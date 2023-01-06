@@ -27,7 +27,6 @@
         <link rel="stylesheet" href="{{ url(asset('leaflet/leaflet.css')) }}">
         <script src="{{ url(asset('leaflet/leaflet.js')) }}"></script>
         
-        
         <!-- Leaflet custom style -->
         <style>
             .leaflet-tooltip {
@@ -43,5 +42,6 @@
     <body>
         @yield('body')
         <script src="{{ url(asset('scripts/script.js')) }}"></script>
+        <script src="{{ url(asset('scripts/alpine.js')) }}"></script>
     </body>
 </html>
