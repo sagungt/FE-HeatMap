@@ -7,7 +7,7 @@
         <div class="legend bottom-[10%] left-5 bg-white fixed w-[300px] h-[270px] z-[999] flex flex-col justify-center gap-1 pl-5 rounded-lg">
             <template x-for="value in ordinal">
                 <div x-on:click="showHeatmap(value.index)" class="flex items-center gap-4 cursor-pointer">
-                    <div x-bind:class="'bg-[' + value.color + ']'" class="color w-[50px] h-[30px] border border-slate-700"></div>
+                    <div x-bind:class="'bg-range-'+ value.index" class="w-[50px] h-[30px] border border-slate-700"></div>
                     <p class="text-sm" x-text="value.l + ' - ' + value.g "></p>
                 </div>
             </template>
