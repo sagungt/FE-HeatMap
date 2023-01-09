@@ -39,10 +39,9 @@
     </style>
 </head>
 
-<body x-data='dataOrdinal'>
+<body>
     @yield('body')
-    <script src="{{ url(asset('scripts/script.js')) }}"></script>
-    <script src="{{ url(asset('scripts/alpine.js')) }}"></script>
+    @stack('scripts')
 </body>
 
 </html>

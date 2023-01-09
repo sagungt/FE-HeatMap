@@ -14,7 +14,9 @@
  *
  * See: https://github.com/laravel-frontend-presets/tall/issues/7
  */
- input:invalid, textarea:invalid, select:invalid {
+input:invalid,
+textarea:invalid,
+select:invalid {
     box-shadow: none;
 }
 
@@ -52,4 +54,23 @@
 
 [x-cloak] {
     display: none;
+}
+
+.bg-range-1 {
+    background-color: #fad4d4;
+}
+.bg-range-2 {
+    background-color: #f78686;
+}
+.bg-range-3 {
+    background-color: #fa5c5c;
+}
+.bg-range-4 {
+    background-color: #f21f1f;
+}
+.bg-range-5 {
+    background-color: #c90202;
+}
+.bg-range-6 {
+    background-color: #380101;
 }

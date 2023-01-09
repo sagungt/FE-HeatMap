@@ -57,21 +57,47 @@ const ordinal = [
 const BASE_URL = "https://fbca-113-11-180-120.ap.ngrok.io";
 const AREA_ENDPOINT = `${BASE_URL}/api/area`;
 
+/**
+ * Calculate latitude with addition by meters
+ * @param {number} latitude - Latitude coordinate
+ * @param {number} meters - Addition in meter
+ * @return {number} - return latitude
+ */
 function latitudePlusMeters(latitude, meters) {
     return latitude + meters * meter;
 }
 
+/**
+ * Calculate latitude with addition by meters
+ * @param {number} latitude - Latitude coordinate
+ * @param {number} longitude - Longitude coordinate
+ * @param {number} meters - Addition in meter
+ * @return {number} - return longitude
+ */
 function longitudePlusMeters(latitude, longitude, meters) {
     return longitude + (meters * meter) / cos(latitude * (pi / 180));
 }
 
+/**
+ * Determine whether a point is in a circle
+ * @param {number} x1 - Latitude coordinate
+ * @param {number} y1 - Longitude coordinate
+ * @param {number} x2 - Circle center latitude
+ * @param {number} y2 - Circle center longitude
+ * @param {number} r - Radius in meter
+ * @return {boolean}
+ */
 function checkPointInCircle(x1, y1, x2, y2, r) {
-    r = r / (((2 * pi) / 360) * earth) / 1000;
     const distPoints = (x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2);
+    r = r / (((2 * pi) / 360) * earth) / 1000;
     r *= r;
     return distPoints < r;
 }
 
+/**
+ * Initialize map layers
+ * @return {void}
+ */
 async function init() {
     map = L.map("map", { zoomControl: false }).setView(
         [currentLatitude, currentLongitude],
@@ -84,7 +110,7 @@ async function init() {
             '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
     }).addTo(map);
 
-    L.marker([currentLatitude, currentLongitude]).addTo(map);
+    // L.marker([currentLatitude, currentLongitude]).addTo(map);
 
     map.on("click", addMarker);
     // map.touchZoom.disable();
@@ -92,7 +118,7 @@ async function init() {
     // map.scrollWheelZoom.disable();
     // map.boxZoom.disable();
     // map.keyboard.disable();
-    const diff = 1600;
+    const diff = 1575;
     for (let j = 0; j < xOffset; j += 1) {
         for (let i = 0; i < yOffset; i += 1) {
             coords.push({
@@ -100,14 +126,14 @@ async function init() {
                 longitude: longitudePlusMeters(
                     currentLatitude,
                     currentLongitude,
-                    j * diff
+                    (j * diff) + (i % 2 === 0 ? 775 : 0)
                 ),
             });
             // const rand = Math.random();
             // const c1 = L.circle(
             //   [
             //     latitudePlusMeters(currentLatitude, i * diff),
-            //     longitudePlusMeters(currentLatitude, currentLongitude, (j * diff) + (i % 2 === 0 ? 750 : 0)),
+            //     longitudePlusMeters(currentLatitude, currentLongitude, (j * diff) + (i % 2 === 0 ? 775 : 0)),
             //   ], {
             //     radius: 1000 - 8,
             //   }
@@ -134,14 +160,14 @@ async function init() {
                 longitude: longitudePlusMeters(
                     currentLatitude,
                     currentLongitude,
-                    j * diff
+                    (j * diff) + (i % 2 === 0 ? 775 : 0)
                 ),
             });
             // const rand = Math.random();
             // const c1 = L.circle(
             //   [
             //     latitudePlusMeters(currentLatitude, -(i * diff)),
-            //     longitudePlusMeters(currentLatitude, currentLongitude, (j * diff)),
+            //     longitudePlusMeters(currentLatitude, currentLongitude, (j * diff) + (i % 2 === 0 ? 775 : 0)),
             //   ], {
             //     radius: 1000 - 8,
             //   }
@@ -170,14 +196,14 @@ async function init() {
                 longitude: longitudePlusMeters(
                     currentLatitude,
                     currentLongitude,
-                    -(j * diff)
+                    -((j * diff) - (i % 2 === 0 ? 775 : 0))
                 ),
             });
             // const rand = Math.random();
             // const c1 = L.circle(
             //   [
             //     latitudePlusMeters(currentLatitude, i * diff),
-            //     longitudePlusMeters(currentLatitude, currentLongitude, -(j * diff)),
+            //     longitudePlusMeters(currentLatitude, currentLongitude, -((j * diff) - (i % 2 === 0 ? 775 : 0))),
             //   ], {
             //     radius: 1000 - 8,
             //   }
@@ -203,14 +229,14 @@ async function init() {
                 longitude: longitudePlusMeters(
                     currentLatitude,
                     currentLongitude,
-                    -(j * diff)
+                    -((j * diff) - (i % 2 === 0 ? 775 : 0))
                 ),
             });
             // const rand = Math.random();
             // const c1 = L.circle(
             //   [
             //     latitudePlusMeters(currentLatitude, -(i * diff)),
-            //     longitudePlusMeters(currentLatitude, currentLongitude, -(j * diff)),
+            //     longitudePlusMeters(currentLatitude, currentLongitude, -((j * diff) - (i % 2 === 0 ? 775 : 0))),
             //   ], {
             //     radius: 1000 - 8,
             //   }
@@ -231,7 +257,6 @@ async function init() {
             // });
         }
     }
-    console.log(coords.length);
     const data = await fetch(AREA_ENDPOINT, {
         method: "POST",
         headers: {
@@ -245,6 +270,11 @@ async function init() {
     showHeatmap();
 }
 
+/**
+ * Determine whether a point is in a circle
+ * @param {number | null} filter - Range index
+ * @return {void}
+ */
 function showHeatmap(filter = null) {
     map.eachLayer(function (layer) {
         map.removeLayer(layer);
@@ -286,6 +316,11 @@ function showHeatmap(filter = null) {
     });
 }
 
+/**
+ * Determine whether a point is in a circle
+ * @param {number} price - Price
+ * @return {any}
+ */
 function determineRange(price) {
     let result = 0;
     for (let i = ordinal.length - 1; i >= 0; i -= 1) {
@@ -298,6 +333,10 @@ function determineRange(price) {
     return ordinal[result];
 }
 
+/**
+ * Get initial coordinate with client current location or manually defined
+ * @return {void}
+ */
 function getCurrentLocation() {
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition((position) => {
@@ -310,6 +349,11 @@ function getCurrentLocation() {
     }
 }
 
+/**
+ * Map click event handler to add marker on map
+ * @param {any} e - Event
+ * @return {void}
+ */
 function addMarker(e) {
     if (markers.length > 0) {
         markers[0].remove();
