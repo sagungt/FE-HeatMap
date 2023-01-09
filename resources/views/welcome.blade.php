@@ -16,3 +16,8 @@
     </div>
 
 @endsection
+
+@push('scripts')
+    <script src="{{ url(asset('scripts/script.js')) }}"></script>
+    <script src="{{ url(asset('scripts/alpine.js')) }}"></script>
+@endpush
