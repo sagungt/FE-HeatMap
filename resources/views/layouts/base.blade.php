@@ -32,25 +32,24 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <!-- Leaflet assets -->
-    <link rel="stylesheet" href="{{ url(asset('leaflet/leaflet.css')) }}">
-    <script src="{{ url(asset('leaflet/leaflet.js')) }}"></script>
+        <!-- Leaflet assets -->
+        <link rel="stylesheet" href="{{ url(asset('leaflet/leaflet.css')) }}">
+        <script src="{{ url(asset('leaflet/leaflet.js')) }}"></script>
+        
+        <!-- Leaflet custom style -->
+        <style>
+            .leaflet-tooltip {
+                background: white;
+                color: black;
+                box-shadow: none;
+                border: none;
+                padding: 0 5px;
+            }
+        </style>
+    </head>
 
-    <!-- Leaflet custom style -->
-    <style>
-        .leaflet-tooltip {
-            background: white;
-            color: black;
-            box-shadow: none;
-            border: none;
-            padding: 0 5px;
-        }
-    </style>
-</head>
-
-<body>
-    @yield('body')
-    @stack('scripts')
-</body>
-
+    <body>
+        @yield('body')
+        @stack('scripts')
+    </body>
 </html>
