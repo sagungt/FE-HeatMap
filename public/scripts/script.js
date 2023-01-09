@@ -9,6 +9,7 @@ var markers = [],
     xOffset = 10,
     coords = [];
 
+/* Ordinal Data */
 const ordinal = [
     {
         index: 1,
@@ -54,8 +55,13 @@ const ordinal = [
     },
 ];
 
+/* API */
 const BASE_URL = "https://fbca-113-11-180-120.ap.ngrok.io";
 const AREA_ENDPOINT = `${BASE_URL}/api/area`;
+
+/* Elements */
+const element = document.getElementById("detail-property");
+const button = document.getElementById("detail-property-info");
 
 /**
  * Calculate latitude with addition by meters
@@ -109,8 +115,6 @@ async function init() {
         attribution:
             '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
     }).addTo(map);
-
-    // L.marker([currentLatitude, currentLongitude]).addTo(map);
 
     map.on("click", addMarker);
     // map.touchZoom.disable();
@@ -386,17 +390,27 @@ function addMarker(e) {
     // );
 }
 
-function modal(lang, long) {
+/**
+ * Open modal detail handler
+ * @param {number} e - Event
+ * @param {number}
+ * @return {void}
+ */
+function modal(latitude, longitude) {
     element.classList.replace("hidden", "flex");
-    const longi = document.getElementById("long");
-    const lati = document.getElementById("lat");
-    const harga = document.getElementById("harga");
+    const longitudeElement = document.getElementById("long");
+    const latitudeElement = document.getElementById("lat");
+    const priceElement = document.getElementById("harga");
 
-    longi.innerHTML = long;
-    lati.innerHTML = lang;
+    longitudeElement.innerHTML = longitude;
+    latitudeElement.innerHTML = latitude;
 }
-const element = document.getElementById("detail-property");
-const button = document.getElementById("detail-property-info");
+
+/**
+ * Click outside modal handler listener
+ * @param {number} event - Click event
+ * @return {void}
+ */
 window.addEventListener("click", (event) => {
     if (
         event.target != button &&
