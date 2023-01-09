@@ -13,6 +13,7 @@
     </form>
 
     <!-- Informasi Legend -->
+    <div id="map" class="h-screen min-h-screen"></div>
     <div x-data="dataOrdinal">
         <div
             class="legend bottom-[10%] left-5 bg-white fixed w-[300px] h-[270px] z-[999] flex flex-col justify-center gap-1 pl-5 rounded-lg">
@@ -22,8 +23,7 @@
                     <p class="text-sm" x-text="value.l + ' - ' + value.g "></p>
                 </div>
             </template>
-            <button x-on:click="showHeatmap()"
-                class="bg-slate-600 text-white rounded-lg mt-3 mr-5 hover:bg-slate-600/80 duration-300">Reset</button>
+            <button x-on:click="showHeatmap()" class="mt-3 mr-5 text-white duration-300 rounded-lg bg-slate-600 hover:bg-slate-600/80">Reset</button>
         </div>
     </div>
 @endsection
