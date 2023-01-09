@@ -126,7 +126,7 @@ async function init() {
                 longitude: longitudePlusMeters(
                     currentLatitude,
                     currentLongitude,
-                    (j * diff) + (i % 2 === 0 ? 775 : 0)
+                    j * diff + (i % 2 === 0 ? 775 : 0)
                 ),
             });
             // const rand = Math.random();
@@ -160,7 +160,7 @@ async function init() {
                 longitude: longitudePlusMeters(
                     currentLatitude,
                     currentLongitude,
-                    (j * diff) + (i % 2 === 0 ? 775 : 0)
+                    j * diff + (i % 2 === 0 ? 775 : 0)
                 ),
             });
             // const rand = Math.random();
@@ -196,7 +196,7 @@ async function init() {
                 longitude: longitudePlusMeters(
                     currentLatitude,
                     currentLongitude,
-                    -((j * diff) - (i % 2 === 0 ? 775 : 0))
+                    -(j * diff - (i % 2 === 0 ? 775 : 0))
                 ),
             });
             // const rand = Math.random();
@@ -229,7 +229,7 @@ async function init() {
                 longitude: longitudePlusMeters(
                     currentLatitude,
                     currentLongitude,
-                    -((j * diff) - (i % 2 === 0 ? 775 : 0))
+                    -(j * diff - (i % 2 === 0 ? 775 : 0))
                 ),
             });
             // const rand = Math.random();
@@ -360,6 +360,7 @@ function addMarker(e) {
         markers = [];
     }
     const newMarker = new L.Marker([e.latlng.lat, e.latlng.lng]);
+    console.log(e.latlng.lat);
     newMarker.addTo(map);
     markers.push(newMarker);
     // if (
