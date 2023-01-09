@@ -110,7 +110,7 @@ async function init() {
             '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
     }).addTo(map);
 
-    L.marker([currentLatitude, currentLongitude]).addTo(map);
+    // L.marker([currentLatitude, currentLongitude]).addTo(map);
 
     map.on("click", addMarker);
     // map.touchZoom.disable();
@@ -196,7 +196,7 @@ async function init() {
                 longitude: longitudePlusMeters(
                     currentLatitude,
                     currentLongitude,
-                    -(j * diff)
+                    -((j * diff) - (i % 2 === 0 ? 775 : 0))
                 ),
             });
             // const rand = Math.random();
@@ -229,7 +229,7 @@ async function init() {
                 longitude: longitudePlusMeters(
                     currentLatitude,
                     currentLongitude,
-                    -(j * diff)
+                    -((j * diff) - (i % 2 === 0 ? 775 : 0))
                 ),
             });
             // const rand = Math.random();
