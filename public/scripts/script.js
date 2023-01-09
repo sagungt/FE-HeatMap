@@ -54,7 +54,7 @@ const ordinal = [
     },
 ];
 
-const BASE_URL = "https://830f-113-11-180-16.ap.ngrok.io";
+const BASE_URL = "https://fbca-113-11-180-120.ap.ngrok.io";
 const AREA_ENDPOINT = `${BASE_URL}/api/area`;
 
 function latitudePlusMeters(latitude, meters) {
@@ -268,7 +268,11 @@ function showHeatmap(filter = null) {
                     .bindTooltip(`${Number(average).toFixed()}`, {
                         permanent: true,
                         direction: "center",
+                    })
+                    .on("click", function () {
+                        modal(center.latitude, center.longitude);
                     });
+
                 c1.setStyle({
                     color: ordinal.color,
                     opacity: 0.8,
@@ -314,15 +318,48 @@ function addMarker(e) {
     const newMarker = new L.Marker([e.latlng.lat, e.latlng.lng]);
     newMarker.addTo(map);
     markers.push(newMarker);
-    alert(
-        checkPointInCircle(
-            currentLatitude,
-            currentLongitude,
-            e.latlng.lat,
-            e.latlng.lng,
-            1000
-        )
-    );
+    // if (
+    //     checkPointInCircle(
+    //         currentLatitude,
+    //         currentLongitude,
+    //         e.latlng.lat,
+    //         e.latlng.lng,
+    //         1000
+    //     ) == true
+    // ) {
+    //     modal(e.latlng.lat, e.latlng.lng);
+    // }
+
+    // alert(
+    //     checkPointInCircle(
+    //         currentLatitude,
+    //         currentLongitude,
+    //         e.latlng.lat,
+    //         e.latlng.lng,
+    //         1000
+    //     )
+    // );
 }
+
+function modal(lang, long) {
+    element.classList.replace("hidden", "flex");
+    const longi = document.getElementById("long");
+    const lati = document.getElementById("lat");
+    const harga = document.getElementById("harga");
+
+    longi.innerHTML = long;
+    lati.innerHTML = lang;
+}
+const element = document.getElementById("detail-property");
+const button = document.getElementById("detail-property-info");
+window.addEventListener("click", (event) => {
+    if (
+        event.target != button &&
+        !button.contains(event.target) &&
+        event.target == element
+    ) {
+        element.classList.replace("flex", "hidden");
+    }
+});
 
 getCurrentLocation();
