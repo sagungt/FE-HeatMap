@@ -4,6 +4,10 @@
     @livewire('components.modal')
     <div id="map" class="min-h-screen h-screen"></div>
 
+    <form action="" method="POST" class="absolute z-[9999] top-5 right-5">
+        <input type="text" class="rounded-xl h-[40px] border-none shadow-xl text-sm w-[250px] focus:ring-[#fa5c5c]" placeholder="Search location ...">
+    </form>
+
     <div x-data="dataOrdinal">
         <div
             class="legend bottom-[10%] left-5 bg-white fixed w-[300px] h-[270px] z-[999] flex flex-col justify-center gap-1 pl-5 rounded-lg">
