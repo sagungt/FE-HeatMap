@@ -44,5 +44,16 @@ document.addEventListener("livewire:load", function () {
                 color: "#380101",
             },
         ],
+        MapDetails: false,
+        long: 0,
+        lat: 0,
+        harga: 0,
+
+        modal(lat, long, harga) {
+            this.long = long;
+            this.lat = lat;
+            this.harga = harga;
+            this.MapDetails = true;
+        },
     }));
 });
