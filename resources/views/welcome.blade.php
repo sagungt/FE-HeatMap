@@ -13,7 +13,6 @@
     </form>
 
     <!-- Informasi Legend -->
-    <div id="map" class="h-screen min-h-screen"></div>
     <div x-data="dataOrdinal">
         <div
             class="legend bottom-[10%] left-5 bg-white fixed w-[300px] h-[300px] z-[999] flex flex-col justify-center gap-1 pl-5 rounded-lg">

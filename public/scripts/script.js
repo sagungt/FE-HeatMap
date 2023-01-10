@@ -58,6 +58,7 @@ const ordinal = [
 /* API */
 const BASE_URL = "https://f632-113-11-180-58.ap.ngrok.io";
 const AREA_ENDPOINT = `${BASE_URL}/api/area`;
+const SEARCH_ENDPOINT = `${BASE_URL}/api/search`;
 
 /* Elements */
 const element = document.getElementById("detail-property");
