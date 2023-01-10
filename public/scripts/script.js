@@ -339,7 +339,7 @@ function modal(latitude, longitude, coords) {
             </tr>
             `;
 
-        dataset.push([i, price]);
+        dataset.push([i + 1, price]);
     });
     console.log(dataset);
     (svg = d3.select("svg")),
@@ -348,7 +348,7 @@ function modal(latitude, longitude, coords) {
         (height = svg.attr("height") - margin); //200
 
     // Step 4
-    var xScale = d3.scaleLinear().domain([0, coords.length]).range([0, width]),
+    var xScale = d3.scaleLinear().domain([1, coords.length]).range([0, width]),
         yScale = d3
             .scaleLinear()
             .domain([0, Math.max(...coords.map((v) => v.price))])
@@ -362,11 +362,11 @@ function modal(latitude, longitude, coords) {
     // Title
     svg.append("text")
         .attr("x", width / 2 + 100)
-        .attr("y", 100)
+        .attr("y", 50)
         .attr("text-anchor", "middle")
         .style("font-family", "Helvetica")
         .style("font-size", 20)
-        .text("Line Chart");
+        .text("Property");
 
     // X label
     svg.append("text")
@@ -375,15 +375,15 @@ function modal(latitude, longitude, coords) {
         .attr("text-anchor", "middle")
         .style("font-family", "Helvetica")
         .style("font-size", 12)
-        .text("Independant");
+        .text("Count");
 
     // Y label
     svg.append("text")
         .attr("text-anchor", "middle")
-        .attr("transform", "translate(60," + height + ")rotate(-90)")
+        .attr("transform", "translate(10," + height + ")rotate(-90)")
         .style("font-family", "Helvetica")
         .style("font-size", 12)
-        .text("Dependant");
+        .text("Price");
 
     // Step 6
     g.append("g")
