@@ -6,26 +6,30 @@
 
     <!-- Form Search -->
     <form action="" method="POST" class="absolute z-[9999] top-5 right-5">
-        <div x-data="{location: ''}" class="bg-white rounded-lg w-[316px]">
-            <div class="flex items-center bg-white rounded-lg shadow-md w-full pl-4 pr-2 py-1">
-                <div class="w-[6%] h-[40px] flex justify-start items-center">
-                    <i class="fa-solid fa-magnifying-glass"></i>
-                </div>
-                <input type="text" x-model="location" x-on:input="findLocation" class="rounded-xl h-[40px] w-[84%] border-none text-sm focus:ring-transparent" placeholder="Search location ...">
-                <button class="bg-slate-500 w-8 h-8 rounded-lg shadow-xl duration-300 hover:bg-slate-500/80">
-                    <i class="fa-solid fa-arrow-right text-white"></i>
-                </button>
-            </div>
-            <div>
-                <template x-if="location.length > 0">
-                    <div class="py-3 px-4 flex items-center overflow-x-hidden  max-w-[316px]">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
-                        </svg>                  
-                        <p x-text="location" class="nameLocation ml-[11px] text-sm w-full overflow-y-hidden"></p>
+        <div x-data="search">
+            <div x-data="{location: '', resultLocation: resultLocation}" class="bg-white rounded-lg w-[316px]">
+                <div class="flex items-center bg-white rounded-lg shadow-md w-full pl-4 pr-2 py-1">
+                    <div class="w-[6%] h-[40px] flex justify-start items-center">
+                        <i class="fa-solid fa-magnifying-glass"></i>
                     </div>
-                </template>
+                    <input type="text" x-model="location" x-on:input="findLocation" class="rounded-xl h-[40px] w-[84%] border-none text-sm focus:ring-transparent" placeholder="Search location ...">
+                    <button type="submit" class="bg-slate-500 w-8 h-8 rounded-lg shadow-xl duration-300 hover:bg-slate-500/80">
+                        <i class="fa-solid fa-arrow-right text-white"></i>
+                    </button>
+                </div>
+                <div class="max-h-[560px] overflow-y-scroll">
+                    <template x-if="location.length > 0">
+                        <template x-for="value in resultLocation">
+                            <div class="py-3 px-4 flex items-center overflow-x-hidden  max-w-[316px]">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
+                                </svg>                  
+                                <p x-text="value.display_name" class="nameLocation ml-[11px] text-sm w-full overflow-y-hidden"></p>
+                            </div>
+                        </template>
+                    </template>
+                </div>
             </div>
         </div>
     </form>

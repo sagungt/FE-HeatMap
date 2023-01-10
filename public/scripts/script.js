@@ -1,4 +1,5 @@
 var map, tile, currentLatitude, currentLongitude, response;
+// var namelokasi;
 var markers = [],
     earth = 6378.137,
     pi = Math.PI,
@@ -9,50 +10,52 @@ var markers = [],
     xOffset = 10,
     coords = [];
 
-const nameLocation = [
-    {
-        display_name: "Bandung, Batang, Jawa Tengah, Indonesia",
-        no: 2,
-    },
-    {
-        display_name: "Bandung, Sragen, Jawa Tengah, 57211, Indonesia",
-        no: 2,
-    },
-    {
-        display_name: "Bandung, Boyolali, Jawa Tengah, 57382, Indonesia",
-    },
-    {
-        display_name: "Bandung, Jepara, Jawa Tengah, Indonesia",
-    },
-    {
-        display_name: "Bandung, Kebumen, Jawa Tengah, 54311, Indonesia",
-    },
-    {
-        display_name:
-            "Bandung, Playen, Kabupaten Gunung Kidul, Daerah Istimewa Yogyakarta, Indonesia",
-    },
-    {
-        display_name: "Bandung, Mojokerto, Jawa Timur, Indonesia",
-    },
-    {
-        display_name:
-            "Bandung, Jalan Stasiun Timur, Kebon Jeruk, Andir, Bandung, Jawa Barat, 40181, Indonesia",
-    },
-    {
-        display_name:
-            "Bandung, Jalan Stasiun Barat, Kebon Jeruk, Andir, Bandung, Jawa Barat, 40181, Indonesia",
-    },
-    {
-        display_name: "Bandung, Jawa Barat, Indonesia",
-    },
-];
+// const nameLocation = [
+//     {
+//         display_name: "Bandung, Batang, Jawa Tengah, Indonesia",
+//     },
+//     {
+//         display_name: "Bandung, Sragen, Jawa Tengah, 57211, Indonesia",
+//     },
+//     {
+//         display_name: "Bandung, Boyolali, Jawa Tengah, 57382, Indonesia",
+//     },
+//     {
+//         display_name: "Bandung, Jepara, Jawa Tengah, Indonesia",
+//     },
+//     {
+//         display_name: "Bandung, Kebumen, Jawa Tengah, 54311, Indonesia",
+//     },
+//     {
+//         display_name:
+//             "Bandung, Playen, Kabupaten Gunung Kidul, Daerah Istimewa Yogyakarta, Indonesia",
+//     },
+//     {
+//         display_name: "Bandung, Mojokerto, Jawa Timur, Indonesia",
+//     },
+//     {
+//         display_name:
+//             "Bandung, Jalan Stasiun Timur, Kebon Jeruk, Andir, Bandung, Jawa Barat, 40181, Indonesia",
+//     },
+//     {
+//         display_name:
+//             "Bandung, Jalan Stasiun Barat, Kebon Jeruk, Andir, Bandung, Jawa Barat, 40181, Indonesia",
+//     },
+//     {
+//         display_name: "Bandung, Jawa Barat, Indonesia",
+//     },
+// ];
 
-function findLocation(event) {
-    const keyword = event.target.value;
-    console.log(keyword);
-    // let resultLocation = nameLocation.filter((e) => e.no == 2);
-    // console.log(resultLocation);
-}
+// function findLocation(event) {
+//     const keyword = event.target.value;
+//     let pattern = new RegExp(keyword, "i");
+//     let resultLocation = nameLocation.filter((e) =>
+//         e.display_name.match(pattern)
+//     );
+//     console.log(keyword);
+//     namelokasi = resultLocation;
+//     console.log(namelokasi);
+// }
 
 /* Ordinal Data */
 const ordinal = [
