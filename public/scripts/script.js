@@ -58,6 +58,7 @@ const ordinal = [
 /* API */
 const BASE_URL = "https://f632-113-11-180-58.ap.ngrok.io";
 const AREA_ENDPOINT = `${BASE_URL}/api/area`;
+const SEARCH_ENDPOINT = `${BASE_URL}/api/search`;
 
 /* Elements */
 const element = document.getElementById("detail-property");
@@ -105,10 +106,16 @@ function checkPointInCircle(x1, y1, x2, y2, r) {
  * @return {void}
  */
 async function init() {
-    map = L.map("map", { zoomControl: false }).setView(
-        [currentLatitude, currentLongitude],
-        13
-    );
+    if (!map) {
+        map = L.map("map", { zoomControl: false }).setView(
+            [currentLatitude, currentLongitude],
+            13
+        );
+    }
+    coords = [];
+    map.eachLayer(function (layer) {
+        map.removeLayer(layer);
+    });
 
     tile = L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
         maxZoom: 19,
@@ -116,7 +123,7 @@ async function init() {
             '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
     }).addTo(map);
 
-    map.on("click", addMarker);
+    // map.on("click", addMarker);
     // map.touchZoom.disable();
     // map.doubleClickZoom.disable();
     // map.scrollWheelZoom.disable();
@@ -133,30 +140,6 @@ async function init() {
                     j * diff + (i % 2 === 0 ? 775 : 0)
                 ),
             });
-            // const rand = Math.random();
-            // const c1 = L.circle(
-            //   [
-            //     latitudePlusMeters(currentLatitude, i * diff),
-            //     longitudePlusMeters(currentLatitude, currentLongitude, (j * diff) + (i % 2 === 0 ? 775 : 0)),
-            //   ], {
-            //     radius: 1000 - 8,
-            //   }
-            // )
-            //   .addTo(map)
-            //   .bindTooltip(`${Number(rand*100000000).toFixed(0)}`, {
-            //     permanent: true,
-            //     direction: 'center'
-            //   });
-
-            // c1
-            //   .setStyle({
-            //     color:'red',
-            //     opacity: rand,
-            //     stroke: false,
-            //     fill: true,
-            //     fillColor: 'red',
-            //     fillOpacity: rand
-            //   });
         }
         for (let i = 1; i < yOffset; i += 1) {
             coords.push({
@@ -167,30 +150,6 @@ async function init() {
                     j * diff + (i % 2 === 0 ? 775 : 0)
                 ),
             });
-            // const rand = Math.random();
-            // const c1 = L.circle(
-            //   [
-            //     latitudePlusMeters(currentLatitude, -(i * diff)),
-            //     longitudePlusMeters(currentLatitude, currentLongitude, (j * diff) + (i % 2 === 0 ? 775 : 0)),
-            //   ], {
-            //     radius: 1000 - 8,
-            //   }
-            // )
-            //   .addTo(map)
-            //   .bindTooltip(`${Number(rand*100000000).toFixed(0)}`, {
-            //     permanent: true,
-            //     direction: 'center'
-            //   });
-
-            // c1
-            //   .setStyle({
-            //     color:'red',
-            //     opacity: rand,
-            //     stroke: false,
-            //     fill: true,
-            //     fillColor: 'red',
-            //     fillOpacity: rand
-            //   });
         }
     }
     for (let j = 1; j < xOffset; j += 1) {
@@ -203,29 +162,6 @@ async function init() {
                     -(j * diff - (i % 2 === 0 ? 775 : 0))
                 ),
             });
-            // const rand = Math.random();
-            // const c1 = L.circle(
-            //   [
-            //     latitudePlusMeters(currentLatitude, i * diff),
-            //     longitudePlusMeters(currentLatitude, currentLongitude, -((j * diff) - (i % 2 === 0 ? 775 : 0))),
-            //   ], {
-            //     radius: 1000 - 8,
-            //   }
-            // )
-            //   .addTo(map)
-            //   .bindTooltip(`${Number(rand*100000000).toFixed(0)}`, {
-            //     permanent: true,
-            //     direction: 'center'
-            //   });
-
-            // c1.setStyle({
-            //   color:'red',
-            //   opacity: rand,
-            //   stroke: false,
-            //   fill: true,
-            //   fillColor: 'red',
-            //   fillOpacity: rand
-            // });
         }
         for (let i = 1; i < yOffset; i += 1) {
             coords.push({
@@ -236,29 +172,6 @@ async function init() {
                     -(j * diff - (i % 2 === 0 ? 775 : 0))
                 ),
             });
-            // const rand = Math.random();
-            // const c1 = L.circle(
-            //   [
-            //     latitudePlusMeters(currentLatitude, -(i * diff)),
-            //     longitudePlusMeters(currentLatitude, currentLongitude, -((j * diff) - (i % 2 === 0 ? 775 : 0))),
-            //   ], {
-            //     radius: 1000 - 8,
-            //   }
-            // )
-            //   .addTo(map)
-            //   .bindTooltip(`${Number(rand*100000000).toFixed(0)}`, {
-            //     permanent: true,
-            //     direction: 'center'
-            //   });
-
-            // c1.setStyle({
-            //   color:'red',
-            //   opacity: rand,
-            //   stroke: false,
-            //   fill: true,
-            //   fillColor: 'red',
-            //   fillOpacity: rand
-            // });
         }
     }
     const data = await fetch(AREA_ENDPOINT, {
@@ -295,6 +208,7 @@ function showHeatmap(filter = null) {
                 result = true;
             }
             if (result) {
+                const areaMarkers = [];
                 const c1 = L.circle([center.latitude, center.longitude], {
                     radius: 1000 - 8,
                 })
@@ -305,6 +219,21 @@ function showHeatmap(filter = null) {
                     })
                     .on("click", function () {
                         modal(center.latitude, center.longitude, coords);
+                    })
+                    .on("mouseover", function () {
+                        coords.forEach((coord) => {
+                            const areaMarker = new L.Marker([
+                                coord.latitude,
+                                coord.longitude,
+                            ]);
+                            areaMarker.addTo(map);
+                            areaMarkers.push(areaMarker);
+                        });
+                    })
+                    .on("mouseout", function () {
+                        areaMarkers.forEach((marker) => {
+                            marker.remove();
+                        });
                     });
 
                 c1.setStyle({
@@ -343,11 +272,18 @@ function determineRange(price) {
  */
 function getCurrentLocation() {
     if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition((position) => {
-            currentLatitude = position.coords.latitude;
-            currentLongitude = position.coords.longitude;
-            init();
-        });
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+                currentLatitude = position.coords.latitude;
+                currentLongitude = position.coords.longitude;
+                init();
+            },
+            () => {
+                currentLatitude = -6.9344694;
+                currentLongitude = 107.6049539;
+                init();
+            }
+        );
     } else {
         alert("Geolocation not supported");
     }
@@ -364,30 +300,8 @@ function addMarker(e) {
         markers = [];
     }
     const newMarker = new L.Marker([e.latlng.lat, e.latlng.lng]);
-    console.log(e.latlng.lat);
     newMarker.addTo(map);
     markers.push(newMarker);
-    // if (
-    //     checkPointInCircle(
-    //         currentLatitude,
-    //         currentLongitude,
-    //         e.latlng.lat,
-    //         e.latlng.lng,
-    //         1000
-    //     ) == true
-    // ) {
-    //     modal(e.latlng.lat, e.latlng.lng);
-    // }
-
-    // alert(
-    //     checkPointInCircle(
-    //         currentLatitude,
-    //         currentLongitude,
-    //         e.latlng.lat,
-    //         e.latlng.lng,
-    //         1000
-    //     )
-    // );
 }
 
 /**
@@ -533,5 +447,16 @@ window.addEventListener("click", (event) => {
         element.classList.replace("flex", "hidden");
     }
 });
+
+/**
+ * Reset heatmap and initialize with map center location
+ * @return {void}
+ */
+function resetHeatmap() {
+    const { lat, lng } = map.getCenter();
+    currentLatitude = lat;
+    currentLongitude = lng;
+    init();
+}
 
 getCurrentLocation();
