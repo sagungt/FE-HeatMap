@@ -222,7 +222,10 @@ function showHeatmap(filter = null) {
                     })
                     .on("mouseover", function () {
                         coords.forEach((coord) => {
-                            const areaMarker = new L.Marker([coord.latitude, coord.longitude]);
+                            const areaMarker = new L.Marker([
+                                coord.latitude,
+                                coord.longitude,
+                            ]);
                             areaMarker.addTo(map);
                             areaMarkers.push(areaMarker);
                         });
