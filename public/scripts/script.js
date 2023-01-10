@@ -55,8 +55,7 @@ const ordinal = [
     },
 ];
 
-/* API */
-const BASE_URL = "https://fbca-113-11-180-120.ap.ngrok.io";
+const BASE_URL = "https://f632-113-11-180-58.ap.ngrok.io";
 const AREA_ENDPOINT = `${BASE_URL}/api/area`;
 
 /* Elements */
@@ -364,7 +363,6 @@ function addMarker(e) {
         markers = [];
     }
     const newMarker = new L.Marker([e.latlng.lat, e.latlng.lng]);
-    console.log(e.latlng.lat);
     newMarker.addTo(map);
     markers.push(newMarker);
     // if (
