@@ -2,28 +2,35 @@
 
 @section('content')
     @livewire('components.modal')
-    <div id="map" class="min-h-screen h-screen"></div>
+    <div id="map" class="min-h-screen h-screen" x-on:click="$ref.inputForm.blur()"></div>
 
     <!-- Form Search -->
     <form action="" method="POST" class="absolute z-[9999] top-5 right-5">
         <div x-data="search">
-            <div x-data="{ location: '', resultLocation: resultLocation }" class="bg-white rounded-lg w-[316px]">
+            <div x-data="{ location: '', resultLocations: resultLocations, focus: false }" class="bg-white rounded-lg w-[316px]">
                 <div class="flex items-center bg-white rounded-lg shadow-md w-full pl-4 pr-2 py-1">
                     <div class="w-[6%] h-[40px] flex justify-start items-center">
                         <i class="fa-solid fa-magnifying-glass"></i>
                     </div>
                     <input type="text" x-model="location" x-on:input="findLocation"
-                        class="rounded-xl h-[40px] w-[84%] border-none text-sm focus:ring-transparent"
-                        placeholder="Search location ...">
+                        class="rounded-xl h-[40px] w-[84%] border-none text-sm focus:ring-transparent" x-on:click="focus = true"
+                        placeholder="Search location ..." x-ref="inputForm" x-on:blur="setTimeout(() => { focus = false }, 300)">
                     <button type="submit"
                         class="bg-slate-500 w-8 h-8 rounded-lg shadow-xl duration-300 hover:bg-slate-500/80">
                         <i class="fa-solid fa-arrow-right text-white"></i>
                     </button>
                 </div>
                 <div class="max-h-[560px] overflow-y-scroll">
-                    <template x-if="location.length > 0">
-                        <template x-for="value in resultLocation">
-                            <div class="py-3 px-4 flex items-center overflow-x-hidden  max-w-[316px]">
+                    <template x-if="loading">
+                        <div class="py-3 px-4 flex items-center overflow-x-hidden  max-w-[316px] cursor-pointer hover:bg-slate-100">
+                            <p class="ml-[11px] text-sm w-full overflow-y-hidden italic">
+                                Loading...
+                            </p>
+                        </div>
+                    </template>
+                    <template x-if="location.length > 0 && focus === true">
+                        <template x-for="value in resultLocations">
+                            <div class="py-3 px-4 flex items-center overflow-x-hidden  max-w-[316px] cursor-pointer hover:bg-slate-100" x-on:click="goToLocation(value.lat, value.lon); focus = false">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                     stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
                                     <path stroke-linecap="round" stroke-linejoin="round"
