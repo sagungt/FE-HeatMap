@@ -1,4 +1,4 @@
-var map, tile, currentLatitude, currentLongitude, response;
+var map, tile, currentLatitude, currentLongitude, response, svg;
 // var namelokasi;
 var markers = [],
     earth = 6378.137,
@@ -104,7 +104,7 @@ const ordinal = [
 ];
 
 /* API */
-const BASE_URL = "https://f632-113-11-180-58.ap.ngrok.io";
+const BASE_URL = "https://ae57-182-253-194-14.ap.ngrok.io";
 const AREA_ENDPOINT = `${BASE_URL}/api/area`;
 const SEARCH_ENDPOINT = `${BASE_URL}/api/search`;
 
@@ -266,7 +266,7 @@ function showHeatmap(filter = null) {
                         direction: "center",
                     })
                     .on("click", function () {
-                        modal(center.latitude, center.longitude);
+                        modal(center.latitude, center.longitude, coords);
                     })
                     .on("mouseover", function () {
                         coords.forEach((coord) => {
@@ -358,12 +358,125 @@ function addMarker(e) {
  * @param {number}
  * @return {void}
  */
-function modal(latitude, longitude) {
+function modal(latitude, longitude, coords) {
+    if (svg) svg.selectAll("*").remove();
     element.classList.replace("hidden", "flex");
     const longitudeElement = document.getElementById("long");
     const latitudeElement = document.getElementById("lat");
-    const priceElement = document.getElementById("harga");
+    const coordsElement = document.getElementById("coords");
 
+    let dataset = [];
+
+    let htmlString = "";
+    let no = 1;
+    coords.forEach(({ price, latitude, longitude }, i) => {
+        htmlString += `
+            <tr class="bg-white border-b">
+                <th scope="row" class="px-2 py-4">
+                    ${no++}
+                </th>
+                <td class="px-6 py-4">
+                ${latitude}
+                </td>
+                <td class="px-6 py-4">
+                    ${longitude}
+                </td>
+                <td class="px-6 py-4">
+                    Rp. ${price}
+                </td>
+            </tr>
+            `;
+
+        dataset.push([i + 1, price]);
+    });
+    console.log(dataset);
+    (svg = d3.select("svg")),
+        (margin = 200),
+        (width = svg.attr("width") - margin), //300
+        (height = svg.attr("height") - margin); //200
+
+    // Step 4
+    var xScale = d3.scaleLinear().domain([1, coords.length]).range([0, width]),
+        yScale = d3
+            .scaleLinear()
+            .domain([0, Math.max(...coords.map((v) => v.price))])
+            .range([height, 0]);
+
+    var g = svg
+        .append("g")
+        .attr("transform", "translate(" + 100 + "," + 100 + ")");
+
+    // Step 5
+    // Title
+    svg.append("text")
+        .attr("x", width / 2 + 100)
+        .attr("y", 50)
+        .attr("text-anchor", "middle")
+        .style("font-family", "Helvetica")
+        .style("font-size", 20)
+        .text("Property");
+
+    // X label
+    svg.append("text")
+        .attr("x", width / 2 + 100)
+        .attr("y", height - 15 + 150)
+        .attr("text-anchor", "middle")
+        .style("font-family", "Helvetica")
+        .style("font-size", 12)
+        .text("Count");
+
+    // Y label
+    svg.append("text")
+        .attr("text-anchor", "middle")
+        .attr("transform", "translate(10," + height + ")rotate(-90)")
+        .style("font-family", "Helvetica")
+        .style("font-size", 12)
+        .text("Price");
+
+    // Step 6
+    g.append("g")
+        .attr("transform", "translate(0," + height + ")")
+        .call(d3.axisBottom(xScale));
+
+    g.append("g").call(d3.axisLeft(yScale));
+
+    // Step 7
+    svg.append("g")
+        .selectAll("dot")
+        .data(dataset)
+        .enter()
+        .append("circle")
+        .attr("cx", function (d) {
+            return xScale(d[0]);
+        })
+        .attr("cy", function (d) {
+            return yScale(d[1]);
+        })
+        .attr("r", 3)
+        .attr("transform", "translate(" + 100 + "," + 100 + ")")
+        .style("fill", "#CC0000");
+
+    // Step 8
+    var line = d3
+        .line()
+        .x(function (d) {
+            return xScale(d[0]);
+        })
+        .y(function (d) {
+            return yScale(d[1]);
+        })
+        .curve(d3.curveMonotoneX);
+
+    svg.append("path")
+        .datum(dataset)
+        .attr("class", "line")
+        .attr("transform", "translate(" + 100 + "," + 100 + ")")
+        .attr("d", line)
+        .style("fill", "none")
+        .style("stroke", "#CC0000")
+        .style("stroke-width", "2");
+
+    coordsElement.innerHTML = htmlString;
     longitudeElement.innerHTML = longitude;
     latitudeElement.innerHTML = latitude;
 }
