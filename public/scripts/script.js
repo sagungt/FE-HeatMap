@@ -56,7 +56,7 @@ const ordinal = [
 ];
 
 /* API */
-const BASE_URL = "https://f632-113-11-180-58.ap.ngrok.io";
+const BASE_URL = "https://ae57-182-253-194-14.ap.ngrok.io";
 const AREA_ENDPOINT = `${BASE_URL}/api/area`;
 const SEARCH_ENDPOINT = `${BASE_URL}/api/search`;
 
