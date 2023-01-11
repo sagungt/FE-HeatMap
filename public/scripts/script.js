@@ -365,6 +365,11 @@ function modal(latitude, longitude, coords) {
     const longitudeElement = document.getElementById("long");
     const latitudeElement = document.getElementById("lat");
     const coordsElement = document.getElementById("coords");
+    const closeButton = document.getElementById("close");
+
+    closeButton.addEventListener("click", function () {
+        element.classList.replace("flex", "hidden");
+    });
 
     let dataset = [];
 
