@@ -5,7 +5,7 @@
     <div id="map" class="min-h-screen h-screen" x-on:click="$ref.inputForm.blur()"></div>
 
     <!-- Form Search -->
-    <form action="" method="POST" class="absolute z-[9999] top-5 right-5">
+    <div class="absolute z-[9999] top-5 right-5">
         <div x-data="search">
             <div x-data="{ location: '', resultLocations: resultLocations, focus: false }" class="bg-white rounded-lg w-[316px]">
                 <div class="flex items-center bg-white rounded-lg shadow-md w-full pl-4 pr-2 py-1">
@@ -15,10 +15,6 @@
                     <input type="text" x-model="location" x-on:input="findLocation"
                         class="rounded-xl h-[40px] w-[84%] border-none text-sm focus:ring-transparent" x-on:click="focus = true"
                         placeholder="Search location ..." x-ref="inputForm" x-on:blur="setTimeout(() => { focus = false }, 300)">
-                    <button type="submit"
-                        class="bg-slate-500 w-8 h-8 rounded-lg shadow-xl duration-300 hover:bg-slate-500/80">
-                        <i class="fa-solid fa-arrow-right text-white"></i>
-                    </button>
                 </div>
                 <div class="max-h-[560px] overflow-y-scroll">
                     <template x-if="loading">
@@ -46,11 +42,11 @@
                 </div>
             </div>
         </div>
-    </form>
+    </div>
 
     <!-- Informasi Legend -->
     <div x-data="dataOrdinal">
-        <div x-data="{open: false}">
+        <div x-data="{open: true}">
             <button x-on:click="open = !open" x-bind:class="open ? 'bottom-[60%]' : 'bottom-[50%]'" class="fixed z-[9999] w-[50px] h-[50px] rounded-[14px] bg-[#ffffff] left-5 shadow-lg flex justify-center items-center duration-[0.4s]">
                 <i x-bind:class="open ? 'rotate-90' : 'rotate-0'" class="fa-solid fa-chevron-right text-slate-600 text-lg duration-[0.4s]"></i>
             </button>
