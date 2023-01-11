@@ -6,6 +6,9 @@ module.exports = {
             fontFamily: {
                 sans: ["Inter var", ...defaultTheme.fontFamily.sans],
             },
+            boxShadow: {
+                neumorphism: "5px 5px 15px #a8a8a8, -5px -5px 15px #ffffff",
+            },
         },
     },
     variants: {

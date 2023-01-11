@@ -555,4 +555,15 @@ function resetHeatmap() {
     init();
 }
 
+/**
+ * Go to location with determined coordinate
+ * @param {number} latitude - Latitude coordinate
+ * @param {number} longitude - Longitude coordinate
+ * @return {void}
+ */
+function goToLocation(latitude, longitude) {
+    map.setView([latitude, longitude]);
+    new L.Marker([latitude, longitude]).addTo(map);
+}
+
 getCurrentLocation();
