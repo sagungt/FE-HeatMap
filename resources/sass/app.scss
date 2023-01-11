@@ -91,3 +91,11 @@ select:invalid {
     background: rgb(100, 116, 139);
     border-radius: 20px;
 }
+
+.animation-legend-start {
+    @apply w-[100px] h-[100px];
+}
+
+.animation-legend-end {
+    @apply w-[300px] h-[300px];
+}

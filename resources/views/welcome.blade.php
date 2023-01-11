@@ -50,20 +50,25 @@
 
     <!-- Informasi Legend -->
     <div x-data="dataOrdinal">
-        <div
-            class="legend bottom-[10%] left-5 bg-white fixed w-[300px] h-[300px] z-[999] flex flex-col justify-center gap-1 pl-5 rounded-lg">
-            <template x-for="value in ordinal">
-                <div x-on:click="showHeatmap(value.index)" class="flex items-center gap-4 cursor-pointer">
-                    <div x-bind:class="'bg-range-' + value.index" class="w-[50px] h-[30px] border border-slate-700"></div>
-                    <p class="text-sm" x-text="value.l + ' - ' + value.g "></p>
-                </div>
-            </template>
-            <button x-on:click="showHeatmap()"
-                class="mt-3 mr-5 text-white duration-300 rounded-lg bg-slate-600 hover:bg-slate-600/80">Reset
-                filter</button>
-            <button x-on:click="resetHeatmap()"
-                class="mt-3 mr-5 text-white duration-300 rounded-lg bg-slate-600 hover:bg-slate-600/80">Reset
-                heatmap</button>
+        <div x-data="{open: false}">
+            <button x-on:click="open = !open" x-bind:class="open ? 'bottom-[60%]' : 'bottom-[50%]'" class="fixed z-[9999] w-[50px] h-[50px] rounded-[14px] bg-[#ffffff] left-5 shadow-lg flex justify-center items-center duration-[0.4s]">
+                <i x-bind:class="open ? 'rotate-90' : 'rotate-0'" class="fa-solid fa-chevron-right text-slate-600 text-lg duration-[0.4s]"></i>
+            </button>
+            <div x-show="open" x-transition.duration.400ms
+                class="legend bottom-[10%] left-5 bg-white fixed w-[300px] h-[300px] z-[999] flex flex-col justify-center gap-1 pl-5 rounded-lg">
+                <template x-for="value in ordinal">
+                    <div x-on:click="showHeatmap(value.index)" class="flex items-center gap-4 cursor-pointer transition delay-700">
+                        <div x-bind:class="'bg-range-' + value.index" class="w-[50px] h-[30px] border border-slate-700"></div>
+                        <p class="text-sm" x-text="value.l + ' - ' + value.g "></p>
+                    </div>
+                </template>
+                <button x-on:click="showHeatmap()"
+                    class="mt-3 mr-5 text-white duration-300 rounded-lg bg-slate-600 hover:bg-slate-600/80">Reset
+                    filter</button>
+                <button x-on:click="resetHeatmap()"
+                    class="mt-3 mr-5 text-white duration-300 rounded-lg bg-slate-600 hover:bg-slate-600/80">Reset
+                    heatmap</button>
+            </div>
         </div>
     </div>
 @endsection
