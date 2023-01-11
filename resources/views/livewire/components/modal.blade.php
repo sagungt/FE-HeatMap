@@ -10,9 +10,15 @@
                 <p class="mr-2"><span id="long"></span>, </p>
                 <p id="lat"></p>
             </div>
-            {{-- <div class="w-full border border-black my-5"> --}}
-            <svg width="900" height="350" id="svg"></svg>
-            {{-- </div> --}}
+            <div class="w-full my-5">
+                <div class="flex items-center gap-3">
+                    <button
+                        class="bg-blue-400 px-3 py-2 rounded-md hover:bg-blue-700 hover:text-white duration-200">Line</button>
+                    <button
+                        class="bg-blue-400 px-3 py-2 rounded-md hover:bg-blue-700 hover:text-white duration-200">Bar</button>
+                </div>
+                <svg width="900" height="350" id="svg"></svg>
+            </div>
             <p class="mb-6 text-center text-black md:text-xl text-xl">List Property</p>
             <div class="relative overflow-x-auto">
                 <table class="w-full text-sm text-left text-gray-500">
