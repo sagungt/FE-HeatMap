@@ -78,3 +78,16 @@ select:invalid {
 .nameLocation::-webkit-scrollbar {
     display: none;
 }
+
+.location::-webkit-scrollbar {
+    width: 10px;
+}
+
+.location::-webkit-scrollbar-track {
+    background-color: transparent;
+}
+
+.location::-webkit-scrollbar-thumb {
+    background: rgb(100, 116, 139);
+    border-radius: 20px;
+}
