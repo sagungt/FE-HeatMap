@@ -11,7 +11,7 @@
                 <p id="lat"></p>
             </div>
             {{-- <div class="w-full border border-black my-5"> --}}
-            <svg width="900" height="350"></svg>
+            <svg width="900" height="350" id="svg"></svg>
             {{-- </div> --}}
             <p class="mb-6 text-center text-black md:text-xl text-xl">List Property</p>
             <div class="relative overflow-x-auto">

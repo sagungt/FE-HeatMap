@@ -389,8 +389,8 @@ function modal(latitude, longitude, coords) {
 
         dataset.push([i + 1, price]);
     });
-    console.log(dataset);
-    (svg = d3.select("svg")),
+    // console.log(dataset);
+    (svg = d3.select("#svg")),
         (margin = 200),
         (width = svg.attr("width") - margin), //300
         (height = svg.attr("height") - margin); //200
@@ -475,6 +475,54 @@ function modal(latitude, longitude, coords) {
         .style("fill", "none")
         .style("stroke", "#CC0000")
         .style("stroke-width", "2");
+
+    // contoh bar
+    // var xScale = d3.scaleBand().range([0, width]).padding(0.5),
+    //     yScale = d3.scaleLinear().range([height, 0]);
+
+    // var g = svg
+    //     .append("g")
+    //     .attr("transform", "translate(" + 100 + "," + 100 + ")");
+
+    // xScale.domain(dataset.map((v) => v[1]));
+    // yScale.domain([0, Math.max(...coords.map((v) => v.price))]);
+    // console.log(height);
+
+    // g.append("g")
+    //     .attr("transform", "translate(0," + height + ")")
+    //     .call(
+    //         d3.axisBottom(xScale).tickFormat(function (d, i) {
+    //             return i + 1;
+    //         })
+    //     );
+
+    // g.append("g").call(
+    //     d3
+    //         .axisLeft(yScale)
+    //         .tickFormat(function (d) {
+    //             return "Rp. " + d;
+    //         })
+    //         .ticks(4)
+    // );
+
+    // g.selectAll(".bar")
+    //     .data(dataset)
+    //     .enter()
+    //     .append("rect")
+    //     .attr("class", "bar")
+    //     .attr("x", function (d) {
+    //         console.log("xScale : " + d);
+    //         return xScale(d[1]);
+    //     })
+    //     .attr("y", function (d) {
+    //         console.log("yScale : " + d[1]);
+    //         return yScale(d[1]);
+    //     })
+    //     .attr("width", xScale.bandwidth())
+    //     .attr("height", function (d) {
+    //         console.log("bandwidth : " + d);
+    //         return height - yScale(d[1]);
+    //     });
 
     coordsElement.innerHTML = htmlString;
     longitudeElement.innerHTML = longitude;
