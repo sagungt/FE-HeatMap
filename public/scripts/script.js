@@ -1,4 +1,4 @@
-var map, tile, currentLatitude, currentLongitude, response, svg;
+var map, tile, currentLatitude, currentLongitude, response, svgBar, svgLine;
 // var namelokasi;
 var markers = [],
     earth = 6378.137,
@@ -359,7 +359,8 @@ function addMarker(e) {
  * @return {void}
  */
 function modal(latitude, longitude, coords) {
-    if (svg) svg.selectAll("*").remove();
+    if (svgBar) svgBar.selectAll("*").remove();
+    if (svgLine) svgLine.selectAll("*").remove();
     element.classList.replace("hidden", "flex");
     const longitudeElement = document.getElementById("long");
     const latitudeElement = document.getElementById("lat");
@@ -390,25 +391,34 @@ function modal(latitude, longitude, coords) {
         dataset.push([i + 1, price]);
     });
     // console.log(dataset);
-    (svg = d3.select("#svg")),
+    (svgLine = d3.select("#Line")),
         (margin = 200),
-        (width = svg.attr("width") - margin), //300
-        (height = svg.attr("height") - margin); //200
+        (width = svgLine.attr("width") - margin), //300
+        (height = svgLine.attr("height") - margin); //200
+
+    (svgBar = d3.select("#Bar")),
+        (margin = 200),
+        (width = svgBar.attr("width") - margin), //300
+        (height = svgBar.attr("height") - margin); //200
 
     // Step 4
-    var xScale = d3.scaleLinear().domain([1, coords.length]).range([0, width]),
-        yScale = d3
+    var xScaleLine = d3
+            .scaleLinear()
+            .domain([1, coords.length])
+            .range([0, width]),
+        yScaleLine = d3
             .scaleLinear()
             .domain([0, Math.max(...coords.map((v) => v.price))])
             .range([height, 0]);
 
-    var g = svg
+    var gLine = svgLine
         .append("g")
         .attr("transform", "translate(" + 100 + "," + 100 + ")");
 
     // Step 5
     // Title
-    svg.append("text")
+    svgLine
+        .append("text")
         .attr("x", width / 2 + 100)
         .attr("y", 50)
         .attr("text-anchor", "middle")
@@ -417,7 +427,8 @@ function modal(latitude, longitude, coords) {
         .text("Property");
 
     // X label
-    svg.append("text")
+    svgLine
+        .append("text")
         .attr("x", width / 2 + 100)
         .attr("y", height - 15 + 150)
         .attr("text-anchor", "middle")
@@ -426,7 +437,8 @@ function modal(latitude, longitude, coords) {
         .text("Count");
 
     // Y label
-    svg.append("text")
+    svgLine
+        .append("text")
         .attr("text-anchor", "middle")
         .attr("transform", "translate(10," + height + ")rotate(-90)")
         .style("font-family", "Helvetica")
@@ -434,23 +446,25 @@ function modal(latitude, longitude, coords) {
         .text("Price");
 
     // Step 6
-    g.append("g")
+    gLine
+        .append("g")
         .attr("transform", "translate(0," + height + ")")
-        .call(d3.axisBottom(xScale));
+        .call(d3.axisBottom(xScaleLine));
 
-    g.append("g").call(d3.axisLeft(yScale));
+    gLine.append("g").call(d3.axisLeft(yScaleLine));
 
     // Step 7
-    svg.append("g")
+    svgLine
+        .append("g")
         .selectAll("dot")
         .data(dataset)
         .enter()
         .append("circle")
         .attr("cx", function (d) {
-            return xScale(d[0]);
+            return xScaleLine(d[0]);
         })
         .attr("cy", function (d) {
-            return yScale(d[1]);
+            return yScaleLine(d[1]);
         })
         .attr("r", 3)
         .attr("transform", "translate(" + 100 + "," + 100 + ")")
@@ -460,14 +474,15 @@ function modal(latitude, longitude, coords) {
     var line = d3
         .line()
         .x(function (d) {
-            return xScale(d[0]);
+            return xScaleLine(d[0]);
         })
         .y(function (d) {
-            return yScale(d[1]);
+            return yScaleLine(d[1]);
         })
         .curve(d3.curveMonotoneX);
 
-    svg.append("path")
+    svgLine
+        .append("path")
         .datum(dataset)
         .attr("class", "line")
         .attr("transform", "translate(" + 100 + "," + 100 + ")")
@@ -477,52 +492,52 @@ function modal(latitude, longitude, coords) {
         .style("stroke-width", "2");
 
     // contoh bar
-    // var xScale = d3.scaleBand().range([0, width]).padding(0.5),
-    //     yScale = d3.scaleLinear().range([height, 0]);
+    var xScaleBar = d3.scaleBand().range([0, width]).padding(0.5),
+        yScaleBar = d3.scaleLinear().range([height, 0]);
 
-    // var g = svg
-    //     .append("g")
-    //     .attr("transform", "translate(" + 100 + "," + 100 + ")");
+    var gBar = svgBar
+        .append("g")
+        .attr("transform", "translate(" + 100 + "," + 100 + ")");
 
-    // xScale.domain(dataset.map((v) => v[1]));
-    // yScale.domain([0, Math.max(...coords.map((v) => v.price))]);
-    // console.log(height);
+    xScaleBar.domain(dataset.map((v) => v[1]));
+    yScaleBar.domain([0, Math.max(...coords.map((v) => v.price))]);
+    console.log(height);
 
-    // g.append("g")
-    //     .attr("transform", "translate(0," + height + ")")
-    //     .call(
-    //         d3.axisBottom(xScale).tickFormat(function (d, i) {
-    //             return i + 1;
-    //         })
-    //     );
+    gBar.append("g")
+        .attr("transform", "translate(0," + height + ")")
+        .call(
+            d3.axisBottom(xScaleBar).tickFormat(function (d, i) {
+                return i + 1;
+            })
+        );
 
-    // g.append("g").call(
-    //     d3
-    //         .axisLeft(yScale)
-    //         .tickFormat(function (d) {
-    //             return "Rp. " + d;
-    //         })
-    //         .ticks(4)
-    // );
+    gBar.append("g").call(
+        d3
+            .axisLeft(yScaleBar)
+            .tickFormat(function (d) {
+                return "Rp. " + d;
+            })
+            .ticks(4)
+    );
 
-    // g.selectAll(".bar")
-    //     .data(dataset)
-    //     .enter()
-    //     .append("rect")
-    //     .attr("class", "bar")
-    //     .attr("x", function (d) {
-    //         console.log("xScale : " + d);
-    //         return xScale(d[1]);
-    //     })
-    //     .attr("y", function (d) {
-    //         console.log("yScale : " + d[1]);
-    //         return yScale(d[1]);
-    //     })
-    //     .attr("width", xScale.bandwidth())
-    //     .attr("height", function (d) {
-    //         console.log("bandwidth : " + d);
-    //         return height - yScale(d[1]);
-    //     });
+    gBar.selectAll(".bar")
+        .data(dataset)
+        .enter()
+        .append("rect")
+        .attr("class", "bar")
+        .attr("x", function (d) {
+            console.log("xScaleBar : " + d);
+            return xScaleBar(d[1]);
+        })
+        .attr("y", function (d) {
+            console.log("yScaleBar : " + d[1]);
+            return yScaleBar(d[1]);
+        })
+        .attr("width", xScaleBar.bandwidth())
+        .attr("height", function (d) {
+            console.log("bandwidth : " + d);
+            return height - yScaleBar(d[1]);
+        });
 
     coordsElement.innerHTML = htmlString;
     longitudeElement.innerHTML = longitude;
