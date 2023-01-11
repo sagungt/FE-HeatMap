@@ -2,7 +2,7 @@ var map = L.map('map').setView([-6.917008029115489, 107.61900716418606], 12);
 var markers = [], loc = [];
 
 /* API */
-const BASE_URL = 'https://f632-113-11-180-58.ap.ngrok.io';
+const BASE_URL = 'https://red-dew-1859.fly.dev';
 const ALLHEATMAP = `${BASE_URL}/api/allheatmap`;
 const CREATE = `${BASE_URL}/api/create`;
 

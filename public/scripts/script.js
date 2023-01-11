@@ -8,7 +8,8 @@ var markers = [],
     circles = [],
     yOffset = 5,
     xOffset = 10,
-    coords = [];
+    coords = [],
+    Property = false;
 
 // const nameLocation = [
 //     {
@@ -58,15 +59,13 @@ var markers = [],
 // }
 
 /* Ordinal Data */
-const ordinal = [
-    {
+const ordinal = [{
         index: 1,
         l: 0,
         g: 700000000,
         opacity: 0.4,
         color: "#fad4d4",
-    },
-    {
+    },{
         index: 2,
         l: 700000000,
         g: 1000000000,
@@ -104,9 +103,70 @@ const ordinal = [
 ];
 
 /* API */
-const BASE_URL = "https://ae57-182-253-194-14.ap.ngrok.io";
+const BASE_URL = "https://red-dew-1859.fly.dev";
 const AREA_ENDPOINT = `${BASE_URL}/api/area`;
 const SEARCH_ENDPOINT = `${BASE_URL}/api/search`;
+let loc = [];
+let isLoading = false;
+
+/**
+ * show error message
+ */
+function showError(toggle = false){
+    const getErrorId = document.getElementById('error')
+    console.log(getErrorId)
+    if(!toggle){
+        getErrorId.classList.add('hidden')
+        getErrorId.classList.remove('flex')
+    } else{
+        getErrorId.classList.add('flex')
+        getErrorId.classList.remove('hidden')
+    }
+}
+
+/* display Loading */
+function loading(toggle = false){
+    const getLoading = document.getElementById('loading');
+    if(!toggle){
+        getLoading.classList.add('hidden');
+        getLoading.classList.remove('flex');
+    } else{
+        getLoading.classList.add('flex');
+        getLoading.classList.remove('hidden');
+    }
+}
+
+/* button for show property */
+async function showProperty(){
+    loading(true);
+    Property = !Property;
+    if(Property == true){
+        await fetchPropertyApi(`${BASE_URL}/api/allheatmap`)
+    } else{
+        for(i = 0; i < loc.length; i++){
+            loc[i].remove();
+        }
+        loc = [];
+    }
+    loading(false);
+}
+
+async function fetchPropertyApi(link) {
+    let object = await fetch(link);
+    let value = await object.json();
+    
+    if(!value.status){
+        loading(false)
+        return showError(true)
+    }
+
+    value.data.forEach((data) => {
+        const propertyMarker = new L.Marker([data.latitude, data.longitude])
+        .bindPopup('Price : ' + data.price)
+        .addTo(map)
+        loc.push(propertyMarker)
+    });
+}
 
 /* Elements */
 const element = document.getElementById("detail-property");
@@ -154,6 +214,7 @@ function checkPointInCircle(x1, y1, x2, y2, r) {
  * @return {void}
  */
 async function init() {
+    loading(true)
     if (!map) {
         map = L.map("map", { zoomControl: false }).setView(
             [currentLatitude, currentLongitude],
@@ -164,7 +225,6 @@ async function init() {
     map.eachLayer(function (layer) {
         map.removeLayer(layer);
     });
-
     tile = L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
         maxZoom: 19,
         attribution:
@@ -230,9 +290,13 @@ async function init() {
         body: JSON.stringify({
             coords,
         }),
-    }).then(async (res) => await res.json());
+    }).then(async (res) => await res.json()).catch(err => {
+        loading(false);
+        showError(true)
+    });
     response = data;
     showHeatmap();
+    loading(false);
 }
 
 /**
@@ -310,7 +374,6 @@ function determineRange(price) {
             break;
         }
     }
-
     return ordinal[result];
 }
 
