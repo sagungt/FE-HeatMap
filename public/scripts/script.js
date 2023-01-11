@@ -1,4 +1,4 @@
-var map, tile, currentLatitude, currentLongitude, response;
+var map, tile, currentLatitude, currentLongitude, response, svg;
 // var namelokasi;
 var markers = [],
     earth = 6378.137,

@@ -1,8 +1,10 @@
 <div id="detail-property"
     class="z-[99999] absolute inset-0 items-center justify-center hidden bg-gray-700 bg-opacity-50 backdrop-blur-sm">
-    <div id="detail-property-info" class="lg:min-w-[800px] md:px-6 px-3 py-3 overflow-y-scroll bg-white rounded-lg h-96">
+    <div id="detail-property-info" class="lg:min-w-[800px] md:px-6 px-3 py-3  bg-white rounded-lg">
         <div class="mt-4">
             <p class="mb-6 text-center text-black md:text-2xl text-xl font-bold">Detail Property</p>
+        </div>
+        <div class="h-96 overflow-y-scroll">
             <div class="flex items-center text-black md:text-sm text-[10px]">
                 <p class="mr-1">Coordinate : </p>
                 <p class="mr-2"><span id="long"></span>, </p>
