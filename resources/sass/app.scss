@@ -74,3 +74,7 @@ select:invalid {
 .bg-range-6 {
     background-color: #380101;
 }
+
+.nameLocation::-webkit-scrollbar {
+    display: none;
+}

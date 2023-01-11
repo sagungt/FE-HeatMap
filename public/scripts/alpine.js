@@ -56,4 +56,56 @@ document.addEventListener("livewire:load", function () {
             this.MapDetails = true;
         },
     }));
+
+    Alpine.data("search", () => ({
+        nameLocation: [
+            {
+                display_name: "Bandung, Batang, Jawa Tengah, Indonesia",
+            },
+            {
+                display_name: "Bandung, Sragen, Jawa Tengah, 57211, Indonesia",
+            },
+            {
+                display_name:
+                    "Bandung, Boyolali, Jawa Tengah, 57382, Indonesia",
+            },
+            {
+                display_name: "Bandung, Jepara, Jawa Tengah, Indonesia",
+            },
+            {
+                display_name: "Bandung, Kebumen, Jawa Tengah, 54311, Indonesia",
+            },
+            {
+                display_name:
+                    "Bandung, Playen, Kabupaten Gunung Kidul, Daerah Istimewa Yogyakarta, Indonesia",
+            },
+            {
+                display_name: "Bandung, Mojokerto, Jawa Timur, Indonesia",
+            },
+            {
+                display_name:
+                    "Bandung, Jalan Stasiun Timur, Kebon Jeruk, Andir, Bandung, Jawa Barat, 40181, Indonesia",
+            },
+            {
+                display_name:
+                    "Bandung, Jalan Stasiun Barat, Kebon Jeruk, Andir, Bandung, Jawa Barat, 40181, Indonesia",
+            },
+            {
+                display_name: "Bandung, Jawa Barat, Indonesia",
+            },
+        ],
+
+        resultLocation: [],
+
+        findLocation(event) {
+            const keyword = event.target.value;
+            let pattern = new RegExp(keyword, "i");
+            let resultLocationFilter = this.nameLocation.filter((e) =>
+                e.display_name.match(pattern)
+            );
+            // console.log(keyword);
+            this.resultLocation = resultLocationFilter;
+            // console.log(this.resultLokasi);
+        },
+    }));
 });
