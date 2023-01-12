@@ -93,9 +93,9 @@ select:invalid {
 }
 
 .animation-legend-start {
-    @apply w-[100px] h-[100px];
+    @apply left-[100%];
 }
 
 .animation-legend-end {
-    @apply w-[300px] h-[300px];
+    @apply left-5;
 }

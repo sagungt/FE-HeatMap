@@ -5,7 +5,7 @@
     <div id="map" class="h-screen min-h-screen" x-on:click="$ref.inputForm.blur()"></div>
 
     <!-- Form Search -->
-    <div class="absolute z-[9999] top-5 right-5">
+    <div class="absolute z-[9999] top-5 left-0 flex justify-center items-center w-full md:top-5 md:right-5 md:w-auto md:justify-end">
         <div x-data="search">
             <div x-data="{ location: '', resultLocations: resultLocations, focus: false }" class="bg-white rounded-lg w-[316px]">
                 <div class="flex items-center w-full py-1 pl-4 pr-2 bg-white rounded-lg shadow-md">
@@ -19,7 +19,7 @@
                         placeholder="Search location ..." x-ref="inputForm" x-on:blur="setTimeout(() => { focus = false }, 300)">
 
                 </div>
-                <div class="max-h-[560px] overflow-y-scroll">
+                <div class="location max-h-[550px] overflow-y-scroll">
                     <template x-if="loading">
                         <div class="py-3 px-4 flex items-center overflow-x-hidden  max-w-[316px] cursor-pointer hover:bg-slate-100">
                             <p class="ml-[11px] text-sm w-full overflow-y-hidden italic">
@@ -49,31 +49,32 @@
     </div>
 
     <!-- Legend Information -->
-    <div x-data="dataOrdinal">
-        <div x-data="{open: true}">
-            <button x-on:click="open = !open" x-bind:class="open ? 'bottom-[65%]' : 'bottom-[50%]'" class="fixed z-[9999] w-[50px] h-[50px] rounded-[14px] bg-[#ffffff] left-5 shadow-lg flex justify-center items-center duration-[0.4s]">
-                <i x-bind:class="open ? 'rotate-90' : 'rotate-0'" class="fa-solid fa-chevron-right text-slate-600 text-lg duration-[0.4s]"></i>
+    <div x-data="dataOrdinal" class="relative bottom-[310px] left-[50%] -translate-x-[50%] sm:w-[420px] h-[310px] sm:left-56 bg-green-400 z-[9999] w-[90%]">
+            <button x-on:click="animationLegend()" class="btn-legend left-0 -top-5 shadow-lg flex justify-center items-center duration-500 absolute z-[9999] w-[50px] h-[50px] rounded-[14px] bg-[#ffffff] sm:w-[40px] sm:h-[40px] sm:top-2 lg:bottom-[520px] lg:w-[50px] lg:h-[50px]">
+                <i class="fa-solid fa-chevron-right rotate-90 text-slate-600 text-lg duration-500"></i>
             </button>
 
-            <div x-show="open" x-transition.duration.400ms
-                class="legend bottom-[10%] left-5 bg-white fixed w-[300px] h-[350px] z-[999] flex flex-col justify-center gap-1 pl-5 rounded-lg">
-                <template x-for="value in ordinal">
-                    <div x-on:click="showHeatmap(value.index)" class="flex items-center gap-4 transition delay-700 cursor-pointer">
-                        <div x-bind:class="'bg-range-' + value.index" class="w-[50px] h-[30px] border border-slate-700"></div>
-                        <p class="text-sm" x-text="value.l + ' - ' + value.g "></p>
-                    </div>
-                </template>
+            <div class="legend bottom-5 left-[50%] gap-1 flex flex-col justify-center rounded-lg duration-500 -translate-x-[50%] bg-white absolute w-full py-4 sm:left-0 sm:translate-x-0 lg:py-5 z-[999] lg:px-5 lg:gap-4 lg:bottom-[10%] lg:left-5">
+                <div class="flex flex-col gap-2 mx-5 lg:mx-0">
+                    <template x-for="value in ordinal">
+                        <div x-on:click="showHeatmap(value.index)" class="flex items-center gap-4 transition delay-700 cursor-pointer">
+                            <div x-bind:class="'bg-range-' + value.index" class="w-[40px] h-[20px] border border-slate-700 lg:w-[50px] lg:h-[30px]"></div>
+                            <p class="text-xs" x-text="value.l + ' - ' + value.g "></p>
+                        </div>
+                    </template>
+                </div>
 
-                <button x-on:click="showHeatmap()"
-                    class="mt-3 mr-5 text-white duration-300 rounded-lg bg-slate-600 hover:bg-slate-600/80">Reset
-                    filter</button>
-                <button x-on:click="resetHeatmap()"
-                    class="mt-3 mr-5 text-white duration-300 rounded-lg bg-slate-600 hover:bg-slate-600/80">Reset
-                    heatmap</button>
-                <button x-on:click="showProperty()"
-                    class="mt-3 mr-5 text-white duration-300 rounded-lg bg-slate-600 hover:bg-slate-600/80">Show markers</button>
+                <div class="flex gap-2 justify-between mx-4 lg:gap-2 lg:mx-0  lg:flex-col">
+                    <button x-on:click="showHeatmap()"
+                        class="text-xs py-2 px-3 text-white duration-300 rounded-lg bg-slate-600 hover:bg-slate-600/80">Reset
+                        filter</button>
+                    <button x-on:click="resetHeatmap()"
+                        class="text-xs py-2 px-3 text-white duration-300 rounded-lg bg-slate-600 hover:bg-slate-600/80">Reset
+                        heatmap</button>
+                    <button x-on:click="showProperty()"
+                        class="text-xs py-2 px-3 text-white duration-300 rounded-lg bg-slate-600 hover:bg-slate-600/80">Show markers</button>
+                </div>
             </div>
-        </div>
     </div>
 
     <!-- Loading indicator -->
