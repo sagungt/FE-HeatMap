@@ -1,6 +1,7 @@
 <div id="detail-property"
     class="z-[99999] absolute inset-0 items-center justify-center hidden bg-gray-700 bg-opacity-50 backdrop-blur-sm">
-    <div id="detail-property-info" class="lg:min-w-[800px] md:px-6 px-3 py-3  bg-white rounded-lg relative" x-data='modal'>
+    <div id="detail-property-info"
+        class="md:w-[1000px] mx-3 md:px-6 px-3 py-3 overflow-x-auto bg-white rounded-lg relative" x-data='modal'>
         <div id="close" class="absolute top-5 right-5">
             <button><i class="fa-solid fa-xmark text-2xl"></i></button>
         </div>
@@ -8,7 +9,7 @@
             <p class="mb-6 text-center text-black md:text-2xl text-xl font-bold">Detail Property</p>
         </div>
         <div class="h-96 overflow-y-scroll pt-2">
-            <div class="flex items-center justify-between">
+            <div class="sm:flex flex-wrap items-center justify-between">
                 <div class="flex items-center text-black md:text-sm text-[10px]">
                     <p class="mr-1">Coordinate : </p>
                     <p class="mr-2"><span id="long"></span>, </p>
@@ -16,7 +17,7 @@
                 </div>
                 <div class="flex-col relative">
                     <button
-                        class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center mr-5"
+                        class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center mr-5 my-3 sm:my-0"
                         type="button" x-on:click='tagChart = !tagChart'>Charts <svg class="w-4 h-4 ml-2"
                             aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                             xmlns="http://www.w3.org/2000/svg">
@@ -39,12 +40,12 @@
                     </div>
                 </div>
             </div>
-            <div class="w-full my-5">
+            <div class="w-full my-5 hidden lg:flex">
                 <svg width="900" height="350" id="Line" x-show='lineChart'></svg>
                 <svg width="900" height="350" id="Bar" x-show='barChart'></svg>
             </div>
             <p class="mb-6 text-center text-black md:text-xl text-xl">List Property</p>
-            <div class="relative overflow-x-auto">
+            <div class="relative">
                 <table class="w-full text-sm text-left text-gray-500">
                     <thead class="text-xs text-gray-700 uppercase bg-gray-50 ">
                         <tr>
