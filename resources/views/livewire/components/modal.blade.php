@@ -11,8 +11,8 @@
         </div>
 
         <div class="h-96 overflow-y-scroll pt-2">
-            <div class="sm:flex flex-wrap items-center justify-between">
-                <div class="flex items-center text-black md:text-sm text-[10px]">
+            <div class="sm:flex flex-wrap items-center justify-between md:mb-0 sm:mb-[160px]">
+                <div class="sm:flex flex-wrap items-center text-black md:text-sm text-[10px]">
                     <p class="mr-1">Coordinate : </p>
                     <p class="mr-2"><span id="long"></span>, </p>
                     <p id="lat"></p>
@@ -49,7 +49,7 @@
                 </div>
             </div>
 
-            <div class="w-full my-5 md:mx-0 mx-5 rotate-90 md:rotate-0 md:pl-0 pl-[100px]">
+            <div class="w-full my-5 md:mx-0 mx-5 rotate-90 md:rotate-0">
                 <svg width="900" height="350" id="Line" x-show='lineChart'></svg>
                 <svg width="900" height="350" id="Bar" x-show='barChart'></svg>
             </div>
