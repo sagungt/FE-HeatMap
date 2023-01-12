@@ -597,6 +597,8 @@ function resetHeatmap() {
     const { lat, lng } = map.getCenter();
     currentLatitude = lat;
     currentLongitude = lng;
+    property = false;
+    propertyMarkers = [];
     init();
 }
 
