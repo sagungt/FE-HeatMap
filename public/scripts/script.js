@@ -1,5 +1,4 @@
-var map, tile, currentLatitude, currentLongitude, response, svgBar, svgLine;
-// var namelokasi;
+var map, tile, currentLatitude, currentLongitude, response, svgBar, svgLine, searchMarker;
 var markers = [],
     earth = 6378.137,
     pi = Math.PI,
@@ -9,54 +8,8 @@ var markers = [],
     yOffset = 5,
     xOffset = 10,
     coords = [],
-    Property = false;
-
-// const nameLocation = [
-//     {
-//         display_name: "Bandung, Batang, Jawa Tengah, Indonesia",
-//     },
-//     {
-//         display_name: "Bandung, Sragen, Jawa Tengah, 57211, Indonesia",
-//     },
-//     {
-//         display_name: "Bandung, Boyolali, Jawa Tengah, 57382, Indonesia",
-//     },
-//     {
-//         display_name: "Bandung, Jepara, Jawa Tengah, Indonesia",
-//     },
-//     {
-//         display_name: "Bandung, Kebumen, Jawa Tengah, 54311, Indonesia",
-//     },
-//     {
-//         display_name:
-//             "Bandung, Playen, Kabupaten Gunung Kidul, Daerah Istimewa Yogyakarta, Indonesia",
-//     },
-//     {
-//         display_name: "Bandung, Mojokerto, Jawa Timur, Indonesia",
-//     },
-//     {
-//         display_name:
-//             "Bandung, Jalan Stasiun Timur, Kebon Jeruk, Andir, Bandung, Jawa Barat, 40181, Indonesia",
-//     },
-//     {
-//         display_name:
-//             "Bandung, Jalan Stasiun Barat, Kebon Jeruk, Andir, Bandung, Jawa Barat, 40181, Indonesia",
-//     },
-//     {
-//         display_name: "Bandung, Jawa Barat, Indonesia",
-//     },
-// ];
-
-// function findLocation(event) {
-//     const keyword = event.target.value;
-//     let pattern = new RegExp(keyword, "i");
-//     let resultLocation = nameLocation.filter((e) =>
-//         e.display_name.match(pattern)
-//     );
-//     console.log(keyword);
-//     namelokasi = resultLocation;
-//     console.log(namelokasi);
-// }
+    propertyMarkers = [],
+    property = false;
 
 /* Ordinal Data */
 const ordinal = [{
@@ -103,50 +56,59 @@ const ordinal = [{
 ];
 
 /* API */
-const BASE_URL = "https://red-dew-1859.fly.dev";
+const BASE_URL = "https://apiheatmap-far.fly.dev";
 const AREA_ENDPOINT = `${BASE_URL}/api/area`;
 const SEARCH_ENDPOINT = `${BASE_URL}/api/search`;
-let loc = [];
 let isLoading = false;
 
 /**
- * show error message
+ * Show error message indicator
+ * @param {boolean} toggle - Error state
+ * @returns {void}
  */
-function showError(toggle = false){
-    const getErrorId = document.getElementById('error')
-    console.log(getErrorId)
-    if(!toggle){
-        getErrorId.classList.add('hidden')
-        getErrorId.classList.remove('flex')
-    } else{
-        getErrorId.classList.add('flex')
-        getErrorId.classList.remove('hidden')
+function showError(toggle = false) {
+    const getErrorId = document.getElementById('error');
+    if (!toggle) {
+        getErrorId.classList.add('hidden');
+        getErrorId.classList.remove('flex');
+    } else {
+        getErrorId.classList.add('flex');
+        getErrorId.classList.remove('hidden');
     }
 }
 
-/* display Loading */
-function loading(toggle = false){
+/**
+ * Show loading indicator
+ * @param {boolean} toggle - Error state
+ * @returns {void}
+*/
+function loading(toggle = false) {
     const getLoading = document.getElementById('loading');
-    if(!toggle){
+    if (!toggle) {
         getLoading.classList.add('hidden');
         getLoading.classList.remove('flex');
-    } else{
+    } else {
         getLoading.classList.add('flex');
         getLoading.classList.remove('hidden');
     }
 }
 
-/* button for show property */
-async function showProperty(){
+/**
+ * Show propertiy markers
+ * @returns {void}
+ */
+async function showProperty() {
     loading(true);
-    Property = !Property;
-    if(Property == true){
-        await fetchPropertyApi(`${BASE_URL}/api/allheatmap`)
-    } else{
-        for(i = 0; i < loc.length; i++){
-            loc[i].remove();
+    property = !property;
+
+    if (property == true){
+        await fetchPropertyApi(`${BASE_URL}/api/allheatmap`);
+    } else {
+        for (i = 0; i < propertyMarkers.length; i++) {
+            propertyMarkers[i].remove();
         }
-        loc = [];
+
+        propertyMarkers = [];
     }
     loading(false);
 }
@@ -156,20 +118,20 @@ async function fetchPropertyApi(link) {
     let value = await object.json();
     
     if(!value.status){
-        loading(false)
-        return showError(true)
+        loading(false);
+        return showError(true);
     }
 
     value.data.forEach((data) => {
         const propertyMarker = new L.Marker([data.latitude, data.longitude])
-        .bindPopup('Price : ' + data.price)
-        .addTo(map)
-        loc.push(propertyMarker)
+            .bindPopup('Price : ' + data.price)
+            .addTo(map);
+        propertyMarkers.push(propertyMarker);
     });
 }
 
 /* Elements */
-const element = document.getElementById("detail-property");
+const modalElement = document.getElementById("detail-property");
 const button = document.getElementById("detail-property-info");
 
 /**
@@ -292,7 +254,7 @@ async function init() {
         }),
     }).then(async (res) => await res.json()).catch(err => {
         loading(false);
-        showError(true)
+        showError(true);
     });
     response = data;
     showHeatmap();
@@ -309,16 +271,19 @@ function showHeatmap(filter = null) {
         map.removeLayer(layer);
     });
     map.addLayer(tile);
+
     const { data } = response;
     data.forEach(({ average, center, coords }) => {
         if (average !== 0) {
             const ordinal = determineRange(average);
             let result;
+
             if (filter) {
                 result = filter === ordinal.index;
             } else {
                 result = true;
             }
+
             if (result) {
                 const areaMarkers = [];
                 const c1 = L.circle([center.latitude, center.longitude], {
@@ -410,6 +375,7 @@ function addMarker(e) {
         markers[0].remove();
         markers = [];
     }
+
     const newMarker = new L.Marker([e.latlng.lat, e.latlng.lng]);
     newMarker.addTo(map);
     markers.push(newMarker);
@@ -424,14 +390,15 @@ function addMarker(e) {
 function modal(latitude, longitude, coords) {
     if (svgBar) svgBar.selectAll("*").remove();
     if (svgLine) svgLine.selectAll("*").remove();
-    element.classList.replace("hidden", "flex");
+
+    modalElement.classList.replace("hidden", "flex");
     const longitudeElement = document.getElementById("long");
     const latitudeElement = document.getElementById("lat");
     const coordsElement = document.getElementById("coords");
     const closeButton = document.getElementById("close");
 
     closeButton.addEventListener("click", function () {
-        element.classList.replace("flex", "hidden");
+        modalElement.classList.replace("flex", "hidden");
     });
 
     let dataset = [];
@@ -458,18 +425,17 @@ function modal(latitude, longitude, coords) {
 
         dataset.push([i + 1, price]);
     });
-    // console.log(dataset);
     (svgLine = d3.select("#Line")),
         (margin = 200),
-        (width = svgLine.attr("width") - margin), //300
-        (height = svgLine.attr("height") - margin); //200
+        (width = svgLine.attr("width") - margin),
+        (height = svgLine.attr("height") - margin);
 
     (svgBar = d3.select("#Bar")),
         (margin = 200),
-        (width = svgBar.attr("width") - margin), //300
-        (height = svgBar.attr("height") - margin); //200
+        (width = svgBar.attr("width") - margin),
+        (height = svgBar.attr("height") - margin);
 
-    // Step 4
+
     var xScaleLine = d3
             .scaleLinear()
             .domain([1, coords.length])
@@ -483,7 +449,6 @@ function modal(latitude, longitude, coords) {
         .append("g")
         .attr("transform", "translate(" + 100 + "," + 100 + ")");
 
-    // Step 5
     // Title
     svgLine
         .append("text")
@@ -513,7 +478,6 @@ function modal(latitude, longitude, coords) {
         .style("font-size", 12)
         .text("Price");
 
-    // Step 6
     gLine
         .append("g")
         .attr("transform", "translate(0," + height + ")")
@@ -521,7 +485,6 @@ function modal(latitude, longitude, coords) {
 
     gLine.append("g").call(d3.axisLeft(yScaleLine));
 
-    // Step 7
     svgLine
         .append("g")
         .selectAll("dot")
@@ -538,7 +501,6 @@ function modal(latitude, longitude, coords) {
         .attr("transform", "translate(" + 100 + "," + 100 + ")")
         .style("fill", "#CC0000");
 
-    // Step 8
     var line = d3
         .line()
         .x(function (d) {
@@ -621,9 +583,9 @@ window.addEventListener("click", (event) => {
     if (
         event.target != button &&
         !button.contains(event.target) &&
-        event.target == element
+        event.target == modalElement
     ) {
-        element.classList.replace("flex", "hidden");
+        modalElement.classList.replace("flex", "hidden");
     }
 });
 
@@ -646,7 +608,10 @@ function resetHeatmap() {
  */
 function goToLocation(latitude, longitude) {
     map.setView([latitude, longitude]);
-    new L.Marker([latitude, longitude]).addTo(map);
+    if (searchMarker) {
+        searchMarker.remove();
+    }
+    searchMarker = new L.Marker([latitude, longitude]).addTo(map);
 }
 
 getCurrentLocation();
