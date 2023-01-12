@@ -79,7 +79,7 @@ function showError(toggle = false) {
 
 /**
  * Show loading indicator
- * @param {boolean} toggle - Error state
+ * @param {boolean} toggle - Loading state
  * @returns {void}
 */
 function loading(toggle = false) {
@@ -616,6 +616,8 @@ function resetHeatmap() {
     const { lat, lng } = map.getCenter();
     currentLatitude = lat;
     currentLongitude = lng;
+    property = false;
+    propertyMarkers = [];
     init();
 }
 
