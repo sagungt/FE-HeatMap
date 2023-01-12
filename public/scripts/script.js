@@ -79,7 +79,7 @@ function showError(toggle = false) {
 
 /**
  * Show loading indicator
- * @param {boolean} toggle - Error state
+ * @param {boolean} toggle - Loading state
  * @returns {void}
 */
 function loading(toggle = false) {
