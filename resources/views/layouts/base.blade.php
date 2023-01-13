@@ -42,7 +42,7 @@
         </style>
     </head>
 
-    <body>
+    <body class="max-h-screen overflow-y-hidden">
         @yield('body')
         @stack('scripts')
     </body>
