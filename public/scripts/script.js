@@ -1,4 +1,11 @@
-var map, tile, currentLatitude, currentLongitude, response, svgBar, svgLine, searchMarker;
+var map,
+    tile,
+    currentLatitude,
+    currentLongitude,
+    response,
+    svgBar,
+    svgLine,
+    searchMarker;
 var markers = [],
     earth = 6378.137,
     pi = Math.PI,
@@ -12,51 +19,53 @@ var markers = [],
     property = false;
 
 /* Ordinal Data */
-const ordinal = [{
+const ordinal = [
+    {
         index: 1,
         l: 0,
         g: 700000000,
-        opacity: 0.4,
-        color: "#fad4d4",
-    },{
+        opacity: 0.3,
+        color: "#f3f2e3",
+    },
+    {
         index: 2,
         l: 700000000,
         g: 1000000000,
-        opacity: 0.5,
-        color: "#f78686",
+        opacity: 0.3,
+        color: "#d6e6e3",
     },
     {
         index: 3,
         l: 1000000000,
         g: 1700000000,
-        opacity: 0.6,
-        color: "#fa5c5c",
+        opacity: 0.4,
+        color: "#b6eeab",
     },
     {
         index: 4,
         l: 1700000000,
         g: 2400000000,
-        opacity: 0.7,
-        color: "#f21f1f",
+        opacity: 0.5,
+        color: "#9ab3f5",
     },
     {
         index: 5,
         l: 2400000000,
         g: 3500000000,
-        opacity: 0.8,
+        opacity: 0.6,
         color: "#c90202",
     },
     {
         index: 6,
         l: 3500000000,
         g: 10000000000,
-        opacity: 0.9,
+        opacity: 0.7,
         color: "#380101",
     },
 ];
 
 /* API */
-const BASE_URL = "https://apiheatmap-far.fly.dev";
+const BASE_URL = "https://red-dew-1859.fly.dev";
 const AREA_ENDPOINT = `${BASE_URL}/api/area`;
 const SEARCH_ENDPOINT = `${BASE_URL}/api/search`;
 let isLoading = false;
@@ -67,13 +76,13 @@ let isLoading = false;
  * @returns {void}
  */
 function showError(toggle = false) {
-    const getErrorId = document.getElementById('error');
+    const getErrorId = document.getElementById("error");
     if (!toggle) {
-        getErrorId.classList.add('hidden');
-        getErrorId.classList.remove('flex');
+        getErrorId.classList.add("hidden");
+        getErrorId.classList.remove("flex");
     } else {
-        getErrorId.classList.add('flex');
-        getErrorId.classList.remove('hidden');
+        getErrorId.classList.add("flex");
+        getErrorId.classList.remove("hidden");
     }
 }
 
@@ -81,15 +90,15 @@ function showError(toggle = false) {
  * Show loading indicator
  * @param {boolean} toggle - Loading state
  * @returns {void}
-*/
+ */
 function loading(toggle = false) {
-    const getLoading = document.getElementById('loading');
+    const getLoading = document.getElementById("loading");
     if (!toggle) {
-        getLoading.classList.add('hidden');
-        getLoading.classList.remove('flex');
+        getLoading.classList.add("hidden");
+        getLoading.classList.remove("flex");
     } else {
-        getLoading.classList.add('flex');
-        getLoading.classList.remove('hidden');
+        getLoading.classList.add("flex");
+        getLoading.classList.remove("hidden");
     }
 }
 
@@ -101,7 +110,7 @@ async function showProperty() {
     loading(true);
     property = !property;
 
-    if (property == true){
+    if (property == true) {
         await fetchPropertyApi(`${BASE_URL}/api/allheatmap`);
     } else {
         for (i = 0; i < propertyMarkers.length; i++) {
@@ -116,15 +125,15 @@ async function showProperty() {
 async function fetchPropertyApi(link) {
     let object = await fetch(link);
     let value = await object.json();
-    
-    if(!value.status){
+
+    if (!value.status) {
         loading(false);
         return showError(true);
     }
 
     value.data.forEach((data) => {
         const propertyMarker = new L.Marker([data.latitude, data.longitude])
-            .bindPopup('Price : ' + data.price)
+            .bindPopup("Price : " + data.price)
             .addTo(map);
         propertyMarkers.push(propertyMarker);
     });
@@ -176,7 +185,7 @@ function checkPointInCircle(x1, y1, x2, y2, r) {
  * @return {void}
  */
 async function init() {
-    loading(true)
+    loading(true);
     if (!map) {
         map = L.map("map", { zoomControl: false }).setView(
             [currentLatitude, currentLongitude],
@@ -252,10 +261,12 @@ async function init() {
         body: JSON.stringify({
             coords,
         }),
-    }).then(async (res) => await res.json()).catch(err => {
-        loading(false);
-        showError(true);
-    });
+    })
+        .then(async (res) => await res.json())
+        .catch((err) => {
+            loading(false);
+            showError(true);
+        });
     response = data;
     showHeatmap();
     loading(false);
@@ -434,7 +445,6 @@ function modal(latitude, longitude, coords) {
         (margin = 200),
         (width = svgBar.attr("width") - margin),
         (height = svgBar.attr("height") - margin);
-
 
     var xScaleLine = d3
             .scaleLinear()
