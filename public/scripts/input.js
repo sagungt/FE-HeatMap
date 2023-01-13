@@ -3,7 +3,7 @@ var markers = [],
     loc = [];
 
 /* API */
-const BASE_URL = "https://red-dew-1859.fly.dev";
+const BASE_URL = "https://api-heatmap-farcapital.fly.dev";
 const ALLHEATMAP = `${BASE_URL}/api/allheatmap`;
 const CREATE = `${BASE_URL}/api/create`;
 

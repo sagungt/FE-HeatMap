@@ -65,7 +65,7 @@ const ordinal = [
 ];
 
 /* API */
-const BASE_URL = "https://red-dew-1859.fly.dev";
+const BASE_URL = "https://api-heatmap-farcapital.fly.dev";
 const AREA_ENDPOINT = `${BASE_URL}/api/area`;
 const SEARCH_ENDPOINT = `${BASE_URL}/api/search`;
 let isLoading = false;
@@ -103,16 +103,16 @@ function loading(toggle = false) {
 }
 
 // Function untuk toggle legend
-function animationLegend(){
-    const btnLegend = document.querySelector('.btn-legend');
-    const btnIcon = document.querySelector('.btn-legend i');
-    const informationLegend = document.querySelector('.legend');
-    btnLegend.classList.toggle('btn-legend-aktif');
-    btnLegend.classList.toggle('btn-legend-nonaktif');
-    btnIcon.classList.toggle('rotate-90');
-    btnIcon.classList.toggle('rotate-0');
-    informationLegend.classList.toggle('information-legend-aktif');
-    informationLegend.classList.toggle('information-legend-nonaktif');
+function animationLegend() {
+    const btnLegend = document.querySelector(".btn-legend");
+    const btnIcon = document.querySelector(".btn-legend i");
+    const informationLegend = document.querySelector(".legend");
+    btnLegend.classList.toggle("btn-legend-aktif");
+    btnLegend.classList.toggle("btn-legend-nonaktif");
+    btnIcon.classList.toggle("rotate-90");
+    btnIcon.classList.toggle("rotate-0");
+    informationLegend.classList.toggle("information-legend-aktif");
+    informationLegend.classList.toggle("information-legend-nonaktif");
 }
 
 /**
