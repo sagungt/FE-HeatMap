@@ -98,18 +98,12 @@ function animationLegend(){
     const btnLegend = document.querySelector('.btn-legend');
     const btnIcon = document.querySelector('.btn-legend i');
     const informationLegend = document.querySelector('.legend');
-    btnLegend.classList.toggle('-top-5');
-    btnLegend.classList.toggle('sm:top-2');
-    btnLegend.classList.toggle('top-[75%]');
-    btnLegend.classList.toggle('sm:top-[40%]');
+    btnLegend.classList.toggle('btn-legend-aktif');
+    btnLegend.classList.toggle('btn-legend-nonaktif');
     btnIcon.classList.toggle('rotate-90');
     btnIcon.classList.toggle('rotate-0');
-    informationLegend.classList.toggle('left-[50%]');
-    informationLegend.classList.toggle('-translate-x-[50%]');
-    informationLegend.classList.toggle('left-[100%]');
-    informationLegend.classList.toggle('sm:left-0');
-    informationLegend.classList.toggle('sm:-left-20');
-    informationLegend.classList.toggle('opacity-0');
+    informationLegend.classList.toggle('information-legend-aktif');
+    informationLegend.classList.toggle('information-legend-nonaktif');
 }
 
 /**
