@@ -93,9 +93,25 @@ select:invalid {
 }
 
 .animation-legend-start {
-    @apply w-[100px] h-[100px];
+    @apply left-[100%];
 }
 
 .animation-legend-end {
-    @apply w-[300px] h-[300px];
+    @apply left-5;
+}
+
+.btn-legend-aktif{
+    @apply -top-5 sm:left-[360px] lg:-top-5 lg:left-[320px];
+}
+
+.btn-legend-nonaktif{
+    @apply top-[75%] sm:left-0 lg:top-[25%];
+}
+
+.information-legend-aktif{
+    @apply left-[50%] -translate-x-[50%] sm:left-0;
+}
+
+.information-legend-nonaktif{
+    @apply left-[100%] sm:-left-20 opacity-0;
 }

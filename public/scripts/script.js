@@ -93,6 +93,19 @@ function loading(toggle = false) {
     }
 }
 
+// Function untuk toggle legend
+function animationLegend(){
+    const btnLegend = document.querySelector('.btn-legend');
+    const btnIcon = document.querySelector('.btn-legend i');
+    const informationLegend = document.querySelector('.legend');
+    btnLegend.classList.toggle('btn-legend-aktif');
+    btnLegend.classList.toggle('btn-legend-nonaktif');
+    btnIcon.classList.toggle('rotate-90');
+    btnIcon.classList.toggle('rotate-0');
+    informationLegend.classList.toggle('information-legend-aktif');
+    informationLegend.classList.toggle('information-legend-nonaktif');
+}
+
 /**
  * Show propertiy markers
  * @returns {void}
