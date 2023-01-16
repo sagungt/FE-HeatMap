@@ -14,8 +14,8 @@
             <div class="sm:flex flex-wrap items-center justify-between md:mb-0 sm:mb-[160px]">
                 <div class="sm:flex flex-wrap items-center text-black md:text-sm text-[10px]">
                     <p class="mr-1">Coordinate : </p>
-                    <p class="mr-2"><span id="long"></span>, </p>
-                    <p id="lat"></p>
+                    <p class="mr-2"><span id="lat"></span>,</p>
+                    <p id="long"></p>
                 </div>
 
                 <div class="flex-col relative">
