@@ -65,7 +65,7 @@ const ordinal = [
 ];
 
 /* API */
-const BASE_URL = "https://api-heatmap-farcapital.fly.dev";
+const BASE_URL = "https://api-heatmap-farcapital.fly.dev/v1";
 const AREA_ENDPOINT = `${BASE_URL}/api/area`;
 const SEARCH_ENDPOINT = `${BASE_URL}/api/search`;
 let isLoading = false;
