@@ -68,22 +68,43 @@ const ordinal = [
 const BASE_URL = "https://api-heatmap-farcapital.fly.dev/v1";
 const AREA_ENDPOINT = `${BASE_URL}/api/area`;
 const SEARCH_ENDPOINT = `${BASE_URL}/api/search`;
+
+/* loading toggle  */
 let isLoading = false;
+
+/**
+ * formatting number with million and billion etc suffixes
+ * @param {number} number - jumlah nominal Price
+ * @return {number} formated number 
+ */
+function formatPrice(number){
+    const min = 1e3;
+    // Alter numbers larger than 1k
+    if (number >= min) {
+        var units = ["k", "M", "B", "T"];
+        
+        var order = Math.floor(Math.log(number) / Math.log(1000));
+
+        var unitname = units[(order - 1)];
+        var num = +(number / 1000 ** order).toFixed(1);
+        
+        // output number remainder + unitname
+        return num + unitname;
+    }
+
+    // return formatted original number
+    return number.toLocaleString();
+}
 
 /**
  * Show error message indicator
  * @param {boolean} toggle - Error state
  * @returns {void}
  */
-function showError(toggle = false) {
-    const getErrorId = document.getElementById("error");
-    if (!toggle) {
-        getErrorId.classList.add("hidden");
-        getErrorId.classList.remove("flex");
-    } else {
-        getErrorId.classList.add("flex");
-        getErrorId.classList.remove("hidden");
-    }
+function showError(toggle = false){
+    const getErrorId = document.getElementById('error');
+    if (toggle) return getErrorId.classList.replace('hidden', "flex");
+    return getErrorId.classList.replace("flex", 'hidden');
 }
 
 /**
@@ -93,13 +114,8 @@ function showError(toggle = false) {
  */
 function loading(toggle = false) {
     const getLoading = document.getElementById("loading");
-    if (!toggle) {
-        getLoading.classList.add("hidden");
-        getLoading.classList.remove("flex");
-    } else {
-        getLoading.classList.add("flex");
-        getLoading.classList.remove("hidden");
-    }
+    if (toggle) return getLoading.classList.replace('hidden', 'flex');
+    return getLoading.classList.replace('flex', 'hidden');
 }
 
 // Function untuk toggle legend
@@ -116,7 +132,7 @@ function animationLegend() {
 }
 
 /**
- * Show propertiy markers
+ * Show property markers
  * @returns {void}
  */
 async function showProperty() {
@@ -135,6 +151,11 @@ async function showProperty() {
     loading(false);
 }
 
+/**
+ * for fetching data in api 
+ * @param {link} link - link of api 
+ * @returns {void}
+ */
 async function fetchPropertyApi(link) {
     let object = await fetch(link);
     let value = await object.json();
@@ -146,7 +167,7 @@ async function fetchPropertyApi(link) {
 
     value.data.forEach((data) => {
         const propertyMarker = new L.Marker([data.latitude, data.longitude])
-            .bindPopup("Price : " + data.price)
+            .bindPopup('Price : ' + formatPrice(data.price))
             .addTo(map);
         propertyMarkers.push(propertyMarker);
     });
@@ -267,9 +288,9 @@ async function init() {
         }
     }
     const data = await fetch(AREA_ENDPOINT, {
-        method: "POST",
+        method: 'POST',
         headers: {
-            "Content-Type": "application/json",
+            "Content-Type": "application/json"
         },
         body: JSON.stringify({
             coords,
@@ -298,7 +319,7 @@ function showHeatmap(filter = null) {
 
     const { data } = response;
     data.forEach(({ average, center, coords }) => {
-        if (average !== 0) {
+        if (average !== 0){
             const ordinal = determineRange(average);
             let result;
 
@@ -314,7 +335,7 @@ function showHeatmap(filter = null) {
                     radius: 1000 - 8,
                 })
                     .addTo(map)
-                    .bindTooltip(`${Number(average).toFixed()}`, {
+                    .bindTooltip(`${formatPrice(average)}`, {
                         permanent: true,
                         direction: "center",
                     })
