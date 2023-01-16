@@ -3,7 +3,7 @@ var markers = [],
     loc = [];
 
 /* API */
-const BASE_URL = "https://apiheatmap-far.fly.dev";
+const BASE_URL = "https://api-heatmap-farcapital.fly.dev";
 const ALLHEATMAP = `${BASE_URL}/api/allheatmap`;
 const CREATE = `${BASE_URL}/api/create`;
 
@@ -15,7 +15,7 @@ const form = document.querySelector("#handleForm");
  * Fetch api to load and show markers
  * @param {string} link - URL target
  * @returns {void}
-*/
+ */
 async function fetchApi(link) {
     let object = await fetch(link);
     let value = await object.json();
@@ -32,7 +32,7 @@ async function fetchApi(link) {
  * Click map handler to show marker and get coordinate values
  * @param {any} e - Event
  * @returns {void}
-*/
+ */
 function onClickMap(e) {
     if (markers.length > 0) {
         markers[0].remove();
@@ -55,16 +55,16 @@ function onClickMap(e) {
  * @param {boolean} show - Show state
  * @param {string} message - HTML Element in string
  * @returns {void}
-*/
+ */
 function toggleMessage(show, message) {
-    const messageContainer = document.querySelector('#message');
+    const messageContainer = document.querySelector("#message");
     messageContainer.innerHTML += message;
     if (show) {
-        messageContainer.classList.remove('hidden');
-        messageContainer.classList.add('flex');
+        messageContainer.classList.remove("hidden");
+        messageContainer.classList.add("flex");
     } else {
-        messageContainer.classList.add('hidden');
-        messageContainer.classList.remove('flex');
+        messageContainer.classList.add("hidden");
+        messageContainer.classList.remove("flex");
     }
 }
 
@@ -72,15 +72,15 @@ function toggleMessage(show, message) {
  * Show loading indicator
  * @param {boolean} toggle - Loading state
  * @returns {void}
-*/
+ */
 function loading(toggle = false) {
-    const loadingContainer = document.getElementById('loading');
+    const loadingContainer = document.getElementById("loading");
     if (!toggle) {
-        loadingContainer.classList.add('hidden');
-        loadingContainer.classList.remove('flex');
+        loadingContainer.classList.add("hidden");
+        loadingContainer.classList.remove("flex");
     } else {
-        loadingContainer.classList.add('flex');
-        loadingContainer.classList.remove('hidden');
+        loadingContainer.classList.add("flex");
+        loadingContainer.classList.remove("hidden");
     }
 }
 
@@ -88,7 +88,7 @@ function loading(toggle = false) {
  * Form button click handler
  * @param {any} e - Event
  * @returns {void}
-*/
+ */
 btn.addEventListener("click", (e) => {
     e.preventDefault();
     const formData = new FormData(form);
@@ -103,14 +103,20 @@ btn.addEventListener("click", (e) => {
     })
         .then((res) => res.json())
         .then(async (data) => {
-            toggleMessage(true, '<span class="text-xs italic font-bold text-blue-700">Data inserted</span>');
+            toggleMessage(
+                true,
+                '<span class="text-xs italic font-bold text-blue-700">Data inserted</span>'
+            );
             await init();
             setTimeout(() => {
                 toggleMessage(false);
             }, 3000);
         })
         .catch((err) => {
-            toggleMessage(true, '<span class="text-xs italic font-bold text-red-700">Failed to insert data</span>');
+            toggleMessage(
+                true,
+                '<span class="text-xs italic font-bold text-red-700">Failed to insert data</span>'
+            );
             setTimeout(() => {
                 toggleMessage(false);
             }, 3000);
@@ -129,7 +135,7 @@ async function init() {
         attribution:
             '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
     }).addTo(map);
-    
+
     await fetchApi(ALLHEATMAP);
     loading(false);
 }
