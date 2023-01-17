@@ -124,13 +124,17 @@ function loading(toggle = false) {
 function animationLegend() {
     const btnLegend = document.querySelector(".btn-legend");
     const btnIcon = document.querySelector(".btn-legend i");
-    const informationLegend = document.querySelector(".legend");
+    const legend = document.querySelector('.legend');
+    const searchOnThisArea = document.querySelector('.search-on-this-area');
     btnLegend.classList.toggle("btn-legend-aktif");
     btnLegend.classList.toggle("btn-legend-nonaktif");
+    legend.classList.toggle('left-5');
+    legend.classList.toggle('-left-[300px]');
+    legend.classList.toggle('sm:-left-[400px]');
     btnIcon.classList.toggle("rotate-90");
     btnIcon.classList.toggle("rotate-0");
-    informationLegend.classList.toggle("information-legend-aktif");
-    informationLegend.classList.toggle("information-legend-nonaktif");
+    searchOnThisArea.classList.toggle("top-[335px]");
+    searchOnThisArea.classList.toggle("top-[593px]");
 }
 
 /* get button by id show marker */
