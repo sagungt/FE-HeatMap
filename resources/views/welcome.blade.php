@@ -18,6 +18,9 @@
 
     <!-- Error indicator -->
     <livewire:components.error />
+
+    <!-- To my location button -->
+    <livewire:components.my-location />
 @endsection
 
 @push('scripts')
