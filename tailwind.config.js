@@ -4,7 +4,7 @@ module.exports = {
     theme: {
         extend: {
             fontFamily: {
-                sans: ["Inter var", ...defaultTheme.fontFamily.sans],
+                sans: ["Nunito", ...defaultTheme.fontFamily.sans],
             },
             boxShadow: {
                 neumorphism: "5px 5px 15px #a8a8a8, -5px -5px 15px #ffffff",
