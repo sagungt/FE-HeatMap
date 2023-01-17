@@ -69,9 +69,6 @@ const BASE_URL = "https://api-heatmap-farcapital.fly.dev/v1";
 const AREA_ENDPOINT = `${BASE_URL}/api/area`;
 const SEARCH_ENDPOINT = `${BASE_URL}/api/search`;
 
-/* loading toggle  */
-let isLoading = false;
-
 /**
  * formatting number with million and billion etc suffixes
  * @param {number} number - jumlah nominal Price
@@ -109,7 +106,7 @@ function showError(toggle = false){
 
 /**
  * Show loading indicator
- * @param {boolean} toggle - Loading state
+ * @param {bool} toggle - Loading state
  * @returns {void}
  */
 function loading(toggle = false) {
@@ -130,6 +127,48 @@ function animationLegend() {
     informationLegend.classList.toggle("information-legend-aktif");
     informationLegend.classList.toggle("information-legend-nonaktif");
 }
+
+/* get button by id show marker */
+const btnShowMarker = document.getElementById('show-marker');
+
+/**
+ * show property marker button click
+ * @return {void} 
+ */
+btnShowMarker.addEventListener('click',() => {
+    btnShowMarker.classList.toggle('bg-red-600');
+    btnShowMarker.classList.toggle('hover:bg-red-600/80');
+    btnShowMarker.classList.toggle('bg-slate-600');
+    btnShowMarker.classList.toggle('hover:bg-slate-600/80');
+    if(btnShowMarker.innerHTML == 'Hide markers'){
+        showProperty(false);
+        btnShowMarker.innerHTML = "Show markers";
+    }else{
+        showProperty(true);
+        btnShowMarker.innerHTML = "Hide markers";
+    }
+});
+
+/** get mode button */
+const mode = document.getElementById('mode');
+
+/**
+ * 
+ * @return {void}
+ */
+mode.addEventListener('click', () => {
+    mode.classList.toggle('bg-blue-700')
+    mode.classList.toggle('hover:bg-blue-700/80');
+    mode.classList.toggle('focus:ring-blue-300');
+    mode.classList.toggle('bg-purple-700');
+    mode.classList.toggle('hover:bg-purple-700/80');
+    mode.classList.toggle('focus:ring-purple-300');
+    if(mode.innerHTML == 'Default mode'){
+        mode.innerHTML = 'Hover mode';
+    }else{
+        mode.innerHTML = 'Default mode';
+    }
+});
 
 /**
  * Show property markers
@@ -153,7 +192,7 @@ async function showProperty() {
 
 /**
  * for fetching data in api 
- * @param {link} link - link of api 
+ * @param {string} link - link of api 
  * @returns {void}
  */
 async function fetchPropertyApi(link) {
@@ -297,7 +336,7 @@ async function init() {
         }),
     })
         .then(async (res) => await res.json())
-        .catch((err) => {
+        .catch(() => {
             loading(false);
             showError(true);
         });
