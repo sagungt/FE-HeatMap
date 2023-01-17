@@ -1,6 +1,8 @@
 @extends('layouts.app')
 
 @section('content')
+    <!-- Modal Login -->
+    <livewire:components.login />
     <!-- Map container -->
     <div id="map" class="z-10 h-screen min-h-screen"></div>
 
@@ -46,4 +48,5 @@
 
 @push('scripts')
     <script src="{{ url(asset('scripts/input.js')) }}"></script>
+    <script src="{{ url(asset('scripts/alpine.js')) }}"></script>
 @endpush

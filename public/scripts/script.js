@@ -25,43 +25,43 @@ const ordinal = [
         index: 1,
         l: 0,
         g: 700000000,
-        opacity: 0.3,
-        color: "#f3f2e3",
+        opacity: 0.1,
+        color: "#f7f2af",
     },
     {
         index: 2,
         l: 700000000,
         g: 1000000000,
-        opacity: 0.3,
-        color: "#d6e6e3",
+        opacity: 0.1,
+        color: "#9bffed",
     },
     {
         index: 3,
         l: 1000000000,
         g: 1700000000,
         opacity: 0.4,
-        color: "#b6eeab",
+        color: "#7ff866",
     },
     {
         index: 4,
         l: 1700000000,
         g: 2400000000,
         opacity: 0.5,
-        color: "#9ab3f5",
+        color: "#4270f0",
     },
     {
         index: 5,
         l: 2400000000,
         g: 3500000000,
         opacity: 0.6,
-        color: "#c90202",
+        color: "#f52e2e",
     },
     {
         index: 6,
         l: 3500000000,
         g: 10000000000,
         opacity: 0.7,
-        color: "#380101",
+        color: "#160101",
     },
 ];
 
@@ -69,23 +69,24 @@ const ordinal = [
 const BASE_URL = "https://api-heatmap-farcapital.fly.dev/v1";
 const AREA_ENDPOINT = `${BASE_URL}/api/area`;
 const SEARCH_ENDPOINT = `${BASE_URL}/api/search`;
+const ADDRESS_ENDPOINT = `${BASE_URL}/api/reverse`;
 
 /**
  * Format number with million, billion etc suffixes
  * @param {number} number - jumlah nominal Price
- * @return {number} formated number 
+ * @return {number} formated number
  */
-function formatPrice(number){
+function formatPrice(number) {
     const min = 1e3;
     // Alter numbers larger than 1k
     if (number >= min) {
         var units = ["k", "M", "B", "T"];
-        
+
         var order = Math.floor(Math.log(number) / Math.log(1000));
 
-        var unitname = units[(order - 1)];
+        var unitname = units[order - 1];
         var num = +(number / 1000 ** order).toFixed(1);
-        
+
         // output number remainder + unitname
         return num + unitname;
     }
@@ -99,10 +100,10 @@ function formatPrice(number){
  * @param {boolean} toggle - Error state
  * @returns {void}
  */
-function showError(toggle = false){
-    const getErrorId = document.getElementById('error');
-    if (toggle) return getErrorId.classList.replace('hidden', "flex");
-    return getErrorId.classList.replace("flex", 'hidden');
+function showError(toggle = false) {
+    const getErrorId = document.getElementById("error");
+    if (toggle) return getErrorId.classList.replace("hidden", "flex");
+    return getErrorId.classList.replace("flex", "hidden");
 }
 
 /**
@@ -112,8 +113,8 @@ function showError(toggle = false){
  */
 function loading(toggle = false) {
     const getLoading = document.getElementById("loading");
-    if (toggle) return getLoading.classList.replace('hidden', 'flex');
-    return getLoading.classList.replace('flex', 'hidden');
+    if (toggle) return getLoading.classList.replace("hidden", "flex");
+    return getLoading.classList.replace("flex", "hidden");
 }
 
 /**
@@ -133,18 +134,18 @@ function animationLegend() {
 }
 
 /* get button by id show marker */
-const btnShowMarker = document.getElementById('show-marker');
+const btnShowMarker = document.getElementById("show-marker");
 
 /**
  * show property marker button click
- * @return {void} 
+ * @return {void}
  */
-btnShowMarker.addEventListener('click',() => {
-    btnShowMarker.classList.toggle('bg-red-600');
-    btnShowMarker.classList.toggle('hover:bg-red-600/80');
-    btnShowMarker.classList.toggle('bg-slate-600');
-    btnShowMarker.classList.toggle('hover:bg-slate-600/80');
-    if (btnShowMarker.innerHTML === 'Hide markers') {
+btnShowMarker.addEventListener("click", () => {
+    btnShowMarker.classList.toggle("bg-red-600");
+    btnShowMarker.classList.toggle("hover:bg-red-600/80");
+    btnShowMarker.classList.toggle("bg-slate-600");
+    btnShowMarker.classList.toggle("hover:bg-slate-600/80");
+    if (btnShowMarker.innerHTML === "Hide markers") {
         showProperty(false);
         btnShowMarker.innerHTML = "Show markers";
     } else {
@@ -154,24 +155,24 @@ btnShowMarker.addEventListener('click',() => {
 });
 
 /** get mode button */
-const modeToggleElement = document.getElementById('mode');
+const modeToggleElement = document.getElementById("mode");
 
 /**
  * Toggle mode heatmap
  * @return {void}
  */
-modeToggleElement.addEventListener('click', () => {
-    modeToggleElement.classList.toggle('bg-blue-700')
-    modeToggleElement.classList.toggle('hover:bg-blue-700/80');
-    modeToggleElement.classList.toggle('focus:ring-blue-300');
-    modeToggleElement.classList.toggle('bg-purple-700');
-    modeToggleElement.classList.toggle('hover:bg-purple-700/80');
-    modeToggleElement.classList.toggle('focus:ring-purple-300');
-    if (modeToggleElement.innerHTML === 'Default mode'){
-        modeToggleElement.innerHTML = 'Hover mode';
+modeToggleElement.addEventListener("click", () => {
+    modeToggleElement.classList.toggle("bg-blue-700");
+    modeToggleElement.classList.toggle("hover:bg-blue-700/80");
+    modeToggleElement.classList.toggle("focus:ring-blue-300");
+    modeToggleElement.classList.toggle("bg-purple-700");
+    modeToggleElement.classList.toggle("hover:bg-purple-700/80");
+    modeToggleElement.classList.toggle("focus:ring-purple-300");
+    if (modeToggleElement.innerHTML === "Default mode") {
+        modeToggleElement.innerHTML = "Hover mode";
         mode = 0;
     } else {
-        modeToggleElement.innerHTML = 'Default mode';
+        modeToggleElement.innerHTML = "Default mode";
         mode = 1;
     }
     showHeatmap();
@@ -198,8 +199,8 @@ async function showProperty() {
 }
 
 /**
- * for fetching data in api 
- * @param {string} link - link of api 
+ * for fetching data in api
+ * @param {string} link - link of api
  * @returns {void}
  */
 async function fetchPropertyApi(link) {
@@ -213,7 +214,7 @@ async function fetchPropertyApi(link) {
 
     value.data.forEach((data) => {
         const propertyMarker = new L.Marker([data.latitude, data.longitude])
-            .bindPopup('Price : ' + formatPrice(data.price))
+            .bindPopup("Price : " + formatPrice(data.price))
             .addTo(map);
         propertyMarkers.push(propertyMarker);
     });
@@ -334,9 +335,9 @@ async function init() {
         }
     }
     const data = await fetch(AREA_ENDPOINT, {
-        method: 'POST',
+        method: "POST",
         headers: {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
         },
         body: JSON.stringify({
             coords,
@@ -365,7 +366,7 @@ function showHeatmap(filter = null) {
 
     const { data } = response;
     data.forEach(({ average, center, coords }) => {
-        if (average !== 0){
+        if (average !== 0) {
             const ordinal = determineRange(average);
             let result;
 
@@ -379,10 +380,9 @@ function showHeatmap(filter = null) {
                 const areaMarkers = [];
                 const circle = L.circle([center.latitude, center.longitude], {
                     radius: 1000 - 8,
-                })
-                    .on("click", function () {
-                        modal(center.latitude, center.longitude, coords);
-                    });
+                }).on("click", function () {
+                    modal(center.latitude, center.longitude, coords);
+                });
                 if (mode === 0) {
                     circle.bindTooltip(`${formatPrice(average)}`, {
                         permanent: true,
@@ -405,11 +405,11 @@ function showHeatmap(filter = null) {
                     });
                     circle.setStyle({
                         color: ordinal.color,
-                        opacity: 0.8,
+                        opacity: 0.5,
                         stroke: false,
                         fill: true,
                         fillColor: ordinal.color,
-                        fillOpacity: 0.8,
+                        fillOpacity: 0.5,
                     });
                 } else {
                     coords.forEach((coord) => {
@@ -420,39 +420,37 @@ function showHeatmap(filter = null) {
                         areaMarker.addTo(map);
                         areaMarkers.push(areaMarker);
                     });
-                    
+
                     circle.on("mouseover", function () {
                         this.setStyle({
                             color: ordinal.color,
-                            opacity: 0.8,
+                            opacity: 0.5,
                             stroke: false,
                             fill: true,
                             fillColor: ordinal.color,
-                            fillOpacity: 0.8,
-                        })
-                            .bindTooltip(`${formatPrice(average)}`, {
-                                permanent: true,
-                                direction: "center",
-                            });
+                            fillOpacity: 0.5,
+                        }).bindTooltip(`${formatPrice(average)}`, {
+                            permanent: true,
+                            direction: "center",
+                        });
                     });
                     circle.on("mouseout", function () {
                         this.setStyle({
-                            color: 'transparent',
+                            color: "transparent",
                             opacity: 0.8,
                             stroke: false,
                             fill: true,
-                            fillColor: 'transparent',
+                            fillColor: "transparent",
                             fillOpacity: 0.8,
-                        })
-                            .unbindTooltip();
+                        }).unbindTooltip();
                     });
-                    
+
                     circle.setStyle({
-                        color: 'transparent',
+                        color: "transparent",
                         opacity: 0.8,
                         stroke: false,
                         fill: true,
-                        fillColor: 'transparent',
+                        fillColor: "transparent",
                         fillOpacity: 0.8,
                     });
                 }
@@ -523,13 +521,18 @@ function addMarker(e) {
  * @param {number}
  * @return {void}
  */
-function modal(latitude, longitude, coords) {
+async function modal(latitude, longitude, coords) {
     if (svgBar) svgBar.selectAll("*").remove();
     if (svgLine) svgLine.selectAll("*").remove();
 
+    var moneyFormatter = new Intl.NumberFormat();
+
+    const address = await fetch(
+        `${ADDRESS_ENDPOINT}?lat=${latitude}&lon=${longitude}`
+    ).then(async (response) => await response.json());
+
     modalElement.classList.replace("hidden", "flex");
-    const longitudeElement = document.getElementById("long");
-    const latitudeElement = document.getElementById("lat");
+    const addressElement = document.getElementById("address");
     const coordsElement = document.getElementById("coords");
     const closeButton = document.getElementById("close");
 
@@ -542,20 +545,30 @@ function modal(latitude, longitude, coords) {
     let htmlString = "";
     let no = 1;
     coords.forEach(({ price, latitude, longitude }, i) => {
+        // htmlString += `
+        //     <tr class="bg-white border-b">
+        //         <th scope="row" class="px-2 py-4">
+        //             ${no++}
+        //         </th>
+        //         <td class="px-6 py-4">
+        //         ${latitude}
+        //         </td>
+        //         <td class="px-6 py-4">
+        //             ${longitude}
+        //         </td>
+        //         <td class="px-6 py-4">
+        //             Rp. ${price}
+        //         </td>
+        //     </tr>
+        //     `;
         htmlString += `
-            <tr class="bg-white border-b">
-                <th scope="row" class="px-2 py-4">
+            <tr class="bg-white border-b flex justify-between">
+                <th scope="col" class="px-8 py-4">
                     ${no++}
                 </th>
-                <td class="px-6 py-4">
-                ${latitude}
-                </td>
-                <td class="px-6 py-4">
-                    ${longitude}
-                </td>
-                <td class="px-6 py-4">
-                    Rp. ${price}
-                </td>
+                <th scope="col" class="px-8 py-4">
+                    Rp. ${moneyFormatter.format(price)}
+                </th>
             </tr>
             `;
 
@@ -705,8 +718,7 @@ function modal(latitude, longitude, coords) {
         });
 
     coordsElement.innerHTML = htmlString;
-    longitudeElement.innerHTML = longitude;
-    latitudeElement.innerHTML = latitude;
+    addressElement.innerHTML = address.data.display_name;
 }
 
 /**
@@ -763,7 +775,7 @@ function myLocation() {
                 goToLocation(latitude, longitude);
             },
             () => {
-                alert('Couldn\'t access your location. Permission denied.');
+                alert("Couldn't access your location. Permission denied.");
             }
         );
     } else {

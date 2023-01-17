@@ -13,9 +13,8 @@
         <div class="h-96 overflow-y-scroll pt-2">
             <div class="sm:flex flex-wrap items-center justify-between md:mb-0 sm:mb-[160px]">
                 <div class="sm:flex flex-wrap items-center text-black md:text-sm text-[10px]">
-                    <p class="mr-1">Coordinate : </p>
-                    <p class="mr-2"><span id="long"></span>, </p>
-                    <p id="lat"></p>
+                    <p class="mr-1">Address : </p>
+                    <p id="address"></p>
                 </div>
 
                 <div class="flex-col relative">
@@ -58,20 +57,20 @@
             <div class="relative">
                 <table class="w-full text-sm text-left text-gray-500">
                     <thead class="text-xs text-gray-700 uppercase bg-gray-50 ">
-                        <tr>
-                            <th scope="col" class="px-2 py-3">
+                        <tr class="flex justify-between">
+                            <th scope="col" class="px-8 py-3">
                                 No
                             </th>
 
-                            <th scope="col" class="px-6 py-3">
+                            {{-- <th scope="col" class="px-6 py-3">
                                 Latitude
                             </th>
 
                             <th scope="col" class="px-6 py-3">
                                 Longitude
-                            </th>
+                            </th> --}}
 
-                            <th scope="col" class="px-6 py-3">
+                            <th scope="col" class="px-8 py-3">
                                 Price
                             </th>
                         </tr>
