@@ -699,4 +699,24 @@ function goToLocation(latitude, longitude) {
     searchMarker = new L.Marker([latitude, longitude]).addTo(map);
 }
 
+/**
+ * Get client location
+ * @returns {void}
+ */
+function myLocation() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+                const { latitude, longitude } = position.coords;
+                goToLocation(latitude, longitude);
+            },
+            () => {
+                alert('Couldn\'t access your location. Permission denied.');
+            }
+        );
+    } else {
+        alert("Geolocation not supported");
+    }
+}
+
 getCurrentLocation();
