@@ -10,13 +10,14 @@ var markers = [],
     earth = 6378.137,
     pi = Math.PI,
     cos = Math.cos,
-    meter = 1 / (((2 * pi) / 360) * earth) / 1000,
+    meter = 1 / (((2 * pi) / 360) * earth) / 1000, // meter in map scale
     circles = [],
     yOffset = 5,
     xOffset = 10,
     coords = [],
     propertyMarkers = [],
-    property = false;
+    property = false,
+    mode = 0; // 0: default, 1: hover
 
 /* Ordinal Data */
 const ordinal = [
@@ -70,7 +71,7 @@ const AREA_ENDPOINT = `${BASE_URL}/api/area`;
 const SEARCH_ENDPOINT = `${BASE_URL}/api/search`;
 
 /**
- * formatting number with million and billion etc suffixes
+ * Format number with million, billion etc suffixes
  * @param {number} number - jumlah nominal Price
  * @return {number} formated number 
  */
@@ -106,7 +107,7 @@ function showError(toggle = false){
 
 /**
  * Show loading indicator
- * @param {bool} toggle - Loading state
+ * @param {boolean} toggle - Loading state
  * @returns {void}
  */
 function loading(toggle = false) {
@@ -115,7 +116,10 @@ function loading(toggle = false) {
     return getLoading.classList.replace('flex', 'hidden');
 }
 
-// Function untuk toggle legend
+/**
+ * Toggle hide legend information
+ * @returns {void}
+ */
 function animationLegend() {
     const btnLegend = document.querySelector(".btn-legend");
     const btnIcon = document.querySelector(".btn-legend i");
@@ -140,34 +144,37 @@ btnShowMarker.addEventListener('click',() => {
     btnShowMarker.classList.toggle('hover:bg-red-600/80');
     btnShowMarker.classList.toggle('bg-slate-600');
     btnShowMarker.classList.toggle('hover:bg-slate-600/80');
-    if(btnShowMarker.innerHTML == 'Hide markers'){
+    if (btnShowMarker.innerHTML === 'Hide markers') {
         showProperty(false);
         btnShowMarker.innerHTML = "Show markers";
-    }else{
+    } else {
         showProperty(true);
         btnShowMarker.innerHTML = "Hide markers";
     }
 });
 
 /** get mode button */
-const mode = document.getElementById('mode');
+const modeToggleElement = document.getElementById('mode');
 
 /**
- * 
+ * Toggle mode heatmap
  * @return {void}
  */
-mode.addEventListener('click', () => {
-    mode.classList.toggle('bg-blue-700')
-    mode.classList.toggle('hover:bg-blue-700/80');
-    mode.classList.toggle('focus:ring-blue-300');
-    mode.classList.toggle('bg-purple-700');
-    mode.classList.toggle('hover:bg-purple-700/80');
-    mode.classList.toggle('focus:ring-purple-300');
-    if(mode.innerHTML == 'Default mode'){
-        mode.innerHTML = 'Hover mode';
-    }else{
-        mode.innerHTML = 'Default mode';
+modeToggleElement.addEventListener('click', () => {
+    modeToggleElement.classList.toggle('bg-blue-700')
+    modeToggleElement.classList.toggle('hover:bg-blue-700/80');
+    modeToggleElement.classList.toggle('focus:ring-blue-300');
+    modeToggleElement.classList.toggle('bg-purple-700');
+    modeToggleElement.classList.toggle('hover:bg-purple-700/80');
+    modeToggleElement.classList.toggle('focus:ring-purple-300');
+    if (modeToggleElement.innerHTML === 'Default mode'){
+        modeToggleElement.innerHTML = 'Hover mode';
+        mode = 0;
+    } else {
+        modeToggleElement.innerHTML = 'Default mode';
+        mode = 1;
     }
+    showHeatmap();
 });
 
 /**
@@ -370,18 +377,18 @@ function showHeatmap(filter = null) {
 
             if (result) {
                 const areaMarkers = [];
-                const c1 = L.circle([center.latitude, center.longitude], {
+                const circle = L.circle([center.latitude, center.longitude], {
                     radius: 1000 - 8,
                 })
-                    .addTo(map)
-                    .bindTooltip(`${formatPrice(average)}`, {
-                        permanent: true,
-                        direction: "center",
-                    })
                     .on("click", function () {
                         modal(center.latitude, center.longitude, coords);
-                    })
-                    .on("mouseover", function () {
+                    });
+                if (mode === 0) {
+                    circle.bindTooltip(`${formatPrice(average)}`, {
+                        permanent: true,
+                        direction: "center",
+                    });
+                    circle.on("mouseover", function () {
                         coords.forEach((coord) => {
                             const areaMarker = new L.Marker([
                                 coord.latitude,
@@ -390,21 +397,66 @@ function showHeatmap(filter = null) {
                             areaMarker.addTo(map);
                             areaMarkers.push(areaMarker);
                         });
-                    })
-                    .on("mouseout", function () {
+                    });
+                    circle.on("mouseout", function () {
                         areaMarkers.forEach((marker) => {
                             marker.remove();
                         });
                     });
-
-                c1.setStyle({
-                    color: ordinal.color,
-                    opacity: 0.8,
-                    stroke: false,
-                    fill: true,
-                    fillColor: ordinal.color,
-                    fillOpacity: 0.8,
-                });
+                    circle.setStyle({
+                        color: ordinal.color,
+                        opacity: 0.8,
+                        stroke: false,
+                        fill: true,
+                        fillColor: ordinal.color,
+                        fillOpacity: 0.8,
+                    });
+                } else {
+                    coords.forEach((coord) => {
+                        const areaMarker = new L.Marker([
+                            coord.latitude,
+                            coord.longitude,
+                        ]);
+                        areaMarker.addTo(map);
+                        areaMarkers.push(areaMarker);
+                    });
+                    
+                    circle.on("mouseover", function () {
+                        this.setStyle({
+                            color: ordinal.color,
+                            opacity: 0.8,
+                            stroke: false,
+                            fill: true,
+                            fillColor: ordinal.color,
+                            fillOpacity: 0.8,
+                        })
+                            .bindTooltip(`${formatPrice(average)}`, {
+                                permanent: true,
+                                direction: "center",
+                            });
+                    });
+                    circle.on("mouseout", function () {
+                        this.setStyle({
+                            color: 'transparent',
+                            opacity: 0.8,
+                            stroke: false,
+                            fill: true,
+                            fillColor: 'transparent',
+                            fillOpacity: 0.8,
+                        })
+                            .unbindTooltip();
+                    });
+                    
+                    circle.setStyle({
+                        color: 'transparent',
+                        opacity: 0.8,
+                        stroke: false,
+                        fill: true,
+                        fillColor: 'transparent',
+                        fillOpacity: 0.8,
+                    });
+                }
+                circle.addTo(map);
             }
         }
     });
