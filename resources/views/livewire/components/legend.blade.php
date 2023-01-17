@@ -14,6 +14,12 @@
             </template>
         </div>
 
+        {{-- <div class="flex gap-2 flex-wrap mx-5 lg:mx-0">
+            <template x-for="value in ordinal">
+                <div x-on:click="showHeatmap(value.index)" class="h-[20px] w-[calc(100%/3-8px)] rounded-xl border border-[#000000]"></div>
+            </template>
+        </div> --}}
+
         <div class="flex gap-2 mx-4 lg:gap-2 lg:mx-0  lg:flex-col">
             <button x-on:click="showHeatmap()"
                 class="text-xs py-1 px-3 sm:w-[calc(50%-8px)] lg:w-auto text-white duration-300 rounded-lg bg-slate-600 hover:bg-slate-600/80 lg:py-2">Reset

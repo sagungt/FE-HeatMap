@@ -125,7 +125,7 @@ function animationLegend() {
     const btnLegend = document.querySelector(".btn-legend");
     const btnIcon = document.querySelector(".btn-legend i");
     const legend = document.querySelector('.legend');
-    const searchOnThisArea = document.querySelector('.search-on-this-area');
+    const searchOnThisArea = document.querySelector('.information-search-on-this-area');
     btnLegend.classList.toggle("btn-legend-aktif");
     btnLegend.classList.toggle("btn-legend-nonaktif");
     legend.classList.toggle('left-5');
@@ -372,6 +372,7 @@ function showHeatmap(filter = null) {
     data.forEach(({ average, center, coords }) => {
         if (average !== 0) {
             const ordinal = determineRange(average);
+            console.log(ordinal);
             let result;
 
             if (filter) {
