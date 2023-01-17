@@ -103,10 +103,17 @@ btn.addEventListener("click", (e) => {
     })
         .then((res) => res.json())
         .then(async (data) => {
-            toggleMessage(
-                true,
-                '<span class="text-xs italic font-bold text-blue-700">Data inserted</span>'
-            );
+            if (data.status) {
+                toggleMessage(
+                    true,
+                    '<span class="text-xs italic font-bold text-blue-700">Data inserted</span>'
+                );
+            } else {
+                toggleMessage(
+                    true,
+                    '<span class="text-xs italic font-bold text-red-700">Failed</span>'
+                );
+            }
             await init();
             setTimeout(() => {
                 toggleMessage(false);

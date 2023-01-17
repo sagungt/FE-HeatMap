@@ -40,5 +40,13 @@ document.addEventListener("livewire:load", function () {
         tagChart: false,
         lineChart: false,
         barChart: true,
+        modalLogin: false,
+
+        ceklogin() {
+            const token = localStorage.getItem("token");
+            this.islogin = token
+                ? (this.modalLogin = false)
+                : (this.modalLogin = true);
+        },
     }));
 });

@@ -68,7 +68,7 @@ const ordinal = [
 const BASE_URL = "https://api-heatmap-farcapital.fly.dev/v1";
 const AREA_ENDPOINT = `${BASE_URL}/api/area`;
 const SEARCH_ENDPOINT = `${BASE_URL}/api/search`;
-const ADDRES_ENDPOINT = `${BASE_URL}/api/reverse`;
+const ADDRESS_ENDPOINT = `${BASE_URL}/api/reverse`;
 
 /* loading toggle  */
 let isLoading = false;
@@ -440,7 +440,7 @@ async function modal(latitude, longitude, coords) {
     var moneyFormatter = new Intl.NumberFormat();
 
     const address = await fetch(
-        `${ADDRES_ENDPOINT}?lat=${latitude}&&lon=${longitude}`
+        `${ADDRESS_ENDPOINT}?lat=${latitude}&lon=${longitude}`
     ).then(async (response) => await response.json());
 
     modalElement.classList.replace("hidden", "flex");
