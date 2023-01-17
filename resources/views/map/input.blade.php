@@ -42,7 +42,7 @@
 
     <!-- Message info container -->
     <div id='message'
-        class="absolute bottom-[50%] left-[50%] right-[50%] lg:top-5 lg:left-14 lg:right-0 hidden items-center justify-center z-[999] bg-white w-[200px] h-10 px-2 py-1.5 rounded">
+        class="absolute bottom-[50%] left-[50%] right-[50%] lg:top-5 lg:left-14 lg:right-0 hidden items-center justify-center z-[999999] bg-white w-[200px] h-10 px-2 py-1.5 rounded">
     </div>
 @endsection
 
