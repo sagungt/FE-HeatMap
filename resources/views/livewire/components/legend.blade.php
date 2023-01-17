@@ -21,7 +21,7 @@
             <button x-on:click="resetHeatmap()"
                 class="text-xs py-2 px-3 text-white duration-300 rounded-lg bg-slate-600 hover:bg-slate-600/80">Reset
                 heatmap</button>
-            <button x-on:click="showProperty()"
+            <button id="show-marker"
                 class="text-xs py-2 px-3 text-white duration-300 rounded-lg bg-slate-600 hover:bg-slate-600/80">Show markers</button>
         </div>
     </div>
