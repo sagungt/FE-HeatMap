@@ -133,8 +133,8 @@ function animationLegend() {
     legend.classList.toggle('sm:-left-[400px]');
     btnIcon.classList.toggle("rotate-90");
     btnIcon.classList.toggle("rotate-0");
-    searchOnThisArea.classList.toggle("top-[335px]");
-    searchOnThisArea.classList.toggle("top-[593px]");
+    // searchOnThisArea.classList.toggle("top-[335px]");
+    // searchOnThisArea.classList.toggle("top-[593px]");
 }
 
 /* get button by id show marker */
