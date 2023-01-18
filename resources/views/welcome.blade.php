@@ -2,10 +2,14 @@
 
 @section('content')
     <livewire:components.modal />
+
     <div id="map" class="h-screen min-h-screen" x-on:click="$ref.inputForm.blur()"></div>
     
-    <!-- Button form -->
+    <!-- Toggle mode button -->
     <livewire:components.mode/>
+
+    <!-- Search on this area -->
+    <livewire:components.search-on-this-area />
 
     <!-- Form Search -->
     <livewire:components.search />
