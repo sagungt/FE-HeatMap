@@ -141,22 +141,6 @@ function animationLegend() {
 /* get button by id show marker */
 const btnShowMarker = document.getElementById("show-marker");
 
-/**
- * show property marker button click
- * @return {void}
- */
-btnShowMarker.addEventListener("click", () => {
-    btnShowMarker.classList.toggle("bg-red-600");
-    btnShowMarker.classList.toggle("hover:bg-red-600/80");
-    btnShowMarker.classList.toggle("bg-slate-600");
-    btnShowMarker.classList.toggle("hover:bg-slate-600/80");
-    if (btnShowMarker.innerHTML === "Hide markers") {
-        btnShowMarker.innerHTML = "Show markers";
-    } else {
-        btnShowMarker.innerHTML = "Hide markers";
-    }
-});
-
 /** get mode button */
 const modeToggleElement = document.getElementById("mode");
 
@@ -187,6 +171,15 @@ modeToggleElement.addEventListener("click", () => {
  */
 async function showProperty() {
     loading(true);
+    btnShowMarker.classList.toggle("bg-red-600");
+    btnShowMarker.classList.toggle("hover:bg-red-600/80");
+    btnShowMarker.classList.toggle("bg-slate-600");
+    btnShowMarker.classList.toggle("hover:bg-slate-600/80");
+    if (btnShowMarker.innerHTML === "Hide markers") {
+        btnShowMarker.innerHTML = "Show markers";
+    } else {
+        btnShowMarker.innerHTML = "Hide markers";
+    }
     property = !property;
 
     if (property) {
@@ -381,6 +374,7 @@ function showHeatmap(filter = null) {
     });
     map.addLayer(tile);
 
+    if (property) showProperty();
     const { data } = response;
     data.forEach(({ average, center, coords }) => {
         if (average !== 0) {
@@ -444,7 +438,7 @@ function showHeatmap(filter = null) {
                         circle.bindTooltip(`${formatPrice(average)}`, {
                             permanent: true,
                             direction: "center",
-                            opacity,
+                            opacity: 0.8,
                         });
                     });
                     circle.setStyle({
@@ -832,6 +826,10 @@ function myLocation() {
     }
 }
 
+/**
+ * Change all circle opacity
+ * @param {any} el - Input range element
+ */
 function changeOpacity(el) {
     opacity = el.value / 100;
     circles.forEach((circle) => {
