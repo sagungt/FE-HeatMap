@@ -404,7 +404,7 @@ function showHeatmap(filter = null) {
                     circle.bindTooltip(`${formatPrice(average)}`, {
                         permanent: true,
                         direction: "center",
-                        opacity,
+                        opacity: 0.8,
                     });
                     circle.on("mouseover", function () {
                         coords.forEach((coord) => {
@@ -426,7 +426,7 @@ function showHeatmap(filter = null) {
                         circle.bindTooltip(`${formatPrice(average)}`, {
                             permanent: true,
                             direction: "center",
-                            opacity,
+                            opacity: 0.9,
                         });
                     });
                     circle.on("mouseout", function () {
@@ -440,6 +440,11 @@ function showHeatmap(filter = null) {
                             fill: true,
                             fillColor: ordinal.color,
                             fillOpacity: opacity,
+                        });
+                        circle.bindTooltip(`${formatPrice(average)}`, {
+                            permanent: true,
+                            direction: "center",
+                            opacity,
                         });
                     });
                     circle.setStyle({
@@ -573,7 +578,9 @@ async function modal(latitude, longitude, coords) {
     const addressElement = document.getElementById("address");
     const coordsElement = document.getElementById("coords");
     const closeButton = document.getElementById("close");
-    
+
+    addressElement.innerHTML = '';
+
     const address = await fetch(
         `${ADDRESS_ENDPOINT}?lat=${latitude}&lon=${longitude}`
     ).then(async (response) => await response.json());
@@ -826,7 +833,7 @@ function myLocation() {
 }
 
 function changeOpacity(el) {
-    opacity = el.value / 10;
+    opacity = el.value / 100;
     circles.forEach((circle) => {
         circle.setStyle({
             opacity,
