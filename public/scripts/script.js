@@ -85,7 +85,7 @@ function formatPrice(number) {
         var order = Math.floor(Math.log(number) / Math.log(1000));
 
         var unitname = units[order - 1];
-        var num = +(number / 1000 ** order).toFixed(1);
+        var num = +(number / 1000 ** order).toFixed(2);
 
         // output number remainder + unitname
         return num + unitname;
@@ -150,10 +150,8 @@ btnShowMarker.addEventListener("click", () => {
     btnShowMarker.classList.toggle("bg-slate-600");
     btnShowMarker.classList.toggle("hover:bg-slate-600/80");
     if (btnShowMarker.innerHTML === "Hide markers") {
-        showProperty(false);
         btnShowMarker.innerHTML = "Show markers";
     } else {
-        showProperty(true);
         btnShowMarker.innerHTML = "Hide markers";
     }
 });
@@ -190,7 +188,7 @@ async function showProperty() {
     loading(true);
     property = !property;
 
-    if (property == true) {
+    if (property) {
         await fetchPropertyApi(`${BASE_URL}/api/allheatmap`);
     } else {
         for (i = 0; i < propertyMarkers.length; i++) {
@@ -287,6 +285,15 @@ async function init() {
             '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
     }).addTo(map);
 
+    map.on('move', function () {
+        const { lat, lng } = this.getCenter();
+        const searchOnThisAreaElement = document.querySelector('#search-on-this-area');
+        if (!(currentLatitude === lat && currentLongitude === lng)) {
+            setTimeout(() => {
+                searchOnThisAreaElement.classList.replace('opacity-0', 'opacity-100');
+            }, 300);
+        }
+    });
     // map.on("click", addMarker);
     // map.touchZoom.disable();
     // map.doubleClickZoom.disable();
@@ -372,7 +379,6 @@ function showHeatmap(filter = null) {
     data.forEach(({ average, center, coords }) => {
         if (average !== 0) {
             const ordinal = determineRange(average);
-            console.log(ordinal);
             let result;
 
             if (filter) {
@@ -402,10 +408,26 @@ function showHeatmap(filter = null) {
                             areaMarker.addTo(map);
                             areaMarkers.push(areaMarker);
                         });
+                        this.setStyle({
+                            color: ordinal.color,
+                            opacity: 0.9,
+                            stroke: false,
+                            fill: true,
+                            fillColor: ordinal.color,
+                            fillOpacity: 0.9,
+                        });
                     });
                     circle.on("mouseout", function () {
                         areaMarkers.forEach((marker) => {
                             marker.remove();
+                        });
+                        circle.setStyle({
+                            color: ordinal.color,
+                            opacity: 0.5,
+                            stroke: false,
+                            fill: true,
+                            fillColor: ordinal.color,
+                            fillOpacity: 0.5,
                         });
                     });
                     circle.setStyle({
@@ -429,11 +451,11 @@ function showHeatmap(filter = null) {
                     circle.on("mouseover", function () {
                         this.setStyle({
                             color: ordinal.color,
-                            opacity: 0.5,
+                            opacity: 0.9,
                             stroke: false,
                             fill: true,
                             fillColor: ordinal.color,
-                            fillOpacity: 0.5,
+                            fillOpacity: 0.9,
                         }).bindTooltip(`${formatPrice(average)}`, {
                             permanent: true,
                             direction: "center",
@@ -684,7 +706,6 @@ async function modal(latitude, longitude, coords) {
 
     xScaleBar.domain(dataset.map((v) => v[1]));
     yScaleBar.domain([0, Math.max(...coords.map((v) => v.price))]);
-    console.log(height);
 
     gBar.append("g")
         .attr("transform", "translate(0," + height + ")")
@@ -709,16 +730,13 @@ async function modal(latitude, longitude, coords) {
         .append("rect")
         .attr("class", "bar")
         .attr("x", function (d) {
-            console.log("xScaleBar : " + d);
             return xScaleBar(d[1]);
         })
         .attr("y", function (d) {
-            console.log("yScaleBar : " + d[1]);
             return yScaleBar(d[1]);
         })
         .attr("width", xScaleBar.bandwidth())
         .attr("height", function (d) {
-            console.log("bandwidth : " + d);
             return height - yScaleBar(d[1]);
         });
 
@@ -752,6 +770,7 @@ function resetHeatmap() {
     property = false;
     propertyMarkers = [];
     init();
+    document.querySelector("#search-on-this-area").classList.replace('opacity-100', 'opacity-0');
 }
 
 /**
