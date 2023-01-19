@@ -61,6 +61,8 @@ document.addEventListener("livewire:load", function () {
             const data = new FormData();
             data.append("email", this.email);
             data.append("password", this.password);
+            data.append("token", localStorage.getItem("app_key"));
+            console.log(localStorage.getItem("app_key"));
             const respon = await fetch(
                 "https://api-heatmap-farcapital.fly.dev/v1/api/login",
                 {
@@ -68,21 +70,17 @@ document.addEventListener("livewire:load", function () {
                     body: data,
                 }
             )
-                .then((res) => {
-                    console.log(res.headers.get("server"));
-                    return res.json();
-                })
+                .then((res) => res.json())
                 .then((response) => {
                     if (response.status == "success") {
-                        localStorage.setItem("token", true);
-
+                        localStorage.setItem("token", response.data.token);
                         toggleMessage(
                             true,
                             '<span class="text-xs italic font-bold text-blue-700">Login Successful</span>'
                         );
-                        // setTimeout(() => {
-                        //     window.location.href = "";
-                        // }, 3000);
+                        setTimeout(() => {
+                            window.location.href = "";
+                        }, 3000);
                     } else {
                         this.message = true;
                         console.log(response.status);

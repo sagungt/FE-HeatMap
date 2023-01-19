@@ -26,7 +26,7 @@ const ordinal = [
         l: 0,
         g: 700000000,
         opacity: 0.1,
-        color: "#f7f2af",
+        color: "#fcf04f",
     },
     {
         index: 2,
@@ -124,13 +124,13 @@ function loading(toggle = false) {
 function animationLegend() {
     const btnLegend = document.querySelector(".btn-legend");
     const btnIcon = document.querySelector(".btn-legend i");
-    const legend = document.querySelector('.legend');
-    const searchOnThisArea = document.querySelector('.search-on-this-area');
+    const legend = document.querySelector(".legend");
+    const searchOnThisArea = document.querySelector(".search-on-this-area");
     btnLegend.classList.toggle("btn-legend-aktif");
     btnLegend.classList.toggle("btn-legend-nonaktif");
-    legend.classList.toggle('left-5');
-    legend.classList.toggle('-left-[300px]');
-    legend.classList.toggle('sm:-left-[400px]');
+    legend.classList.toggle("left-5");
+    legend.classList.toggle("-left-[300px]");
+    legend.classList.toggle("sm:-left-[400px]");
     btnIcon.classList.toggle("rotate-90");
     btnIcon.classList.toggle("rotate-0");
     // searchOnThisArea.classList.toggle("top-[335px]");
@@ -285,12 +285,17 @@ async function init() {
             '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
     }).addTo(map);
 
-    map.on('move', function () {
+    map.on("move", function () {
         const { lat, lng } = this.getCenter();
-        const searchOnThisAreaElement = document.querySelector('#search-on-this-area');
+        const searchOnThisAreaElement = document.querySelector(
+            "#search-on-this-area"
+        );
         if (!(currentLatitude === lat && currentLongitude === lng)) {
             setTimeout(() => {
-                searchOnThisAreaElement.classList.replace('opacity-0', 'opacity-100');
+                searchOnThisAreaElement.classList.replace(
+                    "opacity-0",
+                    "opacity-100"
+                );
             }, 300);
         }
     });
@@ -423,20 +428,20 @@ function showHeatmap(filter = null) {
                         });
                         circle.setStyle({
                             color: ordinal.color,
-                            opacity: 0.5,
+                            opacity: 0.6,
                             stroke: false,
                             fill: true,
                             fillColor: ordinal.color,
-                            fillOpacity: 0.5,
+                            fillOpacity: 0.6,
                         });
                     });
                     circle.setStyle({
                         color: ordinal.color,
-                        opacity: 0.5,
+                        opacity: 0.6,
                         stroke: false,
                         fill: true,
                         fillColor: ordinal.color,
-                        fillOpacity: 0.5,
+                        fillOpacity: 0.6,
                     });
                 } else {
                     coords.forEach((coord) => {
@@ -552,16 +557,18 @@ async function modal(latitude, longitude, coords) {
     if (svgBar) svgBar.selectAll("*").remove();
     if (svgLine) svgLine.selectAll("*").remove();
 
-    var moneyFormatter = new Intl.NumberFormat();
+    loading(true);
 
-    const address = await fetch(
-        `${ADDRESS_ENDPOINT}?lat=${latitude}&lon=${longitude}`
-    ).then(async (response) => await response.json());
+    var moneyFormatter = new Intl.NumberFormat();
 
     modalElement.classList.replace("hidden", "flex");
     const addressElement = document.getElementById("address");
     const coordsElement = document.getElementById("coords");
     const closeButton = document.getElementById("close");
+
+    const address = await fetch(
+        `${ADDRESS_ENDPOINT}?lat=${latitude}&lon=${longitude}`
+    ).then(async (response) => await response.json());
 
     closeButton.addEventListener("click", function () {
         modalElement.classList.replace("flex", "hidden");
@@ -740,6 +747,7 @@ async function modal(latitude, longitude, coords) {
             return height - yScaleBar(d[1]);
         });
 
+    loading(false);
     coordsElement.innerHTML = htmlString;
     addressElement.innerHTML = address.data.display_name;
 }
@@ -770,7 +778,9 @@ function resetHeatmap() {
     property = false;
     propertyMarkers = [];
     init();
-    document.querySelector("#search-on-this-area").classList.replace('opacity-100', 'opacity-0');
+    document
+        .querySelector("#search-on-this-area")
+        .classList.replace("opacity-100", "opacity-0");
 }
 
 /**
