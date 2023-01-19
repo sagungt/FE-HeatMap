@@ -1,6 +1,7 @@
-var map = L.map("map").setView([-6.917008029115489, 107.61900716418606], 12);
+var map = L.map("map", { zoomControl: false }).setView([-6.917008029115489, 107.61900716418606], 12);
 var markers = [],
     loc = [];
+
 
 /* API */
 const BASE_URL = "https://api-heatmap-farcapital.fly.dev/v1";
