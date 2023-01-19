@@ -37,8 +37,12 @@
     {{-- <livewire:components.form/> --}}
     </div>
 
-    <div class="absolute top-3 z-50 right-5" x-data="modal" x-show="isShow" x-init="ceklogin()">
-        <button class="bg-red-400 px-5 py-2 rounded-md text-black hover:bg-red-700 hover:text-white duration-200"
+    <div class="absolute top-5 z-[999999] right-5">
+        <a href="{{ url('/') }}" class="bg-white shadow-md px-5 py-2 rounded-md text-black hover:bg-green-400 hover:text-white duration-200">Home</button>
+    </div>
+
+    <div class="absolute top-3 z-50 right-28" x-data="modal" x-show="isShow" x-init="ceklogin()">
+        <button class="bg-red-500 shadow-md px-5 py-2 rounded-md text-black hover:bg-red-700 hover:text-white duration-200"
             @click="logout()">Logout</button>
     </div>
 
@@ -47,7 +51,7 @@
 
     <!-- Message info container -->
     <div id='message'
-        class="absolute bottom-[50%] left-[50%] right-[50%] lg:top-5 lg:left-14 lg:right-0 hidden items-center justify-center z-[999999] -translate-x-1/2 -translate-y-1/2 bg-white w-[200px] h-10 px-2 py-1.5 rounded">
+        class="absolute top-1/2 left-1/2 hidden items-center justify-center z-[999999] -translate-x-1/2 -translate-y-1/2 bg-white w-[200px] h-10 px-2 py-1.5 rounded">
     </div>
 @endsection
 
