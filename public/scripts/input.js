@@ -58,7 +58,7 @@ function onClickMap(e) {
  */
 function toggleMessage(show, message) {
     const messageContainer = document.querySelector("#message");
-    messageContainer.innerHTML += message;
+    messageContainer.innerHTML = message;
     if (show) {
         messageContainer.classList.remove("hidden");
         messageContainer.classList.add("flex");
@@ -97,9 +97,25 @@ btn.addEventListener("click", (e) => {
     formData.append("lat", document.querySelector("#lat").value);
     formData.append("long", document.querySelector("#long").value);
 
+    // const data = {
+    //     harga: document.querySelector("#price").value,
+    //     lat: document.querySelector("#lat").value,
+    //     long: document.querySelector("#long").value,
+    // };
+
     fetch(CREATE, {
         method: "POST",
         body: formData,
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: localStorage.getItem("token"),
+            "d-app-authorization": localStorage.getItem("app_key"),
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Methods": "POST",
+            "Access-Control-Allow-Headers":
+                "Authorization, d-app-authorization, Content-Type",
+            Accept: "*/*",
+        },
     })
         .then((res) => res.json())
         .then(async (data) => {
@@ -135,6 +151,11 @@ btn.addEventListener("click", (e) => {
  * @returns {void}
  */
 async function init() {
+    if (!localStorage.getItem("app_key"))
+        localStorage.setItem(
+            "app_key",
+            Math.random().toString(36) + Math.random().toString(36).substring(2)
+        );
     loading(true);
     map.on("click", onClickMap);
     L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {

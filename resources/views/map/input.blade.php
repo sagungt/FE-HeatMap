@@ -7,22 +7,25 @@
     <div id="map" class="z-10 h-screen min-h-screen"></div>
 
     <!-- Input data form -->
-    <div class="absolute top-[100px] left-[50px] z-50 ">
+    <div x-data="modal" class="absolute top-[100px] left-[50px] z-50" x-show="isShow" x-init="ceklogin()">
         <form id="handleForm" method="POST" class=" rounded gap-3 p-4 w-[200px] flex flex-col bg-white">
             <label for="price">Price</label>
             <input type="number" placeholder="Harga" name="price" class="p-2 border-2 border-gray-500 rounded-xl"
-                id='price' x-model="formData.price">
+                id='price'>
 
             <label for="lat">Latitude</label>
-            <input type="text" name="lat" id="lat" class="p-2 border-2 border-gray-500 rounded-xl"
-                x-model="formData.lat">
+            <input type="text" name="lat" id="lat" class="p-2 border-2 border-gray-500 rounded-xl">
 
             <label for="long">Longitude</label>
-            <input type="text" name="long" id="long" class="p-2 border-2 border-gray-500 rounded-xl"
-                x-model="formData.long">
+            <input type="text" name="long" id="long" class="p-2 border-2 border-gray-500 rounded-xl">
 
             <button id="submit" type='submit' class="p-2 text-white bg-blue-500 rounded-xl">Submit</button>
         </form>
+    </div>
+
+    <div class="absolute top-3 z-50 right-5" x-data="modal" x-show="isShow" x-init="ceklogin()">
+        <button class="bg-red-400 px-5 py-2 rounded-md text-black hover:bg-red-700 hover:text-white duration-200"
+            @click="logout()">Logout</button>
     </div>
 
     <!-- Loading indicator -->
@@ -42,7 +45,7 @@
 
     <!-- Message info container -->
     <div id='message'
-        class="absolute bottom-[50%] left-[50%] right-[50%] lg:top-5 lg:left-14 lg:right-0 hidden items-center justify-center z-[999] bg-white w-[200px] h-10 px-2 py-1.5 rounded">
+        class="absolute bottom-[50%] left-[50%] right-[50%] lg:top-5 lg:left-14 lg:right-0 hidden items-center justify-center z-[999999] bg-white w-[200px] h-10 px-2 py-1.5 rounded">
     </div>
 @endsection
 

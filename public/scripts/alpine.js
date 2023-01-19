@@ -42,12 +42,74 @@ document.addEventListener("livewire:load", function () {
         lineChart: false,
         barChart: true,
         modalLogin: false,
-
+        email: "",
+        password: "",
+        message: false,
+        isShow: false,
         ceklogin() {
             const token = localStorage.getItem("token");
-            this.islogin = token
-                ? (this.modalLogin = false)
-                : (this.modalLogin = true);
+            if (token) {
+                this.modalLogin = false;
+                this.isShow = true;
+            } else {
+                this.modalLogin = true;
+                this.isShow = false;
+            }
+        },
+
+        async login() {
+            const data = new FormData();
+            data.append("email", this.email);
+            data.append("password", this.password);
+            data.append("token", localStorage.getItem("app_key"));
+            console.log(localStorage.getItem("app_key"));
+            const respon = await fetch(
+                "https://api-heatmap-farcapital.fly.dev/v1/api/login",
+                {
+                    method: "POST",
+                    body: data,
+                }
+            )
+                .then((res) => res.json())
+                .then((response) => {
+                    if (response.status == "success") {
+                        localStorage.setItem("token", response.data.token);
+                        toggleMessage(
+                            true,
+                            '<span class="text-xs italic font-bold text-blue-700">Login Successful</span>'
+                        );
+                        setTimeout(() => {
+                            window.location.href = "";
+                        }, 3000);
+                    } else {
+                        this.message = true;
+                        console.log(response.status);
+                    }
+                });
+        },
+
+        async logout() {
+            const respon = await fetch(
+                "https://api-heatmap-farcapital.fly.dev/v1/api/logout"
+            ).then(async (response) => await response.json());
+            if ((respon.status = "success")) {
+                localStorage.removeItem("token");
+                toggleMessage(
+                    true,
+                    '<span class="text-xs italic font-bold text-blue-700">Logout Successful</span>'
+                );
+                setTimeout(() => {
+                    window.location.href = "";
+                }, 3000);
+            } else {
+                toggleMessage(
+                    true,
+                    '<span class="text-xs italic font-bold text-red-700">Logout Failed</span>'
+                );
+                setTimeout(() => {
+                    window.location.href = "";
+                }, 3000);
+            }
         },
     }));
 });
