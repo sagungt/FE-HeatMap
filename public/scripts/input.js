@@ -97,24 +97,12 @@ btn.addEventListener("click", (e) => {
     formData.append("lat", document.querySelector("#lat").value);
     formData.append("long", document.querySelector("#long").value);
 
-    // const data = {
-    //     harga: document.querySelector("#price").value,
-    //     lat: document.querySelector("#lat").value,
-    //     long: document.querySelector("#long").value,
-    // };
-
     fetch(CREATE, {
         method: "POST",
         body: formData,
         headers: {
-            "Content-Type": "application/json",
             Authorization: localStorage.getItem("token"),
             "d-app-authorization": localStorage.getItem("app_key"),
-            "Access-Control-Allow-Origin": "*",
-            "Access-Control-Allow-Methods": "POST",
-            "Access-Control-Allow-Headers":
-                "Authorization, d-app-authorization, Content-Type",
-            Accept: "*/*",
         },
     })
         .then((res) => res.json())

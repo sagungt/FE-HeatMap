@@ -1,7 +1,6 @@
 <!-- Legend Information -->
 <div x-data="dataOrdinal" class="legend absolute bottom-10 left-5 z-[9999] w-[230px] h-[310px] sm:w-[380px] sm:h-[160px] md:w-[350px] md:h-[160px] lg:w-[300px] lg:h-[384px] duration-700">
     
-
     <div class="information-legend bottom-0 gap-4 flex flex-col justify-center rounded-lg duration-700 md:duration-500 bg-white absolute w-full py-4 lg:py-5 z-[999] lg:px-5 lg:gap-4 shadow-lg">
         <button x-on:click="animationLegend()" class="btn-legend btn-legend-aktif shadow-lg flex justify-center items-center duration-700 md:duration-500 absolute z-[9999] w-[40px] h-[40px] rounded-[14px] bg-[#ffffff] sm:w-[40px] sm:duration-[0.8s] sm:h-[40px] lg:w-[50px] lg:h-[50px]">
             <i class="fa-solid fa-chevron-right rotate-90 text-slate-600 text-lg duration-500"></i>
@@ -27,6 +26,11 @@
                 filter</button>
             <button x-on:click="showProperty()" id="show-marker"
                 class="text-xs py-1 px-3 text-white duration-300 sm:w-[calc(50%-8px)] lg:w-auto rounded-lg bg-slate-600 hover:bg-slate-600/80 lg:py-2">Show markers</button>
+        </div>
+
+        <div class="w-full px-4 md:px-5 lg:px-0">
+            <label for="large-range" class="block mb-2 text-sm font-medium text-gray-900" x-text="'Opacity ' + Math.round(opacity * 100) + '%'"></label>
+            <input x-on:input="changeOpacity($el); opacity = $el.value / 100" id="large-range" type="range" min="10" max="100" class="w-full h-3 bg-gray-200 rounded-lg appearance-none cursor-pointer range-lg">
         </div>
     </div>
 </div>

@@ -1,5 +1,5 @@
 <div id='loading'
-    class="absolute bottom-[50%] left-[50%] -translate-x-[50%] hidden items-center justify-center z-[9999999] bg-white w-[100px] h-[50px] rounded">
+    class="absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-[50%] hidden items-center justify-center z-[9999999] bg-white w-[100px] h-[50px] rounded">
     <svg aria-hidden="true" class="w-6 h-6 mr-2 text-gray-700 animate-spin dark:text-gray-600 fill-blue-600"
         viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path

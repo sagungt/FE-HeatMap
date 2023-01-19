@@ -93,7 +93,7 @@ select:invalid {
 }
 
 .btn-legend-aktif{
-    @apply left-0 bottom-[270px] sm:bottom-[120px] sm:left-[400px] md:left-[370px] lg:top-0 lg:left-[315px];
+    @apply left-0 -top-12 sm:bottom-[120px] sm:left-[400px] md:left-[370px] md:top-0 lg:top-0 lg:left-[315px];
 }
 
 .btn-legend-nonaktif{
