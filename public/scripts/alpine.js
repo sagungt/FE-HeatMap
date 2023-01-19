@@ -47,6 +47,11 @@ document.addEventListener("livewire:load", function () {
         password: "",
         message: false,
         isShow: false,
+
+        /**
+         * Check if logged in
+         * @returns {void}
+         */
         ceklogin() {
             const token = localStorage.getItem("token");
             if (token) {
@@ -58,13 +63,16 @@ document.addEventListener("livewire:load", function () {
             }
         },
 
+        /**
+         * Login function
+         */
         async login() {
             const data = new FormData();
             data.append("email", this.email);
             data.append("password", this.password);
             data.append("token", localStorage.getItem("app_key"));
             console.log(localStorage.getItem("app_key"));
-            const respon = await fetch(
+            await fetch(
                 "https://api-heatmap-farcapital.fly.dev/v1/api/login",
                 {
                     method: "POST",
@@ -89,11 +97,14 @@ document.addEventListener("livewire:load", function () {
                 });
         },
 
+        /**
+         * Logout function
+         */
         async logout() {
-            const respon = await fetch(
+            const response = await fetch(
                 "https://api-heatmap-farcapital.fly.dev/v1/api/logout"
             ).then(async (response) => await response.json());
-            if ((respon.status = "success")) {
+            if ((response.status = "success")) {
                 localStorage.removeItem("token");
                 toggleMessage(
                     true,
