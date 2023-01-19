@@ -15,6 +15,7 @@ var markers = [],
     yOffset = 5,
     xOffset = 10,
     coords = [],
+    opacity = 0.5,
     propertyMarkers = [],
     property = false,
     mode = 0; // 0: default, 1: hover
@@ -403,13 +404,14 @@ function showHeatmap(filter = null) {
                     circle.bindTooltip(`${formatPrice(average)}`, {
                         permanent: true,
                         direction: "center",
+                        opacity,
                     });
                     circle.on("mouseover", function () {
                         coords.forEach((coord) => {
                             const areaMarker = new L.Marker([
                                 coord.latitude,
                                 coord.longitude,
-                            ]);
+                            ], { interactive: false });
                             areaMarker.addTo(map);
                             areaMarkers.push(areaMarker);
                         });
@@ -421,6 +423,11 @@ function showHeatmap(filter = null) {
                             fillColor: ordinal.color,
                             fillOpacity: 0.9,
                         });
+                        circle.bindTooltip(`${formatPrice(average)}`, {
+                            permanent: true,
+                            direction: "center",
+                            opacity,
+                        });
                     });
                     circle.on("mouseout", function () {
                         areaMarkers.forEach((marker) => {
@@ -428,27 +435,27 @@ function showHeatmap(filter = null) {
                         });
                         circle.setStyle({
                             color: ordinal.color,
-                            opacity: 0.6,
+                            opacity,
                             stroke: false,
                             fill: true,
                             fillColor: ordinal.color,
-                            fillOpacity: 0.6,
+                            fillOpacity: opacity,
                         });
                     });
                     circle.setStyle({
                         color: ordinal.color,
-                        opacity: 0.6,
+                        opacity,
                         stroke: false,
                         fill: true,
                         fillColor: ordinal.color,
-                        fillOpacity: 0.6,
+                        fillOpacity: opacity,
                     });
                 } else {
                     coords.forEach((coord) => {
                         const areaMarker = new L.Marker([
                             coord.latitude,
                             coord.longitude,
-                        ]);
+                        ], { interactive: false });
                         areaMarker.addTo(map);
                         areaMarkers.push(areaMarker);
                     });
@@ -487,6 +494,7 @@ function showHeatmap(filter = null) {
                     });
                 }
                 circle.addTo(map);
+                circles.push(circle);
             }
         }
     });
@@ -565,7 +573,7 @@ async function modal(latitude, longitude, coords) {
     const addressElement = document.getElementById("address");
     const coordsElement = document.getElementById("coords");
     const closeButton = document.getElementById("close");
-
+    
     const address = await fetch(
         `${ADDRESS_ENDPOINT}?lat=${latitude}&lon=${longitude}`
     ).then(async (response) => await response.json());
@@ -815,6 +823,16 @@ function myLocation() {
     } else {
         alert("Geolocation not supported");
     }
+}
+
+function changeOpacity(el) {
+    opacity = el.value / 10;
+    circles.forEach((circle) => {
+        circle.setStyle({
+            opacity,
+            fillOpacity: opacity,
+        });
+    });
 }
 
 getCurrentLocation();
