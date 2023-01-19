@@ -29,8 +29,8 @@
         </div>
 
         <div class="w-full px-4 md:px-5 lg:px-0">
-            <label for="large-range" class="block mb-2 text-sm font-medium text-gray-900" x-text="'Opacity ' + opacity * 100 + '%'"></label>
-            <input x-on:input="changeOpacity($el); opacity = $el.value / 10" id="large-range" type="range" min="10" max="100" class="w-full h-3 bg-gray-200 rounded-lg appearance-none cursor-pointer range-lg">
+            <label for="large-range" class="block mb-2 text-sm font-medium text-gray-900" x-text="'Opacity ' + Math.round(opacity * 100) + '%'"></label>
+            <input x-on:input="changeOpacity($el); opacity = $el.value / 100" id="large-range" type="range" min="10" max="100" class="w-full h-3 bg-gray-200 rounded-lg appearance-none cursor-pointer range-lg">
         </div>
     </div>
 </div>
