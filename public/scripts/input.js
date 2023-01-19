@@ -58,7 +58,7 @@ function onClickMap(e) {
  */
 function toggleMessage(show, message) {
     const messageContainer = document.querySelector("#message");
-    messageContainer.innerHTML += message;
+    messageContainer.innerHTML = message;
     if (show) {
         messageContainer.classList.remove("hidden");
         messageContainer.classList.add("flex");
