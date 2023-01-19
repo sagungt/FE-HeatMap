@@ -101,10 +101,10 @@ select:invalid {
 }
 
 .btn-legend-aktif{
-    @apply left-0 -top-5 sm:left-[400px] md:left-[370px] lg:-top-5 lg:left-[310px];
+    @apply left-0 bottom-[270px] sm:bottom-[120px] sm:left-[400px] md:left-[370px] lg:bottom-[334px] lg:left-[310px];
 }
 
 .btn-legend-nonaktif{
-    @apply left-[320px] top-[240px] sm:left-[410px] md:left-[415px] lg:top-[25%] lg:left-[415px];
+    @apply left-[320px] bottom-0 sm:bottom-[120px] sm:left-[415px] md:left-[415px] lg:bottom-[334px] lg:left-[415px];
 }
 
