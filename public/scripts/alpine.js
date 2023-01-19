@@ -67,8 +67,11 @@ document.addEventListener("livewire:load", function () {
                     body: data,
                 }
             )
-                .then((res) => res.json())
-                .then(async (response) => {
+                .then((res) => {
+                    console.log(res.headers.get("server"));
+                    return res.json();
+                })
+                .then((response) => {
                     if (response.status == "success") {
                         localStorage.setItem("token", true);
 
@@ -76,12 +79,12 @@ document.addEventListener("livewire:load", function () {
                             true,
                             '<span class="text-xs italic font-bold text-blue-700">Login Successful</span>'
                         );
-                        setTimeout(() => {
-                            window.location.href = "";
-                        }, 3000);
+                        // setTimeout(() => {
+                        //     window.location.href = "";
+                        // }, 3000);
                     } else {
                         this.message = true;
-                        console.log(await response.status);
+                        console.log(response.status);
                     }
                 });
         },
@@ -90,8 +93,6 @@ document.addEventListener("livewire:load", function () {
             const respon = await fetch(
                 "https://api-heatmap-farcapital.fly.dev/v1/api/logout"
             ).then(async (response) => await response.json());
-
-            console.log(respon);
             if ((respon.status = "success")) {
                 localStorage.removeItem("token");
                 toggleMessage(
