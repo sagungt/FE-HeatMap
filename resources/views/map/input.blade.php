@@ -38,7 +38,7 @@
     </div>
 
     <div class="absolute top-5 z-[999999] right-5">
-        <a href="{{ url('/') }}" class="bg-white shadow-md px-5 py-2 rounded-md text-black hover:bg-green-400 hover:text-white duration-200">Home</button>
+        <a href="{{ url('/') }}" class="bg-white shadow-md px-5 py-2 rounded-md text-black hover:bg-green-400 hover:text-white duration-200">Home</a>
     </div>
 
     <div class="absolute top-3 z-50 right-28" x-data="modal" x-show="isShow" x-init="ceklogin()">
