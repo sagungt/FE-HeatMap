@@ -1,5 +1,5 @@
 <div id="detail-property"
-    class="z-[99999] absolute inset-0 items-center justify-center hidden bg-gray-700 bg-opacity-50 backdrop-blur-sm">
+    class="z-[999999] absolute inset-0 items-center justify-center hidden bg-gray-700 bg-opacity-50 backdrop-blur-sm">
     <div id="detail-property-info"
         class="md:w-[1000px] mx-3 md:px-6 px-3 py-3 overflow-x-auto bg-white rounded-lg relative" x-data='modal'>
         <div id="close" class="absolute top-5 right-5">
