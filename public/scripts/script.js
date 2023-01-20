@@ -127,7 +127,7 @@ function animationLegend() {
     const btnLegend = document.querySelector(".btn-legend");
     const btnIcon = document.querySelector(".btn-legend i");
     const legend = document.querySelector(".legend");
-    const searchOnThisArea = document.querySelector(".search-on-this-area");
+    // const searchOnThisArea = document.querySelector(".search-on-this-area");
     btnLegend.classList.toggle("btn-legend-aktif");
     btnLegend.classList.toggle("btn-legend-nonaktif");
     legend.classList.toggle("left-5");
