@@ -7,7 +7,12 @@
         </button>
         <div class="flex flex-col sm:flex-row sm:flex-wrap gap-2 mx-5 lg:mx-0">
             <template x-for="value in ordinal">
-                <div x-on:click="showHeatmap(value.index); filter = value.index" x-bind:class="'bg-range-' + value.index" class="flex items-center gap-4 transition cursor-pointer px-5 py-1 justify-center rounded-lg hover:scale-[102%] w-full sm:w-[calc(50%-8px)] lg:w-full duration-300 lg:py-2">
+                <div
+                    x-on:click="setFilter(showHeatmap(value.index))"
+                    x-bind:class="'bg-range-' + value.index + (filter.includes(value.index) ? ' border-black font-extrabold' : ' border-transparent')"
+                    {{-- x-on:mouseover="setFilter(showHeatmap(value.index))" --}}
+                    {{-- x-on:mouseout="setFilter(showHeatmap())" --}}
+                    class="flex items-center gap-4 transition cursor-pointer px-4 py-1 justify-center rounded-lg hover:scale-[102%] w-full sm:w-[calc(50%-8px)] lg:w-full duration-300 lg:py-2 border-2 shadow-sm">
                     {{-- <div x-bind:class="'bg-range-' + value.index" class="w-[40px] h-[20px] border border-slate-700 lg:w-[50px] lg:h-[30px]"></div> --}}
                     <p x-bind:class="value.index > 3 ? 'text-white' : 'text-slate-800'" class="text-xs lg:text-sm" x-text="'Rp. ' + formatPrice(value.l) + ' - ' + 'Rp. ' + formatPrice(value.g) "></p>
                 </div>
@@ -21,11 +26,14 @@
         </div> --}}
 
         <div class="flex gap-2 mx-4 lg:gap-2 lg:mx-0  lg:flex-col">
-            <button x-show="filter !== null" x-transition x-on:click="showHeatmap(); filter = null;"
+            <button x-on:click="showProperty()" id="show-marker"
+            class="text-xs py-1 px-3 text-white duration-300 sm:w-[calc(50%-8px)] lg:w-auto rounded-lg bg-slate-600 hover:bg-slate-600/80 lg:py-2">Show markers</button>
+            <button
+                x-show="filter.length > 0"
+                x-transition x-on:click="setFilter(showHeatmap())"
+                {{-- x-bind:class="filter.length === 0 ? 'invisible opacity-0' : 'visible opacity-100'" --}}
                 class="text-xs py-1 px-3 sm:w-[calc(50%-8px)] lg:w-auto text-white duration-300 rounded-lg bg-slate-600 hover:bg-slate-600/80 lg:py-2">Reset
                 filter</button>
-            <button x-on:click="showProperty()" id="show-marker"
-                class="text-xs py-1 px-3 text-white duration-300 sm:w-[calc(50%-8px)] lg:w-auto rounded-lg bg-slate-600 hover:bg-slate-600/80 lg:py-2">Show markers</button>
         </div>
 
         <div class="w-full px-4 md:px-5 lg:px-0">

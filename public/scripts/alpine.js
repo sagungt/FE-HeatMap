@@ -1,8 +1,11 @@
 document.addEventListener("livewire:load", function () {
     Alpine.data("dataOrdinal", () => ({
         ordinal,
-        filter: null,
+        filter: filterValue,
         opacity,
+        setFilter(value) {
+            this.filter = [...new Set([...value])];
+        },
     }));
 
     Alpine.data("search", () => ({

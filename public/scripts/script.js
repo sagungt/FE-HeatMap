@@ -17,6 +17,7 @@ var markers = [],
     coords = [],
     opacity = 0.5,
     propertyMarkers = [],
+    filterValue = [],
     property = false,
     mode = 0; // 0: default, 1: hover
 
@@ -271,13 +272,15 @@ async function init() {
     }
     coords = [];
     map.eachLayer(function (layer) {
-        map.removeLayer(layer);
+        if (layer.type !== 'tile') map.removeLayer(layer);
     });
     tile = L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
         maxZoom: 19,
         attribution:
             '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-    }).addTo(map);
+    })
+    tile['type'] = 'tile';
+    tile.addTo(map);
 
     map.on("move", function () {
         const { lat, lng } = this.getCenter();
@@ -369,10 +372,18 @@ async function init() {
  * @return {void}
  */
 function showHeatmap(filter = null) {
+    if (filter === null) {
+        filterValue = [];
+    } else {
+        if (filterValue.includes(filter)) {
+            filterValue = filterValue.filter((f) => f !== filter);
+        } else {
+            filterValue.push(filter);
+        }
+    }
     map.eachLayer(function (layer) {
-        map.removeLayer(layer);
+        if (layer.type !== 'tile') map.removeLayer(layer);
     });
-    map.addLayer(tile);
 
     if (property) showProperty();
     const { data } = response;
@@ -382,8 +393,13 @@ function showHeatmap(filter = null) {
             let result;
 
             if (filter) {
-                result = filter === ordinal.index;
+                // result = filter === ordinal.index;
+                result = filterValue.includes(ordinal.index);
             } else {
+                result = true;
+            }
+
+            if (filterValue.length === 0) {
                 result = true;
             }
 
@@ -497,6 +513,8 @@ function showHeatmap(filter = null) {
             }
         }
     });
+
+    return filterValue;
 }
 
 /**
@@ -566,7 +584,7 @@ async function modal(latitude, longitude, coords) {
 
     loading(true);
 
-    var moneyFormatter = new Intl.NumberFormat();
+    const moneyFormatter = new Intl.NumberFormat();
 
     modalElement.classList.replace("hidden", "flex");
     const addressElement = document.getElementById("address");
@@ -627,7 +645,7 @@ async function modal(latitude, longitude, coords) {
         (width = svgBar.attr("width") - margin),
         (height = svgBar.attr("height") - margin);
 
-    var xScaleLine = d3
+    const xScaleLine = d3
             .scaleLinear()
             .domain([1, coords.length])
             .range([0, width]),
@@ -636,7 +654,7 @@ async function modal(latitude, longitude, coords) {
             .domain([0, Math.max(...coords.map((v) => v.price))])
             .range([height, 0]);
 
-    var gLine = svgLine
+    const gLine = svgLine
         .append("g")
         .attr("transform", "translate(" + 100 + "," + 100 + ")");
 
@@ -646,7 +664,7 @@ async function modal(latitude, longitude, coords) {
         .attr("x", width / 2 + 100)
         .attr("y", 50)
         .attr("text-anchor", "middle")
-        .style("font-family", "Helvetica")
+        .style("font-family", "Nunito")
         .style("font-size", 20)
         .text("Property");
 
@@ -656,7 +674,7 @@ async function modal(latitude, longitude, coords) {
         .attr("x", width / 2 + 100)
         .attr("y", height - 15 + 150)
         .attr("text-anchor", "middle")
-        .style("font-family", "Helvetica")
+        .style("font-family", "Nunito")
         .style("font-size", 12)
         .text("Count");
 
@@ -665,7 +683,7 @@ async function modal(latitude, longitude, coords) {
         .append("text")
         .attr("text-anchor", "middle")
         .attr("transform", "translate(10," + height + ")rotate(-90)")
-        .style("font-family", "Helvetica")
+        .style("font-family", "Nunito")
         .style("font-size", 12)
         .text("Price");
 
@@ -692,7 +710,7 @@ async function modal(latitude, longitude, coords) {
         .attr("transform", "translate(" + 100 + "," + 100 + ")")
         .style("fill", "#CC0000");
 
-    var line = d3
+    const line = d3
         .line()
         .x(function (d) {
             return xScaleLine(d[0]);
@@ -713,10 +731,10 @@ async function modal(latitude, longitude, coords) {
         .style("stroke-width", "2");
 
     // contoh bar
-    var xScaleBar = d3.scaleBand().range([0, width]).padding(0.5),
+    const xScaleBar = d3.scaleBand().range([0, width]).padding(0.5),
         yScaleBar = d3.scaleLinear().range([height, 0]);
 
-    var gBar = svgBar
+    const gBar = svgBar
         .append("g")
         .attr("transform", "translate(" + 100 + "," + 100 + ")");
 
@@ -735,7 +753,7 @@ async function modal(latitude, longitude, coords) {
         d3
             .axisLeft(yScaleBar)
             .tickFormat(function (d) {
-                return "Rp. " + d;
+                return "Rp. " + moneyFormatter.format(d);
             })
             .ticks(4)
     );
