@@ -31,4 +31,5 @@
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <script src="{{ url(asset('scripts/script.js')) }}"></script>
     <script src="{{ url(asset('scripts/alpine.js')) }}"></script>
+    <script src="{{ url(asset('scripts/modal.js')) }}"></script>
 @endpush
