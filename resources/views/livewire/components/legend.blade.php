@@ -1,5 +1,5 @@
 <!-- Legend Information -->
-<div x-data="dataOrdinal" class="legend absolute bottom-10 left-5 z-[9999] w-[230px] h-[310px] sm:w-[380px] sm:h-[160px] md:w-[350px] md:h-[160px] lg:w-[300px] lg:h-[384px] duration-700">
+<div x-data="dataOrdinal" class="legend absolute bottom-10 left-5 z-[9999] w-[230px] h-[410px] sm:w-[380px] sm:h-[160px] md:w-[350px] md:h-[160px] lg:w-[300px] lg:h-[384px] duration-700 bg-green-500">
     
     <div class="information-legend bottom-0 gap-4 flex flex-col justify-center rounded-lg duration-700 md:duration-500 bg-white absolute w-full py-4 lg:py-5 z-[999] lg:px-5 lg:gap-4 shadow-lg">
         <button x-on:click="animationLegend()" class="btn-legend btn-legend-aktif shadow-lg flex justify-center items-center duration-700 md:duration-500 absolute z-[9999] w-[40px] h-[40px] rounded-[14px] bg-[#ffffff] sm:w-[40px] sm:duration-[0.8s] sm:h-[40px] lg:w-[50px] lg:h-[50px]">
