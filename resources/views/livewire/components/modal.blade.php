@@ -1,5 +1,5 @@
 <div id="detail-property"
-    class="z-[999999] absolute inset-0 items-center justify-center hidden bg-gray-700 bg-opacity-50 backdrop-blur-sm">
+    class="z-[999998] absolute inset-0 items-center justify-center hidden bg-gray-700 bg-opacity-50 backdrop-blur-sm">
     <div id="detail-property-info"
         class="md:w-[1000px] h-[90vh] mx-3 md:px-6 px-3 py-3 overflow-x-auto bg-white rounded-lg relative" x-data='modal'>
         <div id="close" class="absolute top-5 right-5">
@@ -10,8 +10,8 @@
             <p class="mb-6 text-center text-black md:text-2xl text-xl font-bold">Detail Property</p>
         </div>
 
-        <div class="overflow-y-hidden pt-2">
-            <div class="sm:flex flex-wrap items-center justify-between md:mb-0 sm:mb-[160px]">
+        <div class="h-96 overflow-y-scroll pt-2">
+            <div class="gap-y-2 sm:flex flex-wrap items-center justify-between md:mb-0 sm:mb-[160px]">
                 <div class="sm:flex flex-wrap items-center text-black md:text-sm text-[10px]">
                     <p class="mr-1">Address : </p>
                     <p id="address"></p>

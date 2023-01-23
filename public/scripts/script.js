@@ -115,8 +115,14 @@ function showError(toggle = false) {
  */
 function loading(toggle = false) {
     const getLoading = document.getElementById("loading");
-    if (toggle) return getLoading.classList.replace("hidden", "flex");
-    return getLoading.classList.replace("flex", "hidden");
+    const overlayLoading = document.getElementById("overlay-loading");
+    if (toggle){
+        getLoading.classList.replace("hidden", "flex");
+        overlayLoading.classList.replace("hidden", "flex");
+        return;
+    }
+    getLoading.classList.replace("flex", "hidden");
+    overlayLoading.classList.replace("flex", "hidden");
 }
 
 /**
