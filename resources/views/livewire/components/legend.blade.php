@@ -6,6 +6,16 @@
             <i class="fa-solid fa-chevron-right rotate-90 text-slate-600 text-lg duration-500"></i>
         </button>
         <div class="flex flex-col sm:flex-row sm:flex-wrap gap-2 mx-5 lg:mx-0">
+            <div class="flex flex-col">
+                <label class="block mb-2 text-sm font-medium text-gray-900">Filter</label>
+                <div class="py-2">
+                    <template x-if="filter.length === 0">
+                        <p class="text-xs">None</p>
+                    </template>
+                    <div class="flex flex-row gap-x-2" id="colors">
+                    </div>
+                </div>
+            </div>
             <template x-for="value in ordinal">
                 <div
                     x-on:click="setFilter(showHeatmap(value.index))"
@@ -14,7 +24,7 @@
                     {{-- x-on:mouseout="setFilter(showHeatmap())" --}}
                     class="flex items-center gap-4 transition cursor-pointer px-4 py-1 justify-center rounded-lg hover:scale-[102%] w-full sm:w-[calc(50%-8px)] lg:w-full duration-300 lg:py-2 border-2 shadow-sm">
                     {{-- <div x-bind:class="'bg-range-' + value.index" class="w-[40px] h-[20px] border border-slate-700 lg:w-[50px] lg:h-[30px]"></div> --}}
-                    <p x-bind:class="value.index > 3 ? 'text-white' : 'text-slate-800'" class="text-xs lg:text-sm" x-text="'Rp. ' + formatPrice(value.l) + ' - ' + 'Rp. ' + formatPrice(value.g) "></p>
+                    <p x-bind:class="value.index > 3 ? 'text-white' : 'text-slate-800'" class="text-xs lg:text-sm" x-text="'Rp. ' + formatPrice(value.l) + ' - ' + 'Rp. ' + formatPrice(value.g)"></p>
                 </div>
             </template>
         </div>
