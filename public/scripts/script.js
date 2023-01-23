@@ -385,6 +385,14 @@ function showHeatmap(filter = null) {
         if (layer.type !== 'tile') map.removeLayer(layer);
     });
 
+    const colorsElement = document.querySelector('#colors');
+    let colorItem = '';
+    filterValue.forEach((f) => {
+        colorItem += `
+        <div class="text-xs w-6 h-3 rounded-full bg-range-${f}"></div>`;
+    });
+    colorsElement.innerHTML = colorItem;
+
     if (property) showProperty();
     const { data } = response;
     data.forEach(({ average, center, coords }) => {
