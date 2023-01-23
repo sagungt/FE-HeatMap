@@ -478,11 +478,11 @@ function showHeatmap(filter = null) {
                     circle.on("mouseover", function () {
                         this.setStyle({
                             color: ordinal.color,
-                            opacity: 0.9,
+                            opacity,
                             stroke: false,
                             fill: true,
                             fillColor: ordinal.color,
-                            fillOpacity: 0.9,
+                            fillOpacity: opacity,
                         }).bindTooltip(`${formatPrice(average)}`, {
                             permanent: true,
                             direction: "center",
