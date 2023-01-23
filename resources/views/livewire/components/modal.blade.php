@@ -10,7 +10,7 @@
             <p class="mb-6 text-center text-black md:text-2xl text-xl font-bold">Detail Property</p>
         </div>
 
-        <div class="h-96 overflow-y-scroll pt-2">
+        <div class="h-auto overflow-y-scroll pt-2">
             <div class="gap-y-2 sm:flex flex-wrap items-center justify-between md:mb-0 sm:mb-[160px]">
                 <div class="sm:flex flex-wrap items-center text-black md:text-sm text-[10px]">
                     <p class="mr-1">Address : </p>
