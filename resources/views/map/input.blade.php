@@ -7,7 +7,7 @@
     <div id="map" class="z-10 h-screen min-h-screen"></div>
 
     <!-- Input data form -->
-    <div x-data="modal" class="absolute top-[25px] left-[35px] md:left-[50px] lg:left-[20px] lg:top-[20px] z-50" x-init="ceklogin()">
+    <div x-data="modal" class="absolute top-[65px] left-[35px] md:left-[50px] md:top-[35px] lg:left-[20px] lg:top-[20px] z-50" x-init="ceklogin()">
         <button @click='isShow = !isShow' x-show='!isShow' class="border border-gray-500  absolute left-[-20px] lg:left-[15px] top-[15px] w-[40px] h-[40px] bg-white flex items-center justify-center rounded-lg" >
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
