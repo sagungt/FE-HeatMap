@@ -381,6 +381,7 @@ function showHeatmap(filter = null) {
     if (filter === null) {
         filterValue = [];
     } else {
+        console.log(filterValue);
         if (filterValue.includes(filter)) {
             filterValue = filterValue.filter((f) => f !== filter);
         } else {
@@ -595,6 +596,17 @@ function resetHeatmap() {
     currentLatitude = lat;
     currentLongitude = lng;
     property = false;
+    if(propertyMarkers.length > 0){
+        btnShowMarker.classList.toggle("bg-red-600");
+        btnShowMarker.classList.toggle("hover:bg-red-600/80");
+        btnShowMarker.classList.toggle("bg-slate-600");
+        btnShowMarker.classList.toggle("hover:bg-slate-600/80");
+        if (btnShowMarker.innerHTML === "Hide markers") {
+            btnShowMarker.innerHTML = "Show markers";
+        } else {
+            btnShowMarker.innerHTML = "Hide markers";
+        }
+    }
     propertyMarkers = [];
     init();
     document
