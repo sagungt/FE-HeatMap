@@ -1,7 +1,7 @@
 <div id="detail-property"
     class="z-[999998] absolute inset-0 items-center justify-center hidden bg-gray-700 bg-opacity-50 backdrop-blur-sm">
     <div id="detail-property-info"
-        class="md:w-[1000px] h-[90vh] mx-3 md:px-6 px-3 py-3 overflow-x-auto bg-white rounded-lg relative" x-data='modal'>
+        class="md:w-[1000px] mx-3 md:px-6 px-3 py-3 overflow-x-auto bg-white rounded-lg relative" x-data='modal'>
         <div id="close" class="absolute top-5 right-5">
             <button><i class="fa-solid fa-xmark text-2xl"></i></button>
         </div>
@@ -10,7 +10,7 @@
             <p class="mb-6 text-center text-black md:text-2xl text-xl font-bold">Detail Property</p>
         </div>
 
-        <div class="h-auto overflow-y-scroll pt-2">
+        <div class="h-[65vh] overflow-y-scroll pt-2">
             <div class="gap-y-2 sm:flex flex-wrap items-center justify-between md:mb-0 sm:mb-[160px]">
                 <div class="sm:flex flex-wrap items-center text-black md:text-sm text-[10px]">
                     <p class="mr-1">Address : </p>
@@ -48,7 +48,7 @@
                 </div>
             </div>
 
-            <div class="w-full my-5 md:mx-0 mx-5 rotate-90 md:rotate-0">
+            <div class="w-full sm:my-5 mb-5 mt-16  rotate-90 md:rotate-0">
                 <svg width="900" height="350" id="Line" x-show='lineChart'></svg>
                 <svg width="900" height="350" id="Bar" x-show='barChart'></svg>
             </div>
