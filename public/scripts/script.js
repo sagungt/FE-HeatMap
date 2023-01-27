@@ -532,7 +532,7 @@ function showHeatmap(filter = null) {
             }
         }
     });
-
+    
     return filterValue;
 }
 

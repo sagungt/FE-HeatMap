@@ -41,6 +41,7 @@ document.addEventListener("livewire:load", function () {
             }, 1000);
         },
     }));
+
     Alpine.data("modal", () => ({
         tagChart: false,
         lineChart: false,
