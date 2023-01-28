@@ -31,15 +31,15 @@
                 <option value="Apartemen">Apartemen</option>
                 <option value="Other">lain-lain</option>
             </select>
-            <label for="">Deskripsi</label>
-            <textarea name="deskripsi" id="deskripsi" class="py-1.5 px-2 border-2 border-gray-500 rounded-xl transition duration-200" placeholder="Deskripsi"></textarea>
             <label for="lat">Latitude</label>
             <input type="text" name="lat" id="lat" placeholder="Latitude" class="py-1.5 px-2 border-2 border-gray-500 rounded-xl transition duration-200">
             <label for="long">Longitude</label>
             <input type="text" name="long" id="long" placeholder="Longitude" class="py-1.5 px-2 border-2 border-gray-500 rounded-xl transition duration-200">
             <label for="long">Area</label>
             <input type="number" name="area" id="area" placeholder="area" class="py-1.5 px-2 border-2 border-gray-500 rounded-xl transition duration-200">
-
+            <label for="">Deskripsi</label>
+            <textarea name="desc" id="desc" class="py-1.5 px-2 border-2 border-gray-500 rounded-xl transition duration-200" placeholder="Deskripsi"></textarea>
+            
             <button id="submit" type='submit' class="p-2 text-white bg-blue-500 rounded-xl">Submit</button>
         </form>
     {{-- <livewire:components.form/> --}}

@@ -95,7 +95,7 @@ btn.addEventListener("click", (e) => {
     const formData = new FormData(form); // define variable for stored data sent from forms  
 
     // stored data sent from forms and define the name field and get the value by id   
-    formData.append("desc", document.querySelector("#deskripsi").value);
+    formData.append("desc", document.querySelector("#desc").value);
     formData.append("type", document.querySelector("#type").value);
     formData.append("area", document.querySelector("#area").value);
     formData.append("harga", document.querySelector("#price").value);
