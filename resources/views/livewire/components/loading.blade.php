@@ -1,4 +1,4 @@
-<div id="overlay-loading" class="hidden w-full h-screen absolute bg-black/30 backdrop-blur-sm z-[999998] top-0 left-0">
+<div id="overlay-loading" class="hidden w-full h-screen absolute bg-black/30 backdrop-blur-sm z-[99999999] top-0 left-0">
     <div id='loading'
         class="absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-[50%] hidden items-center justify-center z-[9999999] bg-white w-[100px] h-[50px] rounded">
         <svg aria-hidden="true" class="w-6 h-6 mr-2 text-gray-700 animate-spin dark:text-gray-600 fill-blue-600"
