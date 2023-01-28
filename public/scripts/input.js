@@ -21,7 +21,7 @@ async function fetchApi(link) {
     let object = await fetch(link); // fetching api and get data
     let value = await object.json(); // change from array to json 
 
-    loc = value.data.map((d) => [d.latitude, d.longitude, d.price]); // all data fetching from api akan ditampilkan dimap  
+    loc = value.data.map((d) => [d.latitude, d.longitude, d.price]); // all data fetching from api 
     for (i = 0; i < loc.length; i++) {
         L.marker([loc[i][0], loc[i][1]])
             .bindPopup("Price : " + loc[i][2])
@@ -58,8 +58,8 @@ function onClickMap(e) {
  * @returns {void}
  */
 function toggleMessage(show, message) {
-    const messageContainer = document.querySelector("#message"); //
-    messageContainer.innerHTML = message; //
+    const messageContainer = document.querySelector("#message"); 
+    messageContainer.innerHTML = message; 
     if (show) { 
         messageContainer.classList.remove("hidden");
         messageContainer.classList.add("flex");
@@ -75,11 +75,11 @@ function toggleMessage(show, message) {
  * @returns {void}
  */
 function loading(toggle = false) {
-    const loadingContainer = document.getElementById("loading");
-    if (!toggle) {
+    const loadingContainer = document.getElementById("loading"); // getting element by id = loading
+    if (!toggle) { // if toggle is false class name in loadingContainer 
         loadingContainer.classList.add("hidden");
         loadingContainer.classList.remove("flex");
-    } else {
+    } else { // else class name in loadingContainer will delete hidden 
         loadingContainer.classList.add("flex");
         loadingContainer.classList.remove("hidden");
     }
@@ -91,29 +91,34 @@ function loading(toggle = false) {
  * @returns {void}
  */
 btn.addEventListener("click", (e) => {
-    e.preventDefault();
-    const formData = new FormData(form);
+    e.preventDefault(); // it will holding browser to hard reload after button submit pressed
+    const formData = new FormData(form); // define variable for stored data sent from forms  
 
+    // stored data sent from forms and define the name field and get the value by id   
+    formData.append("desc", document.querySelector("#deskripsi").value);
+    formData.append("type", document.querySelector("#type").value);
+    formData.append("area", document.querySelector("#area").value);
     formData.append("harga", document.querySelector("#price").value);
     formData.append("lat", document.querySelector("#lat").value);
     formData.append("long", document.querySelector("#long").value);
 
+    // send data from form input to api 
     fetch(CREATE, {
-        method: "POST",
-        body: formData,
+        method: "POST", 
+        body: formData, // stored data from form input 
         headers: {
-            Authorization: localStorage.getItem("token"),
-            "d-app-authorization": localStorage.getItem("app_key"),
+            Authorization: localStorage.getItem("token"), // Authorization user for getting access this task 
+            "d-app-authorization": localStorage.getItem("app_key"), // Authorization user for getting access this task 
         },
     })
-        .then((res) => res.json())
-        .then(async (data) => {
-            if (data.status) {
+        .then((res) => res.json()) // then response will change type to json   
+        .then(async (data) => { // display message after create data 
+            if (data.status) { // if status is true, it will send message success 
                 toggleMessage(
                     true,
                     '<span class="text-xs italic font-bold text-blue-700">Data inserted</span>'
                 );
-            } else {
+            } else { // else it send error message 
                 toggleMessage(
                     true,
                     '<span class="text-xs italic font-bold text-red-700">Failed</span>'

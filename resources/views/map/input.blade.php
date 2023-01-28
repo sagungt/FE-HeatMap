@@ -25,11 +25,11 @@
             <input type="number" name="price" placeholder="Price" class="py-1.5 px-2 border-2 border-gray-500 rounded-xl transition duration-200"
                 id='price'>
             <label for="">Type</label>
-            <select class="py-1.5 px-2 border-2 border-gray-500 rounded-xl transition duration-200">
-                <option value="rumah">Rumah</option>
-                <option value="tanah">Tanah</option>
-                <option value="apartemen">Apartemen</option>
-                <option value="other">lain-lain</option>
+            <select id='type' class="py-1.5 px-2 border-2 border-gray-500 rounded-xl transition duration-200">
+                <option value="Rumah">Rumah</option>
+                <option value="Tanah">Tanah</option>
+                <option value="Apartemen">Apartemen</option>
+                <option value="Other">lain-lain</option>
             </select>
             <label for="">Deskripsi</label>
             <textarea name="deskripsi" id="deskripsi" class="py-1.5 px-2 border-2 border-gray-500 rounded-xl transition duration-200" placeholder="Deskripsi"></textarea>
@@ -37,6 +37,8 @@
             <input type="text" name="lat" id="lat" placeholder="Latitude" class="py-1.5 px-2 border-2 border-gray-500 rounded-xl transition duration-200">
             <label for="long">Longitude</label>
             <input type="text" name="long" id="long" placeholder="Longitude" class="py-1.5 px-2 border-2 border-gray-500 rounded-xl transition duration-200">
+            <label for="long">Area</label>
+            <input type="number" name="area" id="area" placeholder="area" class="py-1.5 px-2 border-2 border-gray-500 rounded-xl transition duration-200">
 
             <button id="submit" type='submit' class="p-2 text-white bg-blue-500 rounded-xl">Submit</button>
         </form>
@@ -44,11 +46,11 @@
     </div>
 
     <div class="absolute top-5 z-[999999] right-5">
-        <a href="{{ url('/') }}" class="bg-white shadow-md px-5 py-2 rounded-md text-black hover:bg-green-400 hover:text-white duration-200">Home</a>
+        <a href="{{ url('/') }}" class="px-5 py-2 text-black duration-200 bg-white rounded-md shadow-md hover:bg-green-400 hover:text-white">Home</a>
     </div>
 
-    <div class="absolute top-3 z-50 right-28" x-data="modal" x-show="isShow" x-init="ceklogin()">
-        <button class="bg-red-500 shadow-md px-5 py-2 rounded-md text-black hover:bg-red-700 hover:text-white duration-200"
+    <div class="absolute z-50 top-3 right-28" x-data="modal" x-show="isShow" x-init="ceklogin()">
+        <button class="px-5 py-2 text-black duration-200 bg-red-500 rounded-md shadow-md hover:bg-red-700 hover:text-white"
             @click="logout()">Logout</button>
     </div>
 
