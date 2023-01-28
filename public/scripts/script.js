@@ -126,13 +126,12 @@ function loading(toggle = false) {
  * @returns {void}
  */
 function animationLegend() {
-    const btnLegend = document.querySelector(".btn-legend"); // getting element by class name 
-    const btnIcon = document.querySelector(".btn-legend i"); // getting element by class name
-    const legend = document.querySelector(".legend"); // getting element by class name
-    // const searchOnThisArea = document.querySelector(".search-on-this-area");
-    btnLegend.classList.toggle("btn-legend-aktif"); // class in btnLegend, if button clicked it will deleted btn-legend-aktif 
-    btnLegend.classList.toggle("btn-legend-nonaktif"); // class in btnLegend, if button clicked it will deleted btn-legend-nonaktif
-    legend.classList.toggle("left-5"); // class in btnLegend, if button clicked it will deleted left-5
+    const btnLegend = document.querySelector(".btn-legend"); 
+    const btnIcon = document.querySelector(".btn-legend i");
+    const legend = document.querySelector(".legend");
+    btnLegend.classList.toggle("btn-legend-aktif");  
+    btnLegend.classList.toggle("btn-legend-nonaktif");
+    legend.classList.toggle("left-5");
     legend.classList.toggle("-left-[300px]"); 
     legend.classList.toggle("sm:-left-[400px]");
     btnIcon.classList.toggle("rotate-90");
