@@ -9,8 +9,8 @@ const ALLHEATMAP = `${BASE_URL}/api/allheatmap`;
 const CREATE = `${BASE_URL}/api/create`;
 
 /* Elements */
-const btn = document.querySelector("#submit");
-const form = document.querySelector("#handleForm");
+const btn = document.querySelector("#submit"); // untuk mengambil element dari halaman web dengan id = submit
+const form = document.querySelector("#handleForm"); // untuk mengambil element dari halaman web dengan id = handleForm
 
 /**
  * Fetch api to load and show markers
@@ -18,14 +18,14 @@ const form = document.querySelector("#handleForm");
  * @returns {void}
  */
 async function fetchApi(link) {
-    let object = await fetch(link);
-    let value = await object.json();
+    let object = await fetch(link); // fetching api and get data
+    let value = await object.json(); // change from array to json 
 
-    loc = value.data.map((d) => [d.latitude, d.longitude, d.price]);
+    loc = value.data.map((d) => [d.latitude, d.longitude, d.price]); // all data fetching from api akan ditampilkan dimap  
     for (i = 0; i < loc.length; i++) {
         L.marker([loc[i][0], loc[i][1]])
             .bindPopup("Price : " + loc[i][2])
-            .addTo(map);
+            .addTo(map); // untuk menampilkan marker dan popup akan  
     }
 }
 
@@ -58,9 +58,9 @@ function onClickMap(e) {
  * @returns {void}
  */
 function toggleMessage(show, message) {
-    const messageContainer = document.querySelector("#message");
-    messageContainer.innerHTML = message;
-    if (show) {
+    const messageContainer = document.querySelector("#message"); //
+    messageContainer.innerHTML = message; //
+    if (show) { 
         messageContainer.classList.remove("hidden");
         messageContainer.classList.add("flex");
     } else {

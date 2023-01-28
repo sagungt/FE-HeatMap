@@ -1,5 +1,4 @@
 @extends('layouts.app')
-
 @section('content')
     <!-- Modal Login -->
     <livewire:components.login />
@@ -23,14 +22,21 @@
                 </button>
             </div>
             <label for="price">Price</label>
-            <input type="number" name="price" placeholder="Price" class="p-2 border-2 border-gray-500 rounded-xl transition duration-200"
+            <input type="number" name="price" placeholder="Price" class="py-1.5 px-2 border-2 border-gray-500 rounded-xl transition duration-200"
                 id='price'>
-
+            <label for="">Type</label>
+            <select class="py-1.5 px-2 border-2 border-gray-500 rounded-xl transition duration-200">
+                <option value="rumah">Rumah</option>
+                <option value="tanah">Tanah</option>
+                <option value="apartemen">Apartemen</option>
+                <option value="other">lain-lain</option>
+            </select>
+            <label for="">Deskripsi</label>
+            <textarea name="deskripsi" id="deskripsi" class="py-1.5 px-2 border-2 border-gray-500 rounded-xl transition duration-200" placeholder="Deskripsi"></textarea>
             <label for="lat">Latitude</label>
-            <input type="text" name="lat" id="lat" placeholder="Latitude" class="p-2 border-2 border-gray-500 rounded-xl transition duration-200">
-
+            <input type="text" name="lat" id="lat" placeholder="Latitude" class="py-1.5 px-2 border-2 border-gray-500 rounded-xl transition duration-200">
             <label for="long">Longitude</label>
-            <input type="text" name="long" id="long" placeholder="Longitude" class="p-2 border-2 border-gray-500 rounded-xl transition duration-200">
+            <input type="text" name="long" id="long" placeholder="Longitude" class="py-1.5 px-2 border-2 border-gray-500 rounded-xl transition duration-200">
 
             <button id="submit" type='submit' class="p-2 text-white bg-blue-500 rounded-xl">Submit</button>
         </form>
