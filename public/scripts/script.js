@@ -16,9 +16,9 @@ var markers = [],
     xOffset = 10,
     coords = [],
     opacity = 0.5,
-    propertyMarkers = [],
-    filterValue = [],
-    property = false,
+    propertyMarkers = [], // this 
+    filterValue = [], // true: display property Marked, False: hidden Property Marked
+    property = false, // true: display property Marked, False: hidden Property Marked
     mode = 0; // 0: default, 1: hover
 
 /* Ordinal Data */
@@ -82,19 +82,14 @@ function formatPrice(number) {
     const min = 1e3;
     // Alter numbers larger than 1k
     if (number >= min) {
-        var units = ["k", "M", "B", "T"];
-
+        var units = ["rb", "jt", "m", "t"];
         var order = Math.floor(Math.log(number) / Math.log(1000));
-
         var unitname = units[order - 1];
         var num = +(number / 1000 ** order).toFixed(2);
-
-        // output number remainder + unitname
-        return num + unitname;
+        
+        return num + unitname; // output number remainder + unitname
     }
-
-    // return formatted original number
-    return number.toLocaleString();
+    return number.toLocaleString(); // mengembalikan nomor asli yang diformat
 }
 
 /**
@@ -103,9 +98,9 @@ function formatPrice(number) {
  * @returns {void}
  */
 function showError(toggle = false) {
-    const getErrorId = document.getElementById("error");
-    if (toggle) return getErrorId.classList.replace("hidden", "flex");
-    return getErrorId.classList.replace("flex", "hidden");
+    const getErrorId = document.getElementById("error"); // getting element html by id
+    if (toggle) return getErrorId.classList.replace("hidden", "flex"); // if toggle is true, then in class will deleted hidden and adding flex
+    return getErrorId.classList.replace("flex", "hidden"); // then else in class will deleted flex and adding hidden
 }
 
 /**
@@ -114,13 +109,14 @@ function showError(toggle = false) {
  * @returns {void}
  */
 function loading(toggle = false) {
-    const getLoading = document.getElementById("loading");
-    const overlayLoading = document.getElementById("overlay-loading");
-    if (toggle){
-        getLoading.classList.replace("hidden", "flex");
-        overlayLoading.classList.replace("hidden", "flex");
+    const getLoading = document.getElementById("loading"); // getting element html by id
+    const overlayLoading = document.getElementById("overlay-loading"); // getting element html by id
+    if (toggle){ // if toggle is true, then class in id loading & overlay-loading will deleted hidden & adding flex, and program will stop   
+        getLoading.classList.replace("hidden", "flex"); 
+        overlayLoading.classList.replace("hidden", "flex"); 
         return;
-    }
+    } 
+    // then else class in id loading & overlay-loading will deleted flex & adding hidden 
     getLoading.classList.replace("flex", "hidden");
     overlayLoading.classList.replace("flex", "hidden");
 }
@@ -130,14 +126,14 @@ function loading(toggle = false) {
  * @returns {void}
  */
 function animationLegend() {
-    const btnLegend = document.querySelector(".btn-legend");
-    const btnIcon = document.querySelector(".btn-legend i");
-    const legend = document.querySelector(".legend");
+    const btnLegend = document.querySelector(".btn-legend"); // getting element by class name 
+    const btnIcon = document.querySelector(".btn-legend i"); // getting element by class name
+    const legend = document.querySelector(".legend"); // getting element by class name
     // const searchOnThisArea = document.querySelector(".search-on-this-area");
-    btnLegend.classList.toggle("btn-legend-aktif");
-    btnLegend.classList.toggle("btn-legend-nonaktif");
-    legend.classList.toggle("left-5");
-    legend.classList.toggle("-left-[300px]");
+    btnLegend.classList.toggle("btn-legend-aktif"); // class in btnLegend, if button clicked it will deleted btn-legend-aktif 
+    btnLegend.classList.toggle("btn-legend-nonaktif"); // class in btnLegend, if button clicked it will deleted btn-legend-nonaktif
+    legend.classList.toggle("left-5"); // class in btnLegend, if button clicked it will deleted left-5
+    legend.classList.toggle("-left-[300px]"); 
     legend.classList.toggle("sm:-left-[400px]");
     btnIcon.classList.toggle("rotate-90");
     btnIcon.classList.toggle("rotate-0");
@@ -155,21 +151,21 @@ const modeToggleElement = document.getElementById("mode");
  * Toggle mode heatmap
  * @return {void}
  */
-modeToggleElement.addEventListener("click", () => {
-    modeToggleElement.classList.toggle("bg-blue-700");
-    modeToggleElement.classList.toggle("hover:bg-blue-700/80");
-    modeToggleElement.classList.toggle("focus:ring-blue-300");
-    modeToggleElement.classList.toggle("bg-purple-700");
-    modeToggleElement.classList.toggle("hover:bg-purple-700/80");
-    modeToggleElement.classList.toggle("focus:ring-purple-300");
-    if (modeToggleElement.innerHTML === "Default mode") {
-        modeToggleElement.innerHTML = "Hover mode";
-        mode = 0;
-    } else {
-        modeToggleElement.innerHTML = "Default mode";
-        mode = 1;
+modeToggleElement.addEventListener("click", () => { // if toggle mode clicked
+    modeToggleElement.classList.toggle("bg-blue-700"); // class in modeToggleElement will delete bg-blue-700
+    modeToggleElement.classList.toggle("hover:bg-blue-700/80"); // class in modeToggleElement will delete bg-blue-700
+    modeToggleElement.classList.toggle("focus:ring-blue-300"); // class in modeToggleElement will delete focus:bg-purple-700
+    modeToggleElement.classList.toggle("bg-purple-700"); // class in modeToggleElement will delete bg-purple-700
+    modeToggleElement.classList.toggle("hover:bg-purple-700/80"); // class in modeToggleElement will delete hover:bg-purple-700/80
+    modeToggleElement.classList.toggle("focus:ring-purple-300"); // class in modeToggleElement will delete focus:ring-purple-700
+    if (modeToggleElement.innerHTML === "Default mode"){ // if content in modeToggleElement is Default mode will change content in modeToggleElement from Default mode to Hover mode
+        modeToggleElement.innerHTML = "Hover mode"; // if in modeToggleElement content is Default
+        mode = 0; // if in modeToggleElement content is Default
+    } else { // then else will change content in modeToggleElement from Default mode to Hover mode
+        modeToggleElement.innerHTML = "Default mode"; // else will content in modeToggleElement change from Hover mode to Default mode   
+        mode = 1; // else will content in modeToggleElement change from Hover mode to Default mode
     }
-    showHeatmap();
+    showHeatmap(); // show heat map
 });
 
 /**
@@ -177,26 +173,34 @@ modeToggleElement.addEventListener("click", () => {
  * @returns {void}
  */
 async function showProperty() {
-    loading(true);
-    btnShowMarker.classList.toggle("bg-red-600");
-    btnShowMarker.classList.toggle("hover:bg-red-600/80");
+    loading(true); // call loading function for display loading before property displayed
+
+    // class in btnShowMarker exists in argument toggle it will deleted, else value in argumen will add in class
+
+    // by default this is not exists in the class, this is for hidden property marker mode
+    btnShowMarker.classList.toggle("bg-red-600"); 
+    btnShowMarker.classList.toggle("hover:bg-red-600/80"); 
+    
+    // by default this is exists in the class, this is for show property marker mode
     btnShowMarker.classList.toggle("bg-slate-600");
     btnShowMarker.classList.toggle("hover:bg-slate-600/80");
-    if (btnShowMarker.innerHTML === "Hide markers") {
-        btnShowMarker.innerHTML = "Show markers";
+
+    if (btnShowMarker.innerHTML === "Hide markers") {  
+        btnShowMarker.innerHTML = "Show markers"; // change content in btnShowMarker from Hide markers to Show markers
     } else {
-        btnShowMarker.innerHTML = "Hide markers";
+        btnShowMarker.innerHTML = "Hide markers"; // else change content in btnShowMarker from Show markers to Hide markers
     }
-    property = !property;
+
+    property = !property; // change status property 
 
     if (property) {
-        await fetchPropertyApi(`${BASE_URL}/api/allheatmap`);
+        await fetchPropertyApi(`${BASE_URL}/api/allheatmap`); // call a fetchPropertyApi for 
     } else {
-        for (i = 0; i < propertyMarkers.length; i++) {
-            propertyMarkers[i].remove();
+        for (i = 0; i < propertyMarkers.length; i++) { 
+            propertyMarkers[i].remove(); // it will delete all data in array propertyMarkers
         }
 
-        propertyMarkers = [];
+        propertyMarkers = []; // it will delete 
     }
     loading(false);
 }
@@ -207,14 +211,16 @@ async function showProperty() {
  * @returns {void}
  */
 async function fetchPropertyApi(link) {
-    let object = await fetch(link);
-    let value = await object.json();
+    let object = await fetch(link); // fetching api and get data
+    let value = await object.json(); // change from array to json 
 
+    // if an errors occurs when fetching data, it will display error message  
     if (!value.status) {
         loading(false);
         return showError(true);
     }
 
+    // if fetching is successful, all data in api will added to array in propertyMarkers and will show marker in map
     value.data.forEach((data) => {
         const propertyMarker = new L.Marker([data.latitude, data.longitude])
             .bindPopup("Price : " + formatPrice(data.price))
@@ -425,7 +431,7 @@ function showHeatmap(filter = null) {
                     modal(center.latitude, center.longitude, coords);
                 });
                 if (mode === 0) {
-                    circle.bindTooltip(`${formatPrice(average)}`, {
+                    circle.bindTooltip(`Rp. ${formatPrice(average)}`, {
                         permanent: true,
                         direction: "center",
                         opacity: 0.8,
@@ -447,7 +453,7 @@ function showHeatmap(filter = null) {
                             fillColor: ordinal.color,
                             fillOpacity: 0.9,
                         });
-                        circle.bindTooltip(`${formatPrice(average)}`, {
+                        circle.bindTooltip(`Rp. ${formatPrice(average)}`, {
                             permanent: true,
                             direction: "center",
                             opacity: 0.9,
@@ -465,7 +471,7 @@ function showHeatmap(filter = null) {
                             fillColor: ordinal.color,
                             fillOpacity: opacity,
                         });
-                        circle.bindTooltip(`${formatPrice(average)}`, {
+                        circle.bindTooltip(`Rp. ${formatPrice(average)}`, {
                             permanent: true,
                             direction: "center",
                             opacity: 0.8,
@@ -497,7 +503,7 @@ function showHeatmap(filter = null) {
                             fill: true,
                             fillColor: ordinal.color,
                             fillOpacity: opacity,
-                        }).bindTooltip(`${formatPrice(average)}`, {
+                        }).bindTooltip(`Rp. ${formatPrice(average)}`, {
                             permanent: true,
                             direction: "center",
                         });
