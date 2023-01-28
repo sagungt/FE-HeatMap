@@ -92,11 +92,13 @@ select:invalid {
     border-radius: 20px;
 }
 
+
 .btn-legend-aktif{
-    @apply left-0 bottom-[430px] sm:top-1/2 sm:left-[400px] md:left-[370px] md:top-0 lg:top-0 lg:left-[315px];
+    @apply left-0 bottom-[430px] sm:bottom-[145px] sm:left-[400px] md:left-[390px] md:top-0 lg:top-0 lg:left-[315px];
 }
 
 .btn-legend-nonaktif{
-    @apply left-[320px] bottom-0 sm:bottom-[120px] sm:left-[415px] md:left-[415px] md:top-0 lg:top-0 lg:left-[415px];
+    @apply left-[320px] bottom-0 sm:bottom-[145px] sm:left-[415px] md:left-[415px] md:top-0 lg:top-0 lg:left-[415px];
 }
+
 
