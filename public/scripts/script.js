@@ -76,14 +76,14 @@ function formatPrice(number) {
     const min = 1e3;
     // Alter numbers larger than 1k
     if (number >= min) {
-        var units = ["rb", "jt", "m", "t"];
-        var order = Math.floor(Math.log(number) / Math.log(1000));
-        var unitname = units[order - 1];
-        var num = +(number / 1000 ** order).toFixed(2);
-        
+        var units = ["rb", "jt", "m", "t"]; // define numeric format name
+        var order = Math.floor(Math.log(number) / Math.log(1000)); // getting nearest integer that is less than or equal to a number.
+        var unitname = units[order - 1]; // getting the numeric format
+        // console.log(unitname)
+        var num = +(number / 1000 ** order).toFixed(2); // getting number with decimal   
         return num + unitname; // output number remainder + unitname
     }
-    return number.toLocaleString(); // mengembalikan nomor asli yang diformat
+    return number.toLocaleString(); // else return number with format price 
 }
 
 /**
@@ -92,9 +92,9 @@ function formatPrice(number) {
  * @returns {void}
  */
 function showError(toggle = false) {
-    const getErrorId = document.getElementById("error"); // getting element html by id
+    const getErrorId = document.getElementById("error"); // getting element html by id = error
     if (toggle) return getErrorId.classList.replace("hidden", "flex"); // if toggle is true, then in class will deleted hidden and adding flex
-    return getErrorId.classList.replace("flex", "hidden"); // then else in class will deleted flex and adding hidden
+    return getErrorId.classList.replace("flex", "hidden"); // else in class will deleted flex and adding hidden
 }
 
 /**
@@ -205,7 +205,7 @@ async function showProperty() {
             propertyMarkers[i].remove(); // it will delete all data in array propertyMarkers
         }
 
-        propertyMarkers = []; // it will delete 
+        propertyMarkers = []; // it will delete
     }
     loading(false);
 }
@@ -219,13 +219,13 @@ async function fetchPropertyApi(link) {
     let object = await fetch(link); // fetching api and get data
     let value = await object.json(); // change from array to json 
 
-    // if an errors occurs when fetching data, it will display error message  
+    // if an errors occurs when fetching data, it will display error message hidden loading  
     if (!value.status) {
         loading(false);
         return showError(true);
     }
 
-    // if fetching is successful, all data in api will added to array in propertyMarkers and will show marker in map
+    // if fetching is successful, all data in api will stored to array in propertyMarkers and will show marker in map
     value.data.forEach((data) => {
         let icon;
         if (data.type === 'Tanah') {
