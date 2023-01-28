@@ -9,8 +9,8 @@ const ALLHEATMAP = `${BASE_URL}/api/allheatmap`;
 const CREATE = `${BASE_URL}/api/create`;
 
 /* Elements */
-const btn = document.querySelector("#submit"); // untuk mengambil element dari halaman web dengan id = submit
-const form = document.querySelector("#handleForm"); // untuk mengambil element dari halaman web dengan id = handleForm
+const btn = document.querySelector("#submit"); // getting element HTML by id = submit
+const form = document.querySelector("#handleForm"); // getting element HTML by id = handleForm
 
 /**
  * Fetch api to load and show markers
@@ -35,20 +35,20 @@ async function fetchApi(link) {
  * @returns {void}
  */
 function onClickMap(e) {
-    if (markers.length > 0) {
-        markers[0].remove();
-        markers = [];
+    if (markers.length > 0) { 
+        markers[0].remove(); // all data in array markers will remove
+        markers = []; // define marker variable to empty array
     }
 
-    const latitudeElement = document.getElementById("lat");
-    const longitudeElement = document.getElementById("long");
+    const latitudeElement = document.getElementById("lat"); // getting element HTML by id 
+    const longitudeElement = document.getElementById("long"); // getting element HTML by id
 
-    latitudeElement.value = e.latlng.lat;
-    longitudeElement.value = e.latlng.lng;
+    latitudeElement.value = e.latlng.lat; // define a value in input latitude in form when user clicked a map 
+    longitudeElement.value = e.latlng.lng; // define a value in input longitude in form when user clicked a map
 
-    const newMarker = new L.Marker([e.latlng.lat, e.latlng.lng]);
-    newMarker.addTo(map);
-    markers.push(newMarker);
+    const newMarker = new L.Marker([e.latlng.lat, e.latlng.lng]); // define new variable for stored a data latitude and longitude
+    newMarker.addTo(map); // add marker to map
+    markers.push(newMarker); // insert data latitude longitude to variable markers in array 
 }
 
 /**
@@ -58,14 +58,12 @@ function onClickMap(e) {
  * @returns {void}
  */
 function toggleMessage(show, message) {
-    const messageContainer = document.querySelector("#message"); 
-    messageContainer.innerHTML = message; 
+    const messageContainer = document.querySelector("#message"); // getting element HTML by id
+    messageContainer.innerHTML = message; // set the content in messageContainer 
     if (show) { 
-        messageContainer.classList.remove("hidden");
-        messageContainer.classList.add("flex");
+        messageContainer.classList.replace('hidden', 'flex'); // if show is true, it will deleted hidden class name in messageContainer and adding flex
     } else {
-        messageContainer.classList.add("hidden");
-        messageContainer.classList.remove("flex");
+        messageContainer.classList.replace('flex', 'hidden'); // if show is true, it will deleted hidden class name in messageContainer and adding flex
     }
 }
 
@@ -122,21 +120,21 @@ btn.addEventListener("click", (e) => {
                 toggleMessage(
                     true,
                     '<span class="text-xs italic font-bold text-red-700">Failed</span>'
-                );
+                ); 
             }
-            await init();
-            setTimeout(() => {
+            await init(); // call a function init for show marker
+            setTimeout(() => { 
                 toggleMessage(false);
-            }, 3000);
+            }, 3000); // this function will hide a message after 3sec message show 
         })
         .catch((err) => {
             toggleMessage(
                 true,
                 '<span class="text-xs italic font-bold text-red-700">Failed to insert data</span>'
-            );
+            ); // call a message and define a content in message 
             setTimeout(() => {
                 toggleMessage(false);
-            }, 3000);
+            }, 3000); // this function will hide a message after 3sec message show 
         });
 });
 
