@@ -126,16 +126,28 @@ function loading(toggle = false) {
  * @returns {void}
  */
 function animationLegend() {
-    const btnLegend = document.querySelector(".btn-legend"); 
+
+    // retrieve html elements based on the class name listed in the legend.blade.php file
+    const btnLegend = document.querySelector(".btn-legend");
     const btnIcon = document.querySelector(".btn-legend i");
     const legend = document.querySelector(".legend");
-    btnLegend.classList.toggle("btn-legend-aktif");  
+
+    // const searchOnThisArea = document.querySelector(".search-on-this-area");
+
+    // Set classes to be added or removed
+    // default is not active
+    // if not active
     btnLegend.classList.toggle("btn-legend-nonaktif");
-    legend.classList.toggle("left-5");
     legend.classList.toggle("-left-[300px]"); 
-    legend.classList.toggle("sm:-left-[400px]");
-    btnIcon.classList.toggle("rotate-90");
+    legend.classList.toggle("sm:-left-[400px]"); 
     btnIcon.classList.toggle("rotate-0");
+    
+    // if active
+    btnLegend.classList.toggle("btn-legend-aktif");
+    legend.classList.toggle("left-5");
+    btnIcon.classList.toggle("rotate-180");
+
+    
     // searchOnThisArea.classList.toggle("top-[335px]");
     // searchOnThisArea.classList.toggle("top-[593px]");
 }
