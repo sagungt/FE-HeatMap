@@ -38,22 +38,20 @@
                                 No
                             </th>
 
-                            <th scope="col"
-                                class="w-[calc(94%/3)] text-center py-3 hidden md:flex md:justify-center">
+                            <th scope="col" class="w-[15%] text-center py-3 hidden md:flex md:justify-center">
                                 Type
                             </th>
 
-                            <th scope="col"
-                                class="w-[calc(94%/3)] text-center py-3 hidden md:flex md:justify-center ">
+                            <th scope="col" class="w-[15%] text-center py-3 hidden md:flex md:justify-center ">
                                 Area
                             </th>
 
                             <th scope="col"
-                                class="w-[80%] md:w-[calc(94%/3)] text-center py-3  md:flex md:justify-center">
+                                class="w-[80%] md:w-[calc(64%/2)] text-center py-3  md:flex md:justify-center">
                                 Price
                             </th>
                             <th scope="col"
-                                class="w-[80%] md:w-[calc(94%/3)] text-center py-3  md:flex md:justify-center">
+                                class="w-[80%] md:w-[calc(64%/2)] text-center py-3 hidden md:flex md:justify-center">
                                 Total
                             </th>
                         </tr>
@@ -64,29 +62,30 @@
                 </table>
             </div>
             <p class="mb-6 text-center my-5 text-black md:text-xl text-xl">List Popular Places</p>
-            <table class="w-full text-sm text-left text-gray-500">
-                <thead class="text-xs text-gray-700 uppercase bg-gray-50 ">
-                    <tr class="text-center">
-                        <th scope="col" class="px-6 py-3">
-                            No
-                        </th>
+            <div class="relative md:px-5 lg:px-10">
+                <table class="w-full text-sm text-left text-gray-500 rounded-lg overflow-hidden">
+                    <thead class="text-xs text-gray-700 uppercase bg-gray-300 ">
+                        <tr class="flex flex-wrap">
+                            <th scope="col" class="w-[20%] md:w-[6%] hidden md:flex justify-center text-center py-3">
+                                No
+                            </th>
 
-                        <th scope="col" class="px-6 py-3">
-                            Name
-                        </th>
+                            <th scope="col"
+                                class="md:w-[calc(94%/2)] w-[100%] text-center py-3 md:flex md:justify-center">
+                                Name
+                            </th>
 
-                        <th scope="col" class="px-6 py-3">
-                            Distance
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                            Categories
-                        </th>
-                    </tr>
-                </thead>
+                            <th scope="col"
+                                class="w-[calc(94%/2)] text-center py-3 hidden md:flex md:justify-center ">
+                                Distance
+                            </th>
+                        </tr>
+                    </thead>
 
-                <tbody id="popular">
-                </tbody>
-            </table>
+                    <tbody id="popular">
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>

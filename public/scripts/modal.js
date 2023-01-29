@@ -37,74 +37,80 @@ async function modal(latitude, longitude, coords) {
 
     let dataset = [];
 
-    let htmlString = "";
-    let no = 1;
-    coords.forEach(({ price, latitude, longitude }, i) => {
-        // htmlString += `
-        //     <tr class="bg-white border-b">
-        //         <th scope="row" class="px-2 py-4">
-        //             ${no++}
-        //         </th>
-        //         <td class="px-6 py-4">
-        //         ${latitude}
-        //         </td>
-        //         <td class="px-6 py-4">
-        //             ${longitude}
-        //         </td>
-        //         <td class="px-6 py-4">
-        //             Rp. ${price}
-        //         </td>
-        //     </tr>
-        //     `;
-        htmlString += `
+    let htmlStringProperties = "";
+    let htmlStringPopular = "";
+    coords
+        .sort((a, b) => a.price - b.price)
+        .forEach(({ price, type, area, desc }, i) => {
+            htmlStringProperties += `
             <tr x-data="{isDetail: false}" x-on:click="isDetail = !isDetail" class="relative cursor-pointer bg-white border-b flex flex-wrap text-gray-500">
                 <td scope="col" class="text-center w-[20%] md:w-[6%] h-[60px] flex justify-center items-center">
-                    ${no++}
+                    ${i + 1}
                 </td>
-                <td scope="col" class="hidden text-center w-[calc(94%/3)] h-[60px] md:flex justify-center items-center">
+                <td scope="col" class="hidden text-center w-[15%] h-[60px] md:flex justify-center items-center">
                     ${type}
                 </td>
-                <td scope="col" class="hidden text-center w-[calc(94%/3)] h-[60px]  md:flex justify-center items-center">
+                <td scope="col" class="hidden text-center w-[15%] h-[60px]  md:flex justify-center items-center">
                     ${area} m²
                 </td>
-                <td scope="col" class="hidden text-center w-[calc(94%/3)] h-[60px]  md:flex justify-center items-center">
-                    Rp. ${moneyFormatter.format(Math.round(price * area))}
+                <td scope="col" class="hidden text-center w-[calc(64%/2)] h-[60px]  md:flex justify-center items-center">
+                    Rp. ${moneyFormatter.format(Math.round(price))}
                 </td>
-                <td scope="col" class="text-center relative w-[80%] md:w-[calc(94%/3)] h-[60px] flex gap-3 items-center justify-center">
-                    <p>Rp. ${moneyFormatter.format(price)}</p>
+                <td scope="col" class="text-center relative w-[80%] md:w-[calc(64%/2)] h-[60px] flex gap-3 items-center justify-center">
+                    <p>Rp. ${moneyFormatter.format(
+                        Math.round(price * area)
+                    )}</p>
                     <div x-bind:class="isDetail ? '-rotate-90' : 'rotate-90'" class="btn-detail cursor-pointer w-6 h-6 right-5 top-[50%] -translate-y-[50%] border absolute border-slate-500 flex justify-center items-center rounded-full duration-500">
                         <i class="fa-solid fa-chevron-right"></i>
                     </div>
                 </td>
                 <td x-bind:class="isDetail ? 'h-auto' : 'h-0'" scope="col" class="detail-element w-full p-0 inline-block transition-[height] duration-300 border-l border-red-600">
-                    <h3 class="text-gray-700 font-bold mt-3 ml-3 duration-300">Price per meter: <span class="font-normal text-gray-500 text-sm">Rp.300.000.000.</span></h3>
-                    <h3 class="text-gray-700 font-bold mt-3 ml-3 duration-300">Total price : <span class="font-normal text-gray-500 text-sm">Rp.1.000.000.000</span></h3>
-                    <h3 class="text-gray-700 font-bold mt-3 ml-3 duration-300 md:hidden">Type : <span class="font-normal text-gray-500 text-sm">Rumah</span></h3>
-                    <h3 class="text-gray-700 font-bold mt-3 ml-3 duration-300 md:hidden">Wide : <span class="font-normal text-gray-500 text-sm">23m</span></h3>
+                    <h3 class="text-gray-700 font-bold mt-3 ml-3 duration-300">Price per m²: <span class="font-normal text-gray-500 text-sm">Rp. ${moneyFormatter.format(
+                        Math.round(price)
+                    )}</span></h3>
+                    <h3 class="text-gray-700 font-bold mt-3 ml-3 duration-300">Total price : <span class="font-normal text-gray-500 text-sm">Rp. ${moneyFormatter.format(
+                        Math.round(price * area)
+                    )}</span></h3>
+                    <h3 class="text-gray-700 font-bold mt-3 ml-3 duration-300 md:hidden">Type : <span class="font-normal text-gray-500 text-sm">${type}</span></h3>
+                    <h3 class="text-gray-700 font-bold mt-3 ml-3 duration-300 md:hidden">Wide : <span class="font-normal text-gray-500 text-sm">${area} m²</span></h3>
                     <h3 class="text-gray-700 font-bold mt-3 ml-3 duration-300">Description :</h3>
-                    <p class="w-[90%] ml-3 mb-3 mt-2 duration-300">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Voluptate, sapiente ipsum maxime ducimus, accusamus quos consequuntur natus obcaecati necessitatibus, deserunt tenetur fuga? Voluptates quidem illo eveniet unde iusto possimus ex facilis beatae laudantium voluptatem quae reprehenderit libero.</p>
+                    <p class="w-[90%] ml-3 mb-3 mt-2 duration-300">${
+                        desc ? desc : "No description"
+                    }</p>
                 </td>
             </tr>
             `;
 
-        // push array
-        dataset.push([i + 1, price]);
-    });
+            // push array
+            dataset.push([i + 1, price]);
+        });
     address.data.popular.results.forEach(
         ({ name, distance, categories }, i) => {
             htmlStringPopular += `
-            <tr class="bg-white border-b text-center">
-                <td scope="col" class="px-6 py-4">
+            <tr x-data="{isDetail: false}" x-on:click="isDetail = !isDetail" class="relative cursor-pointer bg-white border-b flex flex-wrap text-gray-500">
+                <td scope="col" class="text-center w-[20%] md:w-[6%] h-[60px] hidden md:flex justify-center items-center">
                     ${i + 1}
                 </td>
-                <td scope="col" class="px-6 py-4">
-                    ${name}
+                <td scope="col" class=" text-center w-[100%] md:w-[calc(94%/2)] h-[60px] flex justify-center items-center relative">
+                   <p class='w-[180px] md:w-auto'> ${name} </p>
+                    <div x-bind:class="isDetail ? '-rotate-90' : 'rotate-90'" class="btn-detail cursor-pointer w-6 h-6 right-5 top-[50%] flex -translate-y-[50%] border absolute border-slate-500 md:hidden justify-center items-center rounded-full duration-500">
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </div>
                 </td>
-                <td scope="col" class="px-6 py-4">
+                <td scope="col" class="hidden text-center w-[calc(94%/2)] h-[60px]  md:flex justify-center items-center relative">
                 ~ ${distance / 1000} Km
+                    <div x-bind:class="isDetail ? '-rotate-90' : 'rotate-90'" class="btn-detail cursor-pointer w-6 h-6 right-5 top-[50%] hidden -translate-y-[50%] border absolute border-slate-500 md:flex justify-center items-center rounded-full duration-500">
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </div>
                 </td>
-                <td scope="col" class="px-6 py-4">
-                    ${category(categories).join("")}
+                <td x-bind:class="isDetail ? 'h-auto' : 'h-0'" scope="col" class="detail-element w-full p-0 inline-block transition-[height] duration-300 border-l border-red-600">
+                    <h3 class="text-gray-700 font-bold mt-3 ml-3 duration-300 gap-2 flex flex-wrap items-center"><span>Categories: </span><span class="font-normal text-gray-500 text-sm">${category(
+                        categories
+                    ).join("")}</span></h3>
+                    <h3 class="text-gray-700 font-bold mt-3 ml-3 mb-3 duration-300">Distance: <span class="font-normal text-gray-500 text-sm">~ ${
+                        distance / 1000
+                    } Km</span></h3>
+                    
                 </td>
              </tr>
             `;
@@ -297,7 +303,7 @@ async function modal(latitude, longitude, coords) {
     loading(false);
 
     // replace html with value js
-    coordsElement.innerHTML = htmlStringProperty;
+    coordsElement.innerHTML = htmlStringProperties;
     popularElement.innerHTML = htmlStringPopular;
     addressElement.innerHTML = address.data.display_name;
 }
