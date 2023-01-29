@@ -51,7 +51,7 @@ const ordinal = [
     {
         index: 5,
         l: 8500000,
-        g: 1050000,
+        g: 10500000,
         color: "#f52e2e",
     },
     {
@@ -173,7 +173,7 @@ modeToggleElement.addEventListener("click", () => { // if toggle mode clicked
     }
 
     if(mode == 0 && propertyMarkers.length > 0){
-        showProperty();
+        showProperty(); 
     }
     showHeatmap();
     
