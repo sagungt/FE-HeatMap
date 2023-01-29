@@ -26,11 +26,11 @@
                 <div class="flex flex-col gap-3 w-full lg:w-[60%]">
                     <div class="flex flex-col">
                         <label for="price">Price</label>
-                        <input type="number" name="price" placeholder="Price" class="py-1.5 px-2 border border-gray-200 rounded-xl transition duration-200" id='price'>
+                        <input type="number" name="price" placeholder="Price" class="py-1.5 px-2 border border-gray-200 rounded-lg transition duration-200" id='price'>
                     </div>
                     <div class="flex flex-col">
                         <label for="">Type</label>
-                        <select id='type' class="py-1.5 px-2 border border-gray-200 rounded-xl transition duration-200">
+                        <select id='type' class="py-1.5 px-2 border border-gray-200 rounded-lg transition duration-200">
                             <option value="Rumah">Rumah</option>
                             <option value="Tanah">Tanah</option>
                             <option value="Apartemen">Apartemen</option>
@@ -39,21 +39,21 @@
                     </div>
                     <div class="flex flex-col">
                         <label for="">Deskripsi</label>
-                        <textarea name="desc" id="desc" cols="0" class="py-1.5 px-2 border border-gray-200 rounded-xl transition duration-200" placeholder="Deskripsi"></textarea>
+                        <textarea name="desc" id="desc" cols="0" class="py-1.5 px-2 border border-gray-200 rounded-lg transition duration-200" placeholder="Deskripsi"></textarea>
                     </div>
                 </div>
                 <div class="flex flex-col gap-3 w-full lg:w-[40%]">
                     <div class="flex flex-col">
                         <label for="lat">Latitude</label>
-                        <input type="number" name="lat" id="lat" placeholder="Latitude" class="py-1.5 px-2 border border-gray-200 rounded-xl transition duration-200">
+                        <input type="number" name="lat" id="lat" placeholder="Latitude" class="py-1.5 px-2 border border-gray-200 rounded-lg transition duration-200">
                     </div>
                     <div class="flex flex-col">
                         <label for="long">Longitude</label>
-                        <input type="text" name="long" id="long" placeholder="Longitude" class="py-1.5 px-2 border border-gray-200 rounded-xl transition duration-200">
+                        <input type="text" name="long" id="long" placeholder="Longitude" class="py-1.5 px-2 border border-gray-200 rounded-lg transition duration-200">
                     </div>
                     <div class="flex flex-col">
                         <label for="long">Area</label>
-                        <input type="number" name="area" id="area" placeholder="area" class="py-1.5 px-2 border border-gray-200 rounded-xl transition duration-200">
+                        <input type="number" name="area" id="area" placeholder="area" class="py-1.5 px-2 border border-gray-200 rounded-lg transition duration-200">
                     </div>
                 </div>
             </div>
