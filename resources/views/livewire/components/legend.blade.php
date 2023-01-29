@@ -26,7 +26,7 @@
                     class="flex items-center gap-4 transition cursor-pointer px-4 py-1 justify-center rounded-lg hover:scale-[102%] w-full sm:w-[calc(50%-8px)] lg:w-full duration-300 lg:py-2 border-2 shadow-sm">
                     {{-- <div x-bind:class="'bg-range-' + value.index" class="w-[40px] h-[20px] border border-slate-700 lg:w-[50px] lg:h-[30px]"></div> --}}
                     <p x-bind:class="value.index > 3 ? 'text-white' : 'text-slate-800'" class="text-xs lg:text-sm"
-                        x-text="'Rp. ' + formatPrice(value.l) + ' - ' + 'Rp. ' + formatPrice(value.g) + (value.index === ordinal[ordinal.length - 1].index ? '++' : '')">
+                        x-text="'Rp. ' + formatPrice(value.l) + ' - ' + 'Rp. ' + formatPrice(value.g) + (value.index === ordinal[ordinal.length - 1].index ? '+' : '')">
                     </p>
                 </div>
             </template>
