@@ -9,8 +9,8 @@ const ALLHEATMAP = `${BASE_URL}/api/allheatmap`;
 const CREATE = `${BASE_URL}/api/create`;
 
 /* Elements */
-const btn = document.querySelector("#submit");
-const form = document.querySelector("#handleForm");
+const btn = document.querySelector("#submit"); // getting element HTML by id = submit
+const form = document.querySelector("#handleForm"); // getting element HTML by id = handleForm
 
 /**
  * Fetch api to load and show markers
@@ -18,14 +18,14 @@ const form = document.querySelector("#handleForm");
  * @returns {void}
  */
 async function fetchApi(link) {
-    let object = await fetch(link);
-    let value = await object.json();
+    let object = await fetch(link); // fetching api and get data
+    let value = await object.json(); // change from array to json 
 
-    loc = value.data.map((d) => [d.latitude, d.longitude, d.price]);
+    loc = value.data.map((d) => [d.latitude, d.longitude, d.price]); // all data fetching from api 
     for (i = 0; i < loc.length; i++) {
         L.marker([loc[i][0], loc[i][1]])
             .bindPopup("Price : " + loc[i][2])
-            .addTo(map);
+            .addTo(map); // untuk menampilkan marker dan popup akan  
     }
 }
 
@@ -35,20 +35,20 @@ async function fetchApi(link) {
  * @returns {void}
  */
 function onClickMap(e) {
-    if (markers.length > 0) {
-        markers[0].remove();
-        markers = [];
+    if (markers.length > 0) { 
+        markers[0].remove(); // all data in array markers will remove
+        markers = []; // define marker variable to empty array
     }
 
-    const latitudeElement = document.getElementById("lat");
-    const longitudeElement = document.getElementById("long");
+    const latitudeElement = document.getElementById("lat"); // getting element HTML by id 
+    const longitudeElement = document.getElementById("long"); // getting element HTML by id
 
-    latitudeElement.value = e.latlng.lat;
-    longitudeElement.value = e.latlng.lng;
+    latitudeElement.value = e.latlng.lat; // define a value in input latitude in form when user clicked a map 
+    longitudeElement.value = e.latlng.lng; // define a value in input longitude in form when user clicked a map
 
-    const newMarker = new L.Marker([e.latlng.lat, e.latlng.lng]);
-    newMarker.addTo(map);
-    markers.push(newMarker);
+    const newMarker = new L.Marker([e.latlng.lat, e.latlng.lng]); // define new variable for stored a data latitude and longitude
+    newMarker.addTo(map); // add marker to map
+    markers.push(newMarker); // insert data latitude longitude to variable markers in array 
 }
 
 /**
@@ -58,14 +58,12 @@ function onClickMap(e) {
  * @returns {void}
  */
 function toggleMessage(show, message) {
-    const messageContainer = document.querySelector("#message");
-    messageContainer.innerHTML = message;
-    if (show) {
-        messageContainer.classList.remove("hidden");
-        messageContainer.classList.add("flex");
+    const messageContainer = document.querySelector("#message"); // getting element HTML by id
+    messageContainer.innerHTML = message; // set the content in messageContainer 
+    if (show) { 
+        messageContainer.classList.replace('hidden', 'flex'); // if show is true, it will deleted hidden class name in messageContainer and adding flex
     } else {
-        messageContainer.classList.add("hidden");
-        messageContainer.classList.remove("flex");
+        messageContainer.classList.replace('flex', 'hidden'); // if show is true, it will deleted hidden class name in messageContainer and adding flex
     }
 }
 
@@ -75,11 +73,11 @@ function toggleMessage(show, message) {
  * @returns {void}
  */
 function loading(toggle = false) {
-    const loadingContainer = document.getElementById("loading");
-    if (!toggle) {
+    const loadingContainer = document.getElementById("loading"); // getting element by id = loading
+    if (!toggle) { // if toggle is false class name in loadingContainer 
         loadingContainer.classList.add("hidden");
         loadingContainer.classList.remove("flex");
-    } else {
+    } else { // else class name in loadingContainer will delete hidden 
         loadingContainer.classList.add("flex");
         loadingContainer.classList.remove("hidden");
     }
@@ -91,47 +89,52 @@ function loading(toggle = false) {
  * @returns {void}
  */
 btn.addEventListener("click", (e) => {
-    e.preventDefault();
-    const formData = new FormData(form);
+    e.preventDefault(); // it will holding browser to hard reload after button submit pressed
+    const formData = new FormData(form); // define variable for stored data sent from forms  
 
+    // stored data sent from forms and define the name field and get the value by id   
+    formData.append("desc", document.querySelector("#desc").value);
+    formData.append("type", document.querySelector("#type").value);
+    formData.append("area", document.querySelector("#area").value);
     formData.append("harga", document.querySelector("#price").value);
     formData.append("lat", document.querySelector("#lat").value);
     formData.append("long", document.querySelector("#long").value);
 
+    // send data from form input to api 
     fetch(CREATE, {
-        method: "POST",
-        body: formData,
+        method: "POST", 
+        body: formData, // stored data from form input 
         headers: {
-            Authorization: localStorage.getItem("token"),
-            "d-app-authorization": localStorage.getItem("app_key"),
+            Authorization: localStorage.getItem("token"), // Authorization user for getting access this task 
+            "d-app-authorization": localStorage.getItem("app_key"), // Authorization user for getting access this task 
         },
     })
-        .then((res) => res.json())
-        .then(async (data) => {
-            if (data.status) {
+        .then((res) => res.json()) // then response will change type to json   
+        .then(async (data) => { // display message after create data 
+            if (data.status) { // if status is true, it will send message success 
                 toggleMessage(
                     true,
                     '<span class="text-xs italic font-bold text-blue-700">Data inserted</span>'
                 );
-            } else {
+            } else { // else it send error message 
                 toggleMessage(
                     true,
                     '<span class="text-xs italic font-bold text-red-700">Failed</span>'
-                );
+                ); 
             }
-            await init();
-            setTimeout(() => {
+            await init(); // call a function init for show marker
+            setTimeout(() => { 
                 toggleMessage(false);
-            }, 3000);
+            }, 3000); // this function will hide a message after 3sec message show 
         })
         .catch((err) => {
             toggleMessage(
                 true,
                 '<span class="text-xs italic font-bold text-red-700">Failed to insert data</span>'
-            );
+            ); // call a message and define a content in message 
             setTimeout(() => {
                 toggleMessage(false);
-            }, 3000);
+            }, 3000); // this function will hide a message after 3sec message show 
         });
 });
 
