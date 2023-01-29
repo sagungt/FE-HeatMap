@@ -7,19 +7,19 @@ var map,
     svgBar,
     svgLine,
     searchMarker;
-var earth = 6378.137,                               // earth equatorial radius
-    pi = Math.PI,                                   // pi value
-    cos = Math.cos,                                 // cos function
-    meter = 1 / (((2 * pi) / 360) * earth) / 1000,  // meter in map scale
-    circles = [],                                   // array for circle overlay
-    yOffset = 5,                                    // how many circle row from center
-    xOffset = 10,                                   // how many circle row from center
-    coords = [],                                    // array for circle
-    opacity = 0.5,                                  // default opacity
-    propertyMarkers = [],                           // array for property markers
-    filterValue = [],                               // array for filter
-    property = false,                               // show property marker default value
-    mode = 0,                                       // 0: default, 1: hover
+var earth = 6378.137, // earth equatorial radius
+    pi = Math.PI, // pi value
+    cos = Math.cos, // cos function
+    meter = 1 / (((2 * pi) / 360) * earth) / 1000, // meter in map scale
+    circles = [], // array for circle overlay
+    yOffset = 5, // how many circle row from center
+    xOffset = 10, // how many circle row from center
+    coords = [], // array for circle
+    opacity = 0.5, // default opacity
+    propertyMarkers = [], // array for property markers
+    filterValue = [], // array for filter
+    property = false, // show property marker default value
+    mode = 0, // 0: default, 1: hover
     error = false;
 
 /* Ordinal Data for range category property price per meter^2 */
@@ -66,7 +66,7 @@ const ordinal = [
 const BASE_URL = "https://api-heatmap-farcapital.fly.dev/v1";
 const AREA_ENDPOINT = `${BASE_URL}/api/area`;
 const SEARCH_ENDPOINT = `${BASE_URL}/api/search`;
-const ADDRESS_ENDPOINT = `${BASE_URL}/api/reverse`;
+const ADDRESS_ENDPOINT = `${BASE_URL}/api/reverseArea`;
 
 /**
  * Format number with million, billion etc suffixes
@@ -81,10 +81,10 @@ function formatPrice(number) {
         var order = Math.floor(Math.log(number) / Math.log(1000)); // getting nearest integer that is less than or equal to a number.
         var unitname = units[order - 1]; // getting the numeric format
         // console.log(unitname)
-        var num = +(number / 1000 ** order).toFixed(2); // getting number with decimal   
+        var num = +(number / 1000 ** order).toFixed(2); // getting number with decimal
         return num + unitname; // output number remainder + unitname
     }
-    return number.toLocaleString(); // else return number with format price 
+    return number.toLocaleString(); // else return number with format price
 }
 
 /**
@@ -106,12 +106,13 @@ function showError(toggle = false) {
 function loading(toggle = false) {
     const getLoading = document.getElementById("loading"); // getting element html by id
     const overlayLoading = document.getElementById("overlay-loading"); // getting element html by id
-    if (toggle){ // if toggle is true, then class in id loading & overlay-loading will deleted hidden & adding flex, and program will stop   
-        getLoading.classList.replace("hidden", "flex"); 
-        overlayLoading.classList.replace("hidden", "flex"); 
+    if (toggle) {
+        // if toggle is true, then class in id loading & overlay-loading will deleted hidden & adding flex, and program will stop
+        getLoading.classList.replace("hidden", "flex");
+        overlayLoading.classList.replace("hidden", "flex");
         return;
-    } 
-    // then else class in id loading & overlay-loading will deleted flex & adding hidden 
+    }
+    // then else class in id loading & overlay-loading will deleted flex & adding hidden
     getLoading.classList.replace("flex", "hidden");
     overlayLoading.classList.replace("flex", "hidden");
 }
@@ -121,7 +122,6 @@ function loading(toggle = false) {
  * @returns {void}
  */
 function animationLegend() {
-
     // retrieve html elements based on the class name listed in the legend.blade.php file
     const btnLegend = document.querySelector(".btn-legend");
     const btnIcon = document.querySelector(".btn-legend i");
@@ -133,16 +133,15 @@ function animationLegend() {
     // default is not active
     // if not active
     btnLegend.classList.toggle("btn-legend-nonaktif");
-    legend.classList.toggle("-left-[300px]"); 
-    legend.classList.toggle("sm:-left-[400px]"); 
+    legend.classList.toggle("-left-[300px]");
+    legend.classList.toggle("sm:-left-[400px]");
     btnIcon.classList.toggle("rotate-0");
-    
+
     // if active
     btnLegend.classList.toggle("btn-legend-aktif");
     legend.classList.toggle("left-5");
     btnIcon.classList.toggle("rotate-180");
 
-    
     // searchOnThisArea.classList.toggle("top-[335px]");
     // searchOnThisArea.classList.toggle("top-[593px]");
 }
@@ -157,27 +156,30 @@ const modeToggleElement = document.getElementById("mode");
  * Toggle mode heatmap
  * @return {void}
  */
-modeToggleElement.addEventListener("click", () => { // if toggle mode clicked
+modeToggleElement.addEventListener("click", () => {
+    // if toggle mode clicked
     modeToggleElement.classList.toggle("bg-blue-700"); // class in modeToggleElement will delete bg-blue-700
     modeToggleElement.classList.toggle("hover:bg-blue-700/80"); // class in modeToggleElement will delete bg-blue-700
     modeToggleElement.classList.toggle("focus:ring-blue-300"); // class in modeToggleElement will delete focus:bg-purple-700
     modeToggleElement.classList.toggle("bg-purple-700"); // class in modeToggleElement will delete bg-purple-700
     modeToggleElement.classList.toggle("hover:bg-purple-700/80"); // class in modeToggleElement will delete hover:bg-purple-700/80
     modeToggleElement.classList.toggle("focus:ring-purple-300"); // class in modeToggleElement will delete focus:ring-purple-700
-    if (modeToggleElement.innerHTML === "Default mode"){ // if content in modeToggleElement is Default mode will change content in modeToggleElement from Default mode to Hover mode
+    if (modeToggleElement.innerHTML === "Default mode") {
+        // if content in modeToggleElement is Default mode will change content in modeToggleElement from Default mode to Hover mode
         modeToggleElement.innerHTML = "Hover mode"; // if in modeToggleElement content is Default
         mode = 0; // if in modeToggleElement content is Default
-    } else { // then else will change content in modeToggleElement from Default mode to Hover mode
-        modeToggleElement.innerHTML = "Default mode"; // else will content in modeToggleElement change from Hover mode to Default mode   
+    } else {
+        // then else will change content in modeToggleElement from Default mode to Hover mode
+        modeToggleElement.innerHTML = "Default mode"; // else will content in modeToggleElement change from Hover mode to Default mode
         mode = 1; // else will content in modeToggleElement change from Hover mode to Default mode
     }
 
-    if(mode == 0 && propertyMarkers.length > 0){
-        showProperty(); 
+    if (mode == 0 && propertyMarkers.length > 0) {
+        showProperty();
     }
     showHeatmap();
-    
-    if(mode == 1){
+
+    if (mode == 1) {
         showProperty();
     }
 });
@@ -192,25 +194,25 @@ async function showProperty() {
     // class in btnShowMarker exists in argument toggle it will deleted, else value in argumen will add in class
 
     // by default this is not exists in the class, this is for hidden property marker mode
-    btnShowMarker.classList.toggle("bg-red-600"); 
-    btnShowMarker.classList.toggle("hover:bg-red-600/80"); 
-    
+    btnShowMarker.classList.toggle("bg-red-600");
+    btnShowMarker.classList.toggle("hover:bg-red-600/80");
+
     // by default this is exists in the class, this is for show property marker mode
     btnShowMarker.classList.toggle("bg-slate-600");
     btnShowMarker.classList.toggle("hover:bg-slate-600/80");
 
-    if (btnShowMarker.innerHTML === "Hide markers") {  
+    if (btnShowMarker.innerHTML === "Hide markers") {
         btnShowMarker.innerHTML = "Show markers"; // change content in btnShowMarker from Hide markers to Show markers
     } else {
         btnShowMarker.innerHTML = "Hide markers"; // else change content in btnShowMarker from Show markers to Hide markers
     }
 
-    property = !property; // change status property 
+    property = !property; // change status property
 
     if (property) {
-        await fetchPropertyApi(`${BASE_URL}/api/allheatmap`); // call a fetchPropertyApi for 
+        await fetchPropertyApi(`${BASE_URL}/api/allheatmap`); // call a fetchPropertyApi for
     } else {
-        for (i = 0; i < propertyMarkers.length; i++) { 
+        for (i = 0; i < propertyMarkers.length; i++) {
             propertyMarkers[i].remove(); // it will delete all data in array propertyMarkers
         }
 
@@ -226,9 +228,9 @@ async function showProperty() {
  */
 async function fetchPropertyApi(link) {
     let object = await fetch(link); // fetching api and get data
-    let value = await object.json(); // change from array to json 
+    let value = await object.json(); // change from array to json
 
-    // if an errors occurs when fetching data, it will display error message hidden loading  
+    // if an errors occurs when fetching data, it will display error message hidden loading
     if (!value.status) {
         loading(false);
         return showError(true);
@@ -237,23 +239,23 @@ async function fetchPropertyApi(link) {
     // if fetching is successful, all data in api will stored to array in propertyMarkers and will show marker in map
     value.data.forEach((data) => {
         let icon;
-        if (data.type === 'Tanah') {
+        if (data.type === "Tanah") {
             icon = L.icon({
                 iconUrl: `${window.location.href}leaflet/images/marker-icon-land.png`,
                 shadowUrl: `${window.location.href}leaflet/images/marker-shadow.png`,
                 iconSize: [25, 36],
                 iconAnchor: [12, 36],
                 popupAnchor: [1, -34],
-                shadowSize: [36, 36]
+                shadowSize: [36, 36],
             });
-        } else if (data.type === 'Rumah') {
+        } else if (data.type === "Rumah") {
             icon = L.icon({
                 iconUrl: `${window.location.href}leaflet/images/marker-icon-house.png`,
                 shadowUrl: `${window.location.href}leaflet/images/marker-shadow.png`,
                 iconSize: [25, 36],
                 iconAnchor: [12, 36],
                 popupAnchor: [1, -34],
-                shadowSize: [36, 36]
+                shadowSize: [36, 36],
             });
         } else {
             icon = L.icon({
@@ -262,11 +264,12 @@ async function fetchPropertyApi(link) {
                 iconSize: [25, 41],
                 iconAnchor: [12, 41],
                 popupAnchor: [1, -34],
-                shadowSize: [41, 41]
+                shadowSize: [41, 41],
             });
         }
-        const propertyMarker = new L.Marker([data.latitude, data.longitude], { icon })
-            .bindPopup("Price : " + formatPrice(data.price))
+        const propertyMarker = new L.Marker([data.latitude, data.longitude], {
+            icon,
+        }).bindPopup("Price : " + formatPrice(data.price));
         propertyMarker.addTo(map);
         propertyMarkers.push(propertyMarker);
     });
@@ -334,7 +337,7 @@ async function init() {
             attribution:
                 '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
         });
-        tile['type'] = 'tile';
+        tile["type"] = "tile";
         tile.addTo(map);
     }
 
@@ -344,7 +347,7 @@ async function init() {
     // remove all map layers
     map.eachLayer(function (layer) {
         // do not remove tile layer
-        if (layer.type !== 'tile') map.removeLayer(layer);
+        if (layer.type !== "tile") map.removeLayer(layer);
     });
 
     // add event handler when moving map
@@ -356,7 +359,7 @@ async function init() {
         const searchOnThisAreaElement = document.querySelector(
             "#search-on-this-area"
         );
-        if(!error){
+        if (!error) {
             if (!(currentLatitude === lat && currentLongitude === lng)) {
                 setTimeout(() => {
                     searchOnThisAreaElement.classList.replace(
@@ -378,7 +381,6 @@ async function init() {
 
     // loop to right of the center
     for (let j = 0; j < xOffset; j += 1) {
-
         // loop loop to the bottom
         for (let i = 0; i < yOffset; i += 1) {
             // append coordinate to coords array
@@ -471,19 +473,20 @@ function showHeatmap(filter = null) {
         // remove filter if already exist in array
         if (filterValue.includes(filter)) {
             filterValue = filterValue.filter((f) => f !== filter);
-        } else { // otherwise append to array
+        } else {
+            // otherwise append to array
             filterValue.push(filter);
         }
     }
 
     // remove all layer except tile
     map.eachLayer(function (layer) {
-        if (layer.type !== 'tile') map.removeLayer(layer);
+        if (layer.type !== "tile") map.removeLayer(layer);
     });
 
     // build filter color elements
-    const colorsElement = document.querySelector('#colors');
-    let colorItem = '';
+    const colorsElement = document.querySelector("#colors");
+    let colorItem = "";
     filterValue.forEach((f) => {
         colorItem += `
         <div class="text-xs w-6 h-3 rounded-full bg-range-${f}"></div>`;
@@ -492,7 +495,7 @@ function showHeatmap(filter = null) {
 
     if (property) showProperty();
     const { data } = response;
-    
+
     data.forEach(({ average, center, coords }) => {
         // show heatmap overlay only if average price exist
         if (average !== 0) {
@@ -518,7 +521,7 @@ function showHeatmap(filter = null) {
                     iconSize: [25, 36],
                     iconAnchor: [12, 36],
                     popupAnchor: [1, -34],
-                    shadowSize: [36, 36]
+                    shadowSize: [36, 36],
                 });
                 const houseIcon = L.icon({
                     iconUrl: `${window.location.href}leaflet/images/marker-icon-house.png`,
@@ -526,7 +529,7 @@ function showHeatmap(filter = null) {
                     iconSize: [25, 36],
                     iconAnchor: [12, 36],
                     popupAnchor: [1, -34],
-                    shadowSize: [36, 36]
+                    shadowSize: [36, 36],
                 });
                 const defaultIcon = L.icon({
                     iconUrl: `${window.location.href}leaflet/images/marker-icon.png`,
@@ -534,14 +537,14 @@ function showHeatmap(filter = null) {
                     iconSize: [25, 41],
                     iconAnchor: [12, 41],
                     popupAnchor: [1, -34],
-                    shadowSize: [41, 41]
+                    shadowSize: [41, 41],
                 });
                 const areaMarkers = []; // array for all marker in area
 
                 // initialize circle object of area's center coordinate and with radius += 1km
                 const circle = L.circle([center.latitude, center.longitude], {
-                        radius: 1000 - 8,
-                    })
+                    radius: 1000 - 8,
+                })
                     // add click handler to circle and show modal
                     .on("click", function () {
                         modal(center.latitude, center.longitude, coords);
@@ -554,7 +557,7 @@ function showHeatmap(filter = null) {
                         permanent: true,
                         direction: "center",
                         opacity: 0.8,
-                        className: "text-center leading-none"
+                        className: "text-center leading-none",
                     });
 
                     // add mouse over event listener to circle
@@ -564,13 +567,13 @@ function showHeatmap(filter = null) {
                         // append all marker on that area to the map
                         coords.forEach((coord) => {
                             let icon;
-                            if (coord.type === 'Tanah') icon = landIcon;
-                            else if (coord.type === 'Rumah') icon = houseIcon;
+                            if (coord.type === "Tanah") icon = landIcon;
+                            else if (coord.type === "Rumah") icon = houseIcon;
                             else icon = defaultIcon;
-                            const areaMarker = new L.Marker([
-                                coord.latitude,
-                                coord.longitude,
-                            ], { interactive: false, icon });
+                            const areaMarker = new L.Marker(
+                                [coord.latitude, coord.longitude],
+                                { interactive: false, icon }
+                            );
                             areaMarker.addTo(map);
                             areaMarkers.push(areaMarker);
                         });
@@ -586,12 +589,15 @@ function showHeatmap(filter = null) {
                         });
 
                         // change the opacity of the tooltip
-                        circle.bindTooltip(`Rp. ${formatPrice(average)}<br>/m²`, {
-                            permanent: true,
-                            direction: "center",
-                            opacity: 0.9,
-                            className: "text-center leading-none"
-                        });
+                        circle.bindTooltip(
+                            `Rp. ${formatPrice(average)}<br>/m²`,
+                            {
+                                permanent: true,
+                                direction: "center",
+                                opacity: 0.9,
+                                className: "text-center leading-none",
+                            }
+                        );
                     });
 
                     // add mouse over event listener to circle
@@ -614,12 +620,15 @@ function showHeatmap(filter = null) {
                         });
 
                         // restore tooltip style
-                        circle.bindTooltip(`Rp. ${formatPrice(average)}<br>/m²`, {
-                            permanent: true,
-                            direction: "center",
-                            opacity: 0.8,
-                            className: "text-center leading-none"
-                        });
+                        circle.bindTooltip(
+                            `Rp. ${formatPrice(average)}<br>/m²`,
+                            {
+                                permanent: true,
+                                direction: "center",
+                                opacity: 0.8,
+                                className: "text-center leading-none",
+                            }
+                        );
                     });
 
                     // set circle default style
@@ -631,8 +640,8 @@ function showHeatmap(filter = null) {
                         fillColor: ordinal.color,
                         fillOpacity: opacity,
                     });
-                
-                // hover mode
+
+                    // hover mode
                 } else {
                     // add mouse over event listener to circle
                     // to show the circle overlay
@@ -647,7 +656,7 @@ function showHeatmap(filter = null) {
                         }).bindTooltip(`Rp. ${formatPrice(average)}<br>/m²`, {
                             permanent: true,
                             direction: "center",
-                            className: "text-center leading-none"
+                            className: "text-center leading-none",
                         });
                     });
 
@@ -679,7 +688,7 @@ function showHeatmap(filter = null) {
             }
         }
     });
-    
+
     return filterValue;
 }
 

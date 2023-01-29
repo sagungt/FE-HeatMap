@@ -17,16 +17,19 @@
             </div>
 
             <div class="flex gap-4 justify-center">
-                <button x-on:click='barChart = true, lineChart = false, tagChart = false' x-bind:class="barChart ? 'border-red-600 font-bold' : 'border-transparent'" class="border-b-2 px-2 py-2 duration-200">Graph</button>
-                <button x-on:click='barChart = false, lineChart = true, tagChart = false' x-bind:class="lineChart ? 'border-red-600 font-bold' : 'border-transparent'" class="border-b-2 px-2 py-2 duration-200">Line</button>
+                <button x-on:click='barChart = true, lineChart = false, tagChart = false'
+                    x-bind:class="barChart ? 'border-red-600 font-bold' : 'border-transparent'"
+                    class="border-b-2 px-2 py-2 duration-200">Graph</button>
+                <button x-on:click='barChart = false, lineChart = true, tagChart = false'
+                    x-bind:class="lineChart ? 'border-red-600 font-bold' : 'border-transparent'"
+                    class="border-b-2 px-2 py-2 duration-200">Line</button>
             </div>
 
             <div class="w-full sm:my-5 mb-5 mt-16  rotate-90 md:rotate-0">
                 <svg width="900" height="350" id="Line" x-show='lineChart'></svg>
                 <svg width="900" height="350" id="Bar" x-show='barChart'></svg>
             </div>
-
-            <p class="mb-6 text-center text-black md:text-xl text-xl md:mt-0 mt-[500px]">List Property</p>
+            <p class="mb-6 text-center text-black md:text-2xl text-xl md:mt-0 mt-[500px]">List Property</p>
             <div class="relative md:px-5 lg:px-10">
                 <table class="w-full text-sm text-left text-gray-500 rounded-lg overflow-hidden">
                     <thead class="text-xs text-gray-700 uppercase bg-gray-300 ">
@@ -35,21 +38,51 @@
                                 No
                             </th>
 
-                            <th scope="col" class="w-[calc(94%/3)] text-center py-3 hidden md:flex md:justify-center">
+                            <th scope="col" class="w-[15%] text-center py-3 hidden md:flex md:justify-center">
                                 Type
                             </th>
 
-                            <th scope="col" class="w-[calc(94%/3)] text-center py-3 hidden md:flex md:justify-center ">
-                                Wide
+                            <th scope="col" class="w-[15%] text-center py-3 hidden md:flex md:justify-center ">
+                                Area
                             </th>
 
-                            <th scope="col" class="w-[80%] md:w-[calc(94%/3)] text-center py-3  md:flex md:justify-center">
+                            <th scope="col"
+                                class="w-[80%] md:w-[calc(64%/2)] text-center py-3  md:flex md:justify-center">
                                 Price
+                            </th>
+                            <th scope="col"
+                                class="w-[80%] md:w-[calc(64%/2)] text-center py-3 hidden md:flex md:justify-center">
+                                Total
                             </th>
                         </tr>
                     </thead>
 
                     <tbody id="coords">
+                    </tbody>
+                </table>
+            </div>
+            <p class="mb-6 text-center mt-10 text-black md:text-2xl text-xl">List Popular Places</p>
+            <div class="relative md:px-5 lg:px-10">
+                <table class="w-full text-sm text-left text-gray-500 rounded-lg overflow-hidden">
+                    <thead class="text-xs text-gray-700 uppercase bg-gray-300 ">
+                        <tr class="flex flex-wrap">
+                            <th scope="col" class="w-[20%] md:w-[6%] hidden md:flex justify-center text-center py-3">
+                                No
+                            </th>
+
+                            <th scope="col"
+                                class="md:w-[calc(94%/2)] w-[100%] text-center py-3 md:flex md:justify-center">
+                                Name
+                            </th>
+
+                            <th scope="col"
+                                class="w-[calc(94%/2)] text-center py-3 hidden md:flex md:justify-center ">
+                                Distance
+                            </th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="popular">
                     </tbody>
                 </table>
             </div>
