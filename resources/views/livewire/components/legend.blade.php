@@ -21,8 +21,7 @@
             </div>
             <template x-for="value in ordinal">
                 <div x-on:click="setFilter(showHeatmap(value.index))"
-                    x-bind:class="'bg-range-' + value.index + (filter.includes(value.index) ? ' border-black font-extrabold' :
-                        ' border-transparent')"
+                    x-bind:class="'bg-range-' + value.index"
                     {{-- x-on:mouseover="setFilter(showHeatmap(value.index))" --}} {{-- x-on:mouseout="setFilter(showHeatmap())" --}}
                     class="flex items-center gap-4 transition cursor-pointer px-4 py-1 justify-center rounded-lg hover:scale-[102%] w-full sm:w-[calc(50%-8px)] lg:w-full duration-300 lg:py-2 border-2 shadow-sm">
                     {{-- <div x-bind:class="'bg-range-' + value.index" class="w-[40px] h-[20px] border border-slate-700 lg:w-[50px] lg:h-[30px]"></div> --}}
