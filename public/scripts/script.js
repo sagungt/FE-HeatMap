@@ -1,3 +1,4 @@
+// Global variable
 var map,
     tile,
     currentLatitude,
@@ -6,68 +7,61 @@ var map,
     svgBar,
     svgLine,
     searchMarker;
-var markers = [],
-    earth = 6378.137,
-    pi = Math.PI,
-    cos = Math.cos,
-    meter = 1 / (((2 * pi) / 360) * earth) / 1000, // meter in map scale
-    circles = [],
-    yOffset = 5,
-    xOffset = 10,
-    coords = [],
-    opacity = 0.5,
-    propertyMarkers = [],
-    filterValue = [],
-    property = false,
-    mode = 0; // 0: default, 1: hover
+var earth = 6378.137,                               // earth equatorial radius
+    pi = Math.PI,                                   // pi value
+    cos = Math.cos,                                 // cos function
+    meter = 1 / (((2 * pi) / 360) * earth) / 1000,  // meter in map scale
+    circles = [],                                   // array for circle overlay
+    yOffset = 5,                                    // how many circle row from center
+    xOffset = 10,                                   // how many circle row from center
+    coords = [],                                    // array for circle
+    opacity = 0.5,                                  // default opacity
+    propertyMarkers = [],                           // array for property markers
+    filterValue = [],                               // array for filter
+    property = false,                               // show property marker default value
+    mode = 0;                                       // 0: default, 1: hover
 
-/* Ordinal Data */
+/* Ordinal Data for range category property price per meter^2 */
 const ordinal = [
     {
         index: 1,
         l: 0,
-        g: 700000000,
-        opacity: 0.1,
+        g: 2500000,
         color: "#fcf04f",
     },
     {
         index: 2,
-        l: 700000000,
-        g: 1000000000,
-        opacity: 0.1,
+        l: 2500000,
+        g: 4500000,
         color: "#9bffed",
     },
     {
         index: 3,
-        l: 1000000000,
-        g: 1700000000,
-        opacity: 0.4,
+        l: 4500000,
+        g: 6500000,
         color: "#7ff866",
     },
     {
         index: 4,
-        l: 1700000000,
-        g: 2400000000,
-        opacity: 0.5,
+        l: 6500000,
+        g: 8500000,
         color: "#4270f0",
     },
     {
         index: 5,
-        l: 2400000000,
-        g: 3500000000,
-        opacity: 0.6,
+        l: 8500000,
+        g: 1050000,
         color: "#f52e2e",
     },
     {
         index: 6,
-        l: 3500000000,
-        g: 10000000000,
-        opacity: 0.7,
+        l: 10500000,
+        g: 12500000,
         color: "#160101",
     },
 ];
 
-/* API */
+/* API endpoints */
 const BASE_URL = "https://api-heatmap-farcapital.fly.dev/v1";
 const AREA_ENDPOINT = `${BASE_URL}/api/area`;
 const SEARCH_ENDPOINT = `${BASE_URL}/api/search`;
@@ -226,10 +220,41 @@ async function fetchPropertyApi(link) {
         return showError(true);
     }
 
+    
     value.data.forEach((data) => {
-        const propertyMarker = new L.Marker([data.latitude, data.longitude])
+        let icon;
+        console.log(data);
+        if (data.type === 'Tanah') {
+            icon = L.icon({
+                iconUrl: `${window.location.href}leaflet/images/marker-icon-land.png`,
+                shadowUrl: `${window.location.href}leaflet/images/marker-shadow.png`,
+                iconSize: [25, 36],
+                iconAnchor: [12, 36],
+                popupAnchor: [1, -34],
+                shadowSize: [36, 36]
+            });
+        } else if (data.type === 'Rumah') {
+            icon = L.icon({
+                iconUrl: `${window.location.href}leaflet/images/marker-icon-house.png`,
+                shadowUrl: `${window.location.href}leaflet/images/marker-shadow.png`,
+                iconSize: [25, 36],
+                iconAnchor: [12, 36],
+                popupAnchor: [1, -34],
+                shadowSize: [36, 36]
+            });
+        } else {
+            icon = L.icon({
+                iconUrl: `${window.location.href}leaflet/images/marker-icon.png`,
+                shadowUrl: `${window.location.href}leaflet/images/marker-shadow.png`,
+                iconSize: [25, 41],
+                iconAnchor: [12, 41],
+                popupAnchor: [1, -34],
+                shadowSize: [41, 41]
+            });
+        }
+        const propertyMarker = new L.Marker([data.latitude, data.longitude], { icon })
             .bindPopup("Price : " + formatPrice(data.price))
-            .addTo(map);
+        propertyMarker.addTo(map);
         propertyMarkers.push(propertyMarker);
     });
 }
@@ -269,7 +294,7 @@ function longitudePlusMeters(latitude, longitude, meters) {
  * @return {boolean}
  */
 function checkPointInCircle(x1, y1, x2, y2, r) {
-    const distPoints = (x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2);
+    const distPoints = (x1 - x2) ** 2 + (y1 - y2) ** 2;
     r = r / (((2 * pi) / 360) * earth) / 1000;
     r *= r;
     return distPoints < r;
@@ -280,30 +305,46 @@ function checkPointInCircle(x1, y1, x2, y2, r) {
  * @return {void}
  */
 async function init() {
+    // show loading overlay
     loading(true);
+
+    // if map not exist it'll initialize map with leaflet map object
     if (!map) {
         map = L.map("map", { zoomControl: false }).setView(
             [currentLatitude, currentLongitude],
             13
         );
+
+        // initialize tile layer and add to map object with openstreetmap
+        tile = L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+            maxZoom: 19,
+            attribution:
+                '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+        });
+        tile['type'] = 'tile';
+        tile.addTo(map);
     }
+
+    // empty all grid coordinates
     coords = [];
+
+    // remove all map layers
     map.eachLayer(function (layer) {
+        // do not remove tile layer
         if (layer.type !== 'tile') map.removeLayer(layer);
     });
-    tile = L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
-        maxZoom: 19,
-        attribution:
-            '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-    })
-    tile['type'] = 'tile';
-    tile.addTo(map);
 
+    // add event handler when moving map
     map.on("move", function () {
+        // get current center coordinate of the map
         const { lat, lng } = this.getCenter();
+
+        // find search on this area element
         const searchOnThisAreaElement = document.querySelector(
             "#search-on-this-area"
         );
+
+        // show search on this area button
         if (!(currentLatitude === lat && currentLongitude === lng)) {
             setTimeout(() => {
                 searchOnThisAreaElement.classList.replace(
@@ -313,57 +354,77 @@ async function init() {
             }, 300);
         }
     });
-    // map.on("click", addMarker);
     // map.touchZoom.disable();
     // map.doubleClickZoom.disable();
     // map.scrollWheelZoom.disable();
     // map.boxZoom.disable();
     // map.keyboard.disable();
+
+    // additional distance in actual meter
     const diff = 1575;
+
+    // loop to right of the center
     for (let j = 0; j < xOffset; j += 1) {
+
+        // loop loop to the bottom
         for (let i = 0; i < yOffset; i += 1) {
+            // append coordinate to coords array
+            // with computed distance in map scale
             coords.push({
                 latitude: latitudePlusMeters(currentLatitude, i * diff),
                 longitude: longitudePlusMeters(
                     currentLatitude,
                     currentLongitude,
-                    j * diff + (i % 2 === 0 ? 775 : 0)
+                    j * diff + (i % 2 === 0 ? 775 : 0) // shift with additional distance if index is even
                 ),
             });
         }
+
+        // loop to the top
         for (let i = 1; i < yOffset; i += 1) {
+            // append coordinate to coords array
+            // with computed distance in map scale
             coords.push({
                 latitude: latitudePlusMeters(currentLatitude, -(i * diff)),
                 longitude: longitudePlusMeters(
                     currentLatitude,
                     currentLongitude,
-                    j * diff + (i % 2 === 0 ? 775 : 0)
+                    j * diff + (i % 2 === 0 ? 775 : 0) // shift with additional distance if index is even
                 ),
             });
         }
     }
+
+    // loop to left of the center
     for (let j = 1; j < xOffset; j += 1) {
+        // loop to the bottom
         for (let i = 0; i < yOffset; i += 1) {
+            // append coordinate to coords array
+            // with computed distance in map scale
             coords.push({
                 latitude: latitudePlusMeters(currentLatitude, i * diff),
                 longitude: longitudePlusMeters(
                     currentLatitude,
                     currentLongitude,
-                    -(j * diff - (i % 2 === 0 ? 775 : 0))
+                    -(j * diff - (i % 2 === 0 ? 775 : 0)) // shift with additional distance if index is even
                 ),
             });
         }
         for (let i = 1; i < yOffset; i += 1) {
+            // append coordinate to coords array
+            // with computed distance in map scale
             coords.push({
                 latitude: latitudePlusMeters(currentLatitude, -(i * diff)),
                 longitude: longitudePlusMeters(
                     currentLatitude,
                     currentLongitude,
-                    -(j * diff - (i % 2 === 0 ? 775 : 0))
+                    -(j * diff - (i % 2 === 0 ? 775 : 0)) // shift with additional distance if index is even
                 ),
             });
         }
     }
+
+    // get area data to server
     const data = await fetch(AREA_ENDPOINT, {
         method: "POST",
         headers: {
@@ -374,13 +435,14 @@ async function init() {
         }),
     })
         .then(async (res) => await res.json())
+        // if failed to fetch
         .catch(() => {
-            loading(false);
-            showError(true);
+            loading(false); // hide show overlay
+            showError(true); // show error message
         });
     response = data;
-    showHeatmap();
-    loading(false);
+    showHeatmap(); // show heatmap grid overlay
+    loading(false); // hodden show overlay
 }
 
 /**
@@ -392,16 +454,20 @@ function showHeatmap(filter = null) {
     if (filter === null) {
         filterValue = [];
     } else {
+        // remove filter if already exist in array
         if (filterValue.includes(filter)) {
             filterValue = filterValue.filter((f) => f !== filter);
-        } else {
+        } else { // otherwise append to array
             filterValue.push(filter);
         }
     }
+
+    // remove all layer except tile
     map.eachLayer(function (layer) {
         if (layer.type !== 'tile') map.removeLayer(layer);
     });
 
+    // build filter color elements
     const colorsElement = document.querySelector('#colors');
     let colorItem = '';
     filterValue.forEach((f) => {
@@ -412,44 +478,70 @@ function showHeatmap(filter = null) {
 
     if (property) showProperty();
     const { data } = response;
+    
     data.forEach(({ average, center, coords }) => {
+        // show heatmap overlay only if average price exist
         if (average !== 0) {
-            const ordinal = determineRange(average);
+            const ordinal = determineRange(average); // determine the category of the area
             let result;
 
             if (filter) {
-                // result = filter === ordinal.index;
+                // set true if area included in filter
                 result = filterValue.includes(ordinal.index);
             } else {
                 result = true;
             }
 
+            // show all if no filter
             if (filterValue.length === 0) {
                 result = true;
             }
 
             if (result) {
-                const areaMarkers = [];
-                const circle = L.circle([center.latitude, center.longitude], {
-                    radius: 1000 - 8,
-                }).on("click", function () {
-                    modal(center.latitude, center.longitude, coords);
+                let icon;
+                icon = L.icon({
+                    iconUrl: `${window.location.href}leaflet/images/marker-icon-land.png`,
+                    shadowUrl: `${window.location.href}leaflet/images/marker-shadow.png`,
+                    iconSize: [25, 36],
+                    iconAnchor: [12, 36],
+                    popupAnchor: [1, -34],
+                    shadowSize: [36, 36]
                 });
+                const areaMarkers = []; // array for all marker in area
+
+                // initialize circle object of area's center coordinate and with radius += 1km
+                const circle = L.circle([center.latitude, center.longitude], {
+                        radius: 1000 - 8,
+                    })
+                    // add click handler to circle and show modal
+                    .on("click", function () {
+                        modal(center.latitude, center.longitude, coords);
+                    });
+
+                // default mode
                 if (mode === 0) {
+                    // bind tooltip to show average price of the area
                     circle.bindTooltip(`${formatPrice(average)}`, {
                         permanent: true,
                         direction: "center",
                         opacity: 0.8,
                     });
+
+                    // add mouse over event listener to circle
+                    // to change the circle opacity
+                    // and show all the marker in the area
                     circle.on("mouseover", function () {
+                        // append all marker on that area to the map
                         coords.forEach((coord) => {
                             const areaMarker = new L.Marker([
                                 coord.latitude,
                                 coord.longitude,
-                            ], { interactive: false });
+                            ], { interactive: false, icon });
                             areaMarker.addTo(map);
                             areaMarkers.push(areaMarker);
                         });
+
+                        // change the opacity of the circle
                         this.setStyle({
                             color: ordinal.color,
                             opacity: 0.9,
@@ -458,16 +550,25 @@ function showHeatmap(filter = null) {
                             fillColor: ordinal.color,
                             fillOpacity: 0.9,
                         });
+
+                        // change the opacity of the tooltip
                         circle.bindTooltip(`${formatPrice(average)}`, {
                             permanent: true,
                             direction: "center",
                             opacity: 0.9,
                         });
                     });
+
+                    // add mouse over event listener to circle
+                    // to change the circle opacity to previous value
+                    // and hide all the marker in the area
                     circle.on("mouseout", function () {
+                        // remove all markers
                         areaMarkers.forEach((marker) => {
                             marker.remove();
                         });
+
+                        // restore circle style
                         circle.setStyle({
                             color: ordinal.color,
                             opacity,
@@ -476,12 +577,16 @@ function showHeatmap(filter = null) {
                             fillColor: ordinal.color,
                             fillOpacity: opacity,
                         });
+
+                        // restore tooltip style
                         circle.bindTooltip(`${formatPrice(average)}`, {
                             permanent: true,
                             direction: "center",
                             opacity: 0.8,
                         });
                     });
+
+                    // set circle default style
                     circle.setStyle({
                         color: ordinal.color,
                         opacity,
@@ -490,16 +595,11 @@ function showHeatmap(filter = null) {
                         fillColor: ordinal.color,
                         fillOpacity: opacity,
                     });
+                
+                // hover mode
                 } else {
-                    coords.forEach((coord) => {
-                        const areaMarker = new L.Marker([
-                            coord.latitude,
-                            coord.longitude,
-                        ], { interactive: false });
-                        areaMarker.addTo(map);
-                        areaMarkers.push(areaMarker);
-                    });
-
+                    // add mouse over event listener to circle
+                    // to show the circle overlay
                     circle.on("mouseover", function () {
                         this.setStyle({
                             color: ordinal.color,
@@ -513,6 +613,9 @@ function showHeatmap(filter = null) {
                             direction: "center",
                         });
                     });
+
+                    // add mouse out event listener to circle
+                    // to hide the circle overlay
                     circle.on("mouseout", function () {
                         this.setStyle({
                             color: "transparent",
@@ -524,6 +627,7 @@ function showHeatmap(filter = null) {
                         }).unbindTooltip();
                     });
 
+                    // set default circle style to transparent
                     circle.setStyle({
                         color: "transparent",
                         opacity: 0.8,
@@ -563,13 +667,17 @@ function determineRange(price) {
  * @return {void}
  */
 function getCurrentLocation() {
+    // if client device support geolocation
     if (navigator.geolocation) {
+        // retrieve current client device location
         navigator.geolocation.getCurrentPosition(
+            // if allowed
             (position) => {
                 currentLatitude = position.coords.latitude;
                 currentLongitude = position.coords.longitude;
                 init();
             },
+            // if rejected
             () => {
                 currentLatitude = -6.9344694;
                 currentLongitude = 107.6049539;
@@ -582,31 +690,20 @@ function getCurrentLocation() {
 }
 
 /**
- * Map click event handler to add marker on map
- * @param {any} e - Event
- * @return {void}
- */
-function addMarker(e) {
-    if (markers.length > 0) {
-        markers[0].remove();
-        markers = [];
-    }
-
-    const newMarker = new L.Marker([e.latlng.lat, e.latlng.lng]);
-    newMarker.addTo(map);
-    markers.push(newMarker);
-}
-
-/**
  * Reset heatmap and initialize with map center location
  * @return {void}
  */
 function resetHeatmap() {
+    // get map center coordinate
     const { lat, lng } = map.getCenter();
     currentLatitude = lat;
     currentLongitude = lng;
-    if(property) showProperty();
+    if (property) showProperty(); // hide all property marker if showing
+
+    // re-initialize all map and heatmap
     init();
+
+    // hide search on this area button
     document
         .querySelector("#search-on-this-area")
         .classList.replace("opacity-100", "opacity-0");
@@ -619,10 +716,14 @@ function resetHeatmap() {
  * @return {void}
  */
 function goToLocation(latitude, longitude) {
-    map.setView([latitude, longitude]);
+    map.setView([latitude, longitude], 13); // set map view to specified location
+
+    // remove marker if exist
     if (searchMarker) {
         searchMarker.remove();
     }
+
+    // add new marker to map
     searchMarker = new L.Marker([latitude, longitude]).addTo(map);
 }
 
@@ -631,12 +732,16 @@ function goToLocation(latitude, longitude) {
  * @returns {void}
  */
 function myLocation() {
+    // if client device support geolocation
     if (navigator.geolocation) {
+        // retrieve current client device location
         navigator.geolocation.getCurrentPosition(
+            // if allowed
             (position) => {
                 const { latitude, longitude } = position.coords;
                 goToLocation(latitude, longitude);
             },
+            // if rejected
             () => {
                 alert("Couldn't access your location. Permission denied.");
             }
@@ -651,8 +756,10 @@ function myLocation() {
  * @param {any} el - Input range element
  */
 function changeOpacity(el) {
+    // change opacity to scale 0 to 1
     opacity = el.value / 100;
     circles.forEach((circle) => {
+        // change circle with new opacity
         circle.setStyle({
             opacity,
             fillOpacity: opacity,
