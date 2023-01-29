@@ -90,16 +90,18 @@ function loading(toggle = false) {
  */
 btn.addEventListener("click", (e) => {
     e.preventDefault(); // it will holding browser to hard reload after button submit pressed
-    const formData = new FormData(form); // define variable for stored data sent from forms  
+    const formData = new FormData(); // define variable for stored data sent from forms  
 
-    // stored data sent from forms and define the name field and get the value by id   
-    formData.append("desc", document.querySelector("#desc").value);
+    let valDescription = document.querySelector("#desc").value;
+    // stored data sent from forms and define the name field and get the value by id
+
+    if(valDescription.length) formData.append("desc", valDescription);
     formData.append("type", document.querySelector("#type").value);
     formData.append("area", document.querySelector("#area").value);
     formData.append("harga", document.querySelector("#price").value);
     formData.append("lat", document.querySelector("#lat").value);
     formData.append("long", document.querySelector("#long").value);
-
+    
     // send data from form input to api 
     fetch(CREATE, {
         method: "POST", 
