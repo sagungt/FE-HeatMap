@@ -223,7 +223,6 @@ async function fetchPropertyApi(link) {
     
     value.data.forEach((data) => {
         let icon;
-        console.log(data);
         if (data.type === 'Tanah') {
             icon = L.icon({
                 iconUrl: `${window.location.href}leaflet/images/marker-icon-land.png`,
@@ -498,14 +497,29 @@ function showHeatmap(filter = null) {
             }
 
             if (result) {
-                let icon;
-                icon = L.icon({
+                const landIcon = L.icon({
                     iconUrl: `${window.location.href}leaflet/images/marker-icon-land.png`,
                     shadowUrl: `${window.location.href}leaflet/images/marker-shadow.png`,
                     iconSize: [25, 36],
                     iconAnchor: [12, 36],
                     popupAnchor: [1, -34],
                     shadowSize: [36, 36]
+                });
+                const houseIcon = L.icon({
+                    iconUrl: `${window.location.href}leaflet/images/marker-icon-house.png`,
+                    shadowUrl: `${window.location.href}leaflet/images/marker-shadow.png`,
+                    iconSize: [25, 36],
+                    iconAnchor: [12, 36],
+                    popupAnchor: [1, -34],
+                    shadowSize: [36, 36]
+                });
+                const defaultIcon = L.icon({
+                    iconUrl: `${window.location.href}leaflet/images/marker-icon.png`,
+                    shadowUrl: `${window.location.href}leaflet/images/marker-shadow.png`,
+                    iconSize: [25, 41],
+                    iconAnchor: [12, 41],
+                    popupAnchor: [1, -34],
+                    shadowSize: [41, 41]
                 });
                 const areaMarkers = []; // array for all marker in area
 
@@ -521,10 +535,11 @@ function showHeatmap(filter = null) {
                 // default mode
                 if (mode === 0) {
                     // bind tooltip to show average price of the area
-                    circle.bindTooltip(`${formatPrice(average)}`, {
+                    circle.bindTooltip(`Rp. ${formatPrice(average)}<br>/m²`, {
                         permanent: true,
                         direction: "center",
                         opacity: 0.8,
+                        className: "text-center leading-none"
                     });
 
                     // add mouse over event listener to circle
@@ -533,6 +548,10 @@ function showHeatmap(filter = null) {
                     circle.on("mouseover", function () {
                         // append all marker on that area to the map
                         coords.forEach((coord) => {
+                            let icon;
+                            if (coord.type === 'Tanah') icon = landIcon;
+                            else if (coord.type === 'Rumah') icon = houseIcon;
+                            else icon = defaultIcon;
                             const areaMarker = new L.Marker([
                                 coord.latitude,
                                 coord.longitude,
@@ -552,10 +571,11 @@ function showHeatmap(filter = null) {
                         });
 
                         // change the opacity of the tooltip
-                        circle.bindTooltip(`${formatPrice(average)}`, {
+                        circle.bindTooltip(`Rp. ${formatPrice(average)}<br>/m²`, {
                             permanent: true,
                             direction: "center",
                             opacity: 0.9,
+                            className: "text-center leading-none"
                         });
                     });
 
@@ -579,10 +599,11 @@ function showHeatmap(filter = null) {
                         });
 
                         // restore tooltip style
-                        circle.bindTooltip(`${formatPrice(average)}`, {
+                        circle.bindTooltip(`Rp. ${formatPrice(average)}<br>/m²`, {
                             permanent: true,
                             direction: "center",
                             opacity: 0.8,
+                            className: "text-center leading-none"
                         });
                     });
 
@@ -608,9 +629,10 @@ function showHeatmap(filter = null) {
                             fill: true,
                             fillColor: ordinal.color,
                             fillOpacity: opacity,
-                        }).bindTooltip(`${formatPrice(average)}`, {
+                        }).bindTooltip(`Rp. ${formatPrice(average)}<br>/m²`, {
                             permanent: true,
                             direction: "center",
+                            className: "text-center leading-none"
                         });
                     });
 
@@ -701,6 +723,7 @@ function resetHeatmap() {
     if (property) showProperty(); // hide all property marker if showing
 
     // re-initialize all map and heatmap
+    map.setZoom(13);
     init();
 
     // hide search on this area button
