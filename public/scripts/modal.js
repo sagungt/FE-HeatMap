@@ -85,7 +85,7 @@ async function modal(latitude, longitude, coords) {
             dataset.push([i + 1, price]);
         });
     address.data.popular.results.forEach(
-        ({ name, distance, categories }, i) => {
+        ({ name, distance, categories, location }, i) => {
             htmlStringPopular += `
             <tr x-data="{isDetail: false}" x-on:click="isDetail = !isDetail" class="relative cursor-pointer bg-white border-b flex flex-wrap text-gray-500">
                 <td scope="col" class="text-center w-[20%] md:w-[6%] h-[60px] hidden md:flex justify-center items-center">
@@ -110,7 +110,9 @@ async function modal(latitude, longitude, coords) {
                     <h3 class="text-gray-700 font-bold mt-3 ml-3 mb-3 duration-300">Distance: <span class="font-normal text-gray-500 text-sm">~ ${
                         distance / 1000
                     } Km</span></h3>
-                    
+                    <h3 class="text-gray-700 font-bold mt-3 ml-3 mb-3 duration-300">Address: <span class="font-normal text-gray-500 text-sm">${
+                        location.formatted_address
+                    }</span></h3>
                 </td>
              </tr>
             `;
@@ -268,7 +270,6 @@ async function modal(latitude, longitude, coords) {
         })
         .attr("y", height)
         .attr("fill", function (d, i) {
-            console.log(coords.length - 1);
             let sortPrice = [];
             for (let j = 0; j < coords.length; j++) {
                 sortPrice.push(coords[j].price);

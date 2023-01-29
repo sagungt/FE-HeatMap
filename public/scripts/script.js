@@ -77,10 +77,10 @@ function formatPrice(number) {
     const min = 1e3;
     // Alter numbers larger than 1k
     if (number >= min) {
-        var units = ["rb", "jt", "m", "t"]; // define numeric format name
+        var units = ["rb", "jt", "mil", "tri"]; // define numeric format name
         var order = Math.floor(Math.log(number) / Math.log(1000)); // getting nearest integer that is less than or equal to a number.
         var unitname = units[order - 1]; // getting the numeric format
-        // console.log(unitname)
+        
         var num = +(number / 1000 ** order).toFixed(2); // getting number with decimal
         return num + unitname; // output number remainder + unitname
     }
@@ -397,7 +397,7 @@ async function init() {
         }
 
         // loop to the top
-        for (let y = 1; y < yOffset; y += 1) {
+        for (let y = 1; y <= yOffset; y += 1) {
             // append coordinate to coords array
             // with computed distance in map scale
             coords.push({
@@ -412,7 +412,8 @@ async function init() {
     }
 
     // loop to left of the center
-    for (let x = 1; x < xOffset; x += 1) {
+    for (let x = 1; x <= xOffset; x += 1) {
+
         // loop to the bottom
         for (let y = 0; y < yOffset; y += 1) {
             // append coordinate to coords array
@@ -426,7 +427,8 @@ async function init() {
                 ),
             });
         }
-        for (let y = 1; y < yOffset; y += 1) {
+        
+        for (let y = 1; y <= yOffset; y += 1) {
             // append coordinate to coords array
             // with computed distance in map scale
             coords.push({
