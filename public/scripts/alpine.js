@@ -75,7 +75,6 @@ document.addEventListener("livewire:load", function () {
             data.append("email", this.email);
             data.append("password", this.password);
             data.append("token", localStorage.getItem("app_key"));
-            console.log(localStorage.getItem("app_key"));
             await fetch(
                 "https://api-heatmap-farcapital.fly.dev/v1/api/login",
                 {
@@ -96,7 +95,6 @@ document.addEventListener("livewire:load", function () {
                         }, 3000);
                     } else {
                         this.message = true;
-                        console.log(response.status);
                     }
                 });
         },
