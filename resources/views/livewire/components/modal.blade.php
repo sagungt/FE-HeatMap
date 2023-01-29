@@ -29,7 +29,7 @@
                 <svg width="900" height="350" id="Line" x-show='lineChart'></svg>
                 <svg width="900" height="350" id="Bar" x-show='barChart'></svg>
             </div>
-            <p class="mb-6 text-center text-black md:text-xl text-xl md:mt-0 mt-[500px]">List Property</p>
+            <p class="mb-6 text-center text-black md:text-2xl text-xl md:mt-0 mt-[500px]">List Property</p>
             <div class="relative md:px-5 lg:px-10">
                 <table class="w-full text-sm text-left text-gray-500 rounded-lg overflow-hidden">
                     <thead class="text-xs text-gray-700 uppercase bg-gray-300 ">
@@ -61,7 +61,7 @@
                     </tbody>
                 </table>
             </div>
-            <p class="mb-6 text-center my-5 text-black md:text-xl text-xl">List Popular Places</p>
+            <p class="mb-6 text-center mt-10 text-black md:text-2xl text-xl">List Popular Places</p>
             <div class="relative md:px-5 lg:px-10">
                 <table class="w-full text-sm text-left text-gray-500 rounded-lg overflow-hidden">
                     <thead class="text-xs text-gray-700 uppercase bg-gray-300 ">
