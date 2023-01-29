@@ -5,62 +5,84 @@
  * @return {void}
  */
 async function modal(latitude, longitude, coords) {
+    // remove svg if exist
     if (svgBar) svgBar.selectAll("*").remove();
     if (svgLine) svgLine.selectAll("*").remove();
 
     loading(true);
 
+    // initialize number formater object
     const moneyFormatter = new Intl.NumberFormat();
 
+    // replace class
     modalElement.classList.replace("hidden", "flex");
+
+    // get id
     const addressElement = document.getElementById("address");
     const coordsElement = document.getElementById("coords");
     const closeButton = document.getElementById("close");
+    const popularElement = document.getElementById("popular");
 
-    addressElement.innerHTML = '';
+    addressElement.innerHTML = "";
 
+    // fetch address to api
     const address = await fetch(
-        `${ADDRESS_ENDPOINT}?lat=${latitude}&lon=${longitude}`
+        `${ADDRESS_ENDPOINT}?lat=${latitude}&lon=${longitude}&radius=5000`
     ).then(async (response) => await response.json());
 
+    // replace class after click button
     closeButton.addEventListener("click", function () {
         modalElement.classList.replace("flex", "hidden");
     });
 
     let dataset = [];
 
-    let htmlString = "";
-    let no = 1;
-    coords.forEach(({ price, latitude, longitude }, i) => {
-        // htmlString += `
-        //     <tr class="bg-white border-b">
-        //         <th scope="row" class="px-2 py-4">
-        //             ${no++}
-        //         </th>
-        //         <td class="px-6 py-4">
-        //         ${latitude}
-        //         </td>
-        //         <td class="px-6 py-4">
-        //             ${longitude}
-        //         </td>
-        //         <td class="px-6 py-4">
-        //             Rp. ${price}
-        //         </td>
-        //     </tr>
-        //     `;
-        htmlString += `
-            <tr class="bg-white border-b flex justify-between">
-                <th scope="col" class="px-8 py-4">
-                    ${no++}
-                </th>
-                <th scope="col" class="px-8 py-4">
-                    Rp. ${moneyFormatter.format(price)}
-                </th>
+    let htmlStringProperty = "";
+    let htmlStringPopular = "";
+    coords.forEach(({ price, type, area }, i) => {
+        // create rows table
+        htmlStringProperty += `
+            <tr class="bg-white border-b text-center">
+                <td scope="col" class="px-6 py-4">
+                    ${i + 1}
+                </td>
+                <td scope="col" class="px-6 py-4">
+                    ${type}
+                </td>
+                <td scope="col" class="px-6 py-4">
+                    ${area} m²
+                </td>
+                <td scope="col" class="px-6 py-4">
+                    Rp. ${moneyFormatter.format(Math.round(price))}
+                </td>
+                <td scope="col" class="px-6 py-4">
+                    Rp. ${moneyFormatter.format(Math.round(price * area))}
+                </td>
             </tr>
             `;
 
+        // push array
         dataset.push([i + 1, price]);
     });
+    address.data.popular.results.forEach(
+        ({ name, distance, categories }, i) => {
+            htmlStringPopular += `
+        <tr class="bg-white border-b text-center">
+            <td scope="col" class="px-6 py-4">
+                ${i + 1}
+            </td>
+            <td scope="col" class="px-6 py-4">
+                ${name}
+            </td>
+            <td scope="col" class="px-6 py-4">
+               ~ ${distance / 1000} Km
+            </td>
+        </tr>
+        `;
+        }
+    );
+
+    // create width and height svg
     (svgLine = d3.select("#Line")),
         (margin = 200),
         (width = svgLine.attr("width") - margin),
@@ -71,6 +93,7 @@ async function modal(latitude, longitude, coords) {
         (width = svgBar.attr("width") - margin),
         (height = svgBar.attr("height") - margin);
 
+    // initialize scale object for x and y value
     const xScaleLine = d3
             .scaleLinear()
             .domain([1, coords.length])
@@ -80,6 +103,7 @@ async function modal(latitude, longitude, coords) {
             .domain([0, Math.max(...coords.map((v) => v.price))])
             .range([height, 0]);
 
+    // initialize group svg element for line chart
     const gLine = svgLine
         .append("g")
         .attr("transform", "translate(" + 100 + "," + 100 + ")");
@@ -113,13 +137,16 @@ async function modal(latitude, longitude, coords) {
         .style("font-size", 12)
         .text("Price");
 
+    // append x axis into group
     gLine
         .append("g")
         .attr("transform", "translate(0," + height + ")")
         .call(d3.axisBottom(xScaleLine));
 
+    // append y axis into group
     gLine.append("g").call(d3.axisLeft(yScaleLine));
 
+    // append dot into svg line
     svgLine
         .append("g")
         .selectAll("dot")
@@ -136,6 +163,7 @@ async function modal(latitude, longitude, coords) {
         .attr("transform", "translate(" + 100 + "," + 100 + ")")
         .style("fill", "#CC0000");
 
+    // initialize line into svg line
     const line = d3
         .line()
         .x(function (d) {
@@ -146,6 +174,7 @@ async function modal(latitude, longitude, coords) {
         })
         .curve(d3.curveMonotoneX);
 
+    // append line into svg line
     svgLine
         .append("path")
         .datum(dataset)
@@ -156,17 +185,20 @@ async function modal(latitude, longitude, coords) {
         .style("stroke", "#CC0000")
         .style("stroke-width", "2");
 
-    // contoh bar
+    // initialize scale object for x and y value
     const xScaleBar = d3.scaleBand().range([0, width]).padding(0.5),
         yScaleBar = d3.scaleLinear().range([height, 0]);
 
+    // initialize group svg element for bar chart
     const gBar = svgBar
         .append("g")
         .attr("transform", "translate(" + 100 + "," + 100 + ")");
 
+    // set domain of scale x and y value
     xScaleBar.domain(dataset.map((v) => v[1]));
     yScaleBar.domain([0, Math.max(...coords.map((v) => v.price))]);
 
+    // append x axis into group
     gBar.append("g")
         .attr("transform", "translate(0," + height + ")")
         .call(
@@ -175,6 +207,7 @@ async function modal(latitude, longitude, coords) {
             })
         );
 
+    // append y axix into group
     gBar.append("g").call(
         d3
             .axisLeft(yScaleBar)
@@ -184,6 +217,7 @@ async function modal(latitude, longitude, coords) {
             .ticks(4)
     );
 
+    // append bar into svg bar
     gBar.selectAll(".bar")
         .data(dataset)
         .enter()
@@ -200,8 +234,12 @@ async function modal(latitude, longitude, coords) {
             return height - yScaleBar(d[1]);
         });
 
+    // close loading
     loading(false);
-    coordsElement.innerHTML = htmlString;
+
+    // replace html with value js
+    coordsElement.innerHTML = htmlStringProperty;
+    popularElement.innerHTML = htmlStringPopular;
     addressElement.innerHTML = address.data.display_name;
 }
 

@@ -71,7 +71,7 @@ const ordinal = [
 const BASE_URL = "https://api-heatmap-farcapital.fly.dev/v1";
 const AREA_ENDPOINT = `${BASE_URL}/api/area`;
 const SEARCH_ENDPOINT = `${BASE_URL}/api/search`;
-const ADDRESS_ENDPOINT = `${BASE_URL}/api/reverse`;
+const ADDRESS_ENDPOINT = `${BASE_URL}/api/reverseArea`;
 
 /**
  * Format number with million, billion etc suffixes
@@ -116,7 +116,7 @@ function showError(toggle = false) {
 function loading(toggle = false) {
     const getLoading = document.getElementById("loading");
     const overlayLoading = document.getElementById("overlay-loading");
-    if (toggle){
+    if (toggle) {
         getLoading.classList.replace("hidden", "flex");
         overlayLoading.classList.replace("hidden", "flex");
         return;
@@ -278,14 +278,14 @@ async function init() {
     }
     coords = [];
     map.eachLayer(function (layer) {
-        if (layer.type !== 'tile') map.removeLayer(layer);
+        if (layer.type !== "tile") map.removeLayer(layer);
     });
     tile = L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
         maxZoom: 19,
         attribution:
             '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-    })
-    tile['type'] = 'tile';
+    });
+    tile["type"] = "tile";
     tile.addTo(map);
 
     map.on("move", function () {
@@ -388,11 +388,11 @@ function showHeatmap(filter = null) {
         }
     }
     map.eachLayer(function (layer) {
-        if (layer.type !== 'tile') map.removeLayer(layer);
+        if (layer.type !== "tile") map.removeLayer(layer);
     });
 
-    const colorsElement = document.querySelector('#colors');
-    let colorItem = '';
+    const colorsElement = document.querySelector("#colors");
+    let colorItem = "";
     filterValue.forEach((f) => {
         colorItem += `
         <div class="text-xs w-6 h-3 rounded-full bg-range-${f}"></div>`;
@@ -432,10 +432,10 @@ function showHeatmap(filter = null) {
                     });
                     circle.on("mouseover", function () {
                         coords.forEach((coord) => {
-                            const areaMarker = new L.Marker([
-                                coord.latitude,
-                                coord.longitude,
-                            ], { interactive: false });
+                            const areaMarker = new L.Marker(
+                                [coord.latitude, coord.longitude],
+                                { interactive: false }
+                            );
                             areaMarker.addTo(map);
                             areaMarkers.push(areaMarker);
                         });
@@ -481,10 +481,10 @@ function showHeatmap(filter = null) {
                     });
                 } else {
                     coords.forEach((coord) => {
-                        const areaMarker = new L.Marker([
-                            coord.latitude,
-                            coord.longitude,
-                        ], { interactive: false });
+                        const areaMarker = new L.Marker(
+                            [coord.latitude, coord.longitude],
+                            { interactive: false }
+                        );
                         areaMarker.addTo(map);
                         areaMarkers.push(areaMarker);
                     });
@@ -594,7 +594,7 @@ function resetHeatmap() {
     const { lat, lng } = map.getCenter();
     currentLatitude = lat;
     currentLongitude = lng;
-    if(property) showProperty();
+    if (property) showProperty();
     init();
     document
         .querySelector("#search-on-this-area")

@@ -7,7 +7,7 @@
         </div>
 
         <div class="mt-4">
-            <p class="mb-6 text-center text-black md:text-2xl text-xl font-bold">Detail Property</p>
+            <p class="mb-6 text-center text-black md:text-2xl text-xl font-bold">Detail Area</p>
         </div>
 
         <div class="h-[65vh] overflow-y-scroll pt-2">
@@ -52,26 +52,29 @@
                 <svg width="900" height="350" id="Line" x-show='lineChart'></svg>
                 <svg width="900" height="350" id="Bar" x-show='barChart'></svg>
             </div>
-
             <p class="mb-6 text-center text-black md:text-xl text-xl md:mt-0 mt-[500px]">List Property</p>
-            <div class="relative">
+            <div class="relative overflow-x-auto">
                 <table class="w-full text-sm text-left text-gray-500">
                     <thead class="text-xs text-gray-700 uppercase bg-gray-50 ">
-                        <tr class="flex justify-between">
-                            <th scope="col" class="px-8 py-3">
+                        <tr class="text-center">
+                            <th scope="col" class="px-6 py-3">
                                 No
                             </th>
 
-                            {{-- <th scope="col" class="px-6 py-3">
-                                Latitude
+                            <th scope="col" class="px-6 py-3">
+                                Type
                             </th>
 
                             <th scope="col" class="px-6 py-3">
-                                Longitude
-                            </th> --}}
+                                M²
+                            </th>
 
-                            <th scope="col" class="px-8 py-3">
-                                Price
+                            <th scope="col" class="px-6 py-3">
+                                Price/M²
+                            </th>
+
+                            <th scope="col" class="px-6 py-3">
+                                Total
                             </th>
                         </tr>
                     </thead>
@@ -80,6 +83,27 @@
                     </tbody>
                 </table>
             </div>
+            <p class="mb-6 text-center my-5 text-black md:text-xl text-xl">List Popular Places</p>
+            <table class="w-full text-sm text-left text-gray-500">
+                <thead class="text-xs text-gray-700 uppercase bg-gray-50 ">
+                    <tr class="text-center">
+                        <th scope="col" class="px-6 py-3">
+                            No
+                        </th>
+
+                        <th scope="col" class="px-6 py-3">
+                            Name
+                        </th>
+
+                        <th scope="col" class="px-6 py-3">
+                            Distance
+                        </th>
+                    </tr>
+                </thead>
+
+                <tbody id="popular">
+                </tbody>
+            </table>
         </div>
     </div>
 </div>
