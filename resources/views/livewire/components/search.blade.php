@@ -1,4 +1,4 @@
-<div class="absolute z-[999999] top-5 left-0 flex justify-center items-center w-full md:top-5 md:right-5 md:w-auto md:justify-end">
+<div class="absolute z-[999999] top-5 left-[50%] -translate-x-[50%] flex justify-center items-center w-[316px] md:top-5 md:right-5 md:translate-x-0 md:w-auto md:justify-end">
     <div x-data="search">
         <div x-data="{ location: '', resultLocations: resultLocations, focus: false }" class="bg-white rounded-lg w-[316px]">
             <div class="flex items-center w-full py-1 pl-4 pr-2 bg-white rounded-lg shadow-md">

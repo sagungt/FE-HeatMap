@@ -19,7 +19,8 @@ var earth = 6378.137,                               // earth equatorial radius
     propertyMarkers = [],                           // array for property markers
     filterValue = [],                               // array for filter
     property = false,                               // show property marker default value
-    mode = 0;                                       // 0: default, 1: hover
+    mode = 0,                                       // 0: default, 1: hover
+    error = false;
 
 /* Ordinal Data for range category property price per meter^2 */
 const ordinal = [
@@ -170,7 +171,15 @@ modeToggleElement.addEventListener("click", () => { // if toggle mode clicked
         modeToggleElement.innerHTML = "Default mode"; // else will content in modeToggleElement change from Hover mode to Default mode   
         mode = 1; // else will content in modeToggleElement change from Hover mode to Default mode
     }
-    showHeatmap(); // show heat map
+
+    if(mode == 0 && propertyMarkers.length > 0){
+        showProperty();
+    }
+    showHeatmap();
+    
+    if(mode == 1){
+        showProperty();
+    }
 });
 
 /**
@@ -347,15 +356,15 @@ async function init() {
         const searchOnThisAreaElement = document.querySelector(
             "#search-on-this-area"
         );
-
-        // show search on this area button
-        if (!(currentLatitude === lat && currentLongitude === lng)) {
-            setTimeout(() => {
-                searchOnThisAreaElement.classList.replace(
-                    "opacity-0",
-                    "opacity-100"
-                );
-            }, 300);
+        if(!error){
+            if (!(currentLatitude === lat && currentLongitude === lng)) {
+                setTimeout(() => {
+                    searchOnThisAreaElement.classList.replace(
+                        "opacity-0",
+                        "opacity-100"
+                    );
+                }, 300);
+            }
         }
     });
     // map.touchZoom.disable();
@@ -441,8 +450,9 @@ async function init() {
         .then(async (res) => await res.json())
         // if failed to fetch
         .catch(() => {
-            loading(false); // hide show overlay
-            showError(true); // show error message
+            loading(false);
+            error = true;
+            showError(true);
         });
     response = data;
     showHeatmap(); // show heatmap grid overlay
