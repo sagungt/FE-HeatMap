@@ -1,6 +1,10 @@
 <!-- Legend Information -->
 <div x-data="dataOrdinal"
+<<<<<<< HEAD
     class="legend absolute bottom-10 -left-[300px] sm:-left-[400px] z-[9999999] w-[230px] h-[470px] sm:w-[380px] sm:h-[290px] md:w-[370px] md:h-[160px] lg:w-[300px] lg:h-[384px] duration-700">
+=======
+    class="legend absolute bottom-10 -left-[300px] sm:-left-[400px] z-[9999999] w-[230px] h-[470px] sm:w-[380px] sm:h-[290px] md:w-[370px] md:h-[160px] lg:w-[300px] lg:h-[384px] duration-700 bg-green-400">
+>>>>>>> a3e092be90f810b75f0643924f2ee4c1d9d9bf1f
 
     <div
         class="information-legend bottom-0 gap-4 flex flex-col justify-center rounded-lg duration-700 md:duration-500 bg-white absolute w-full py-4 lg:py-5 z-[999] lg:px-5 lg:gap-4 shadow-lg sm:-m-5 sm:ml-0.5">

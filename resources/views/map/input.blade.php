@@ -22,6 +22,7 @@
                     </svg>
                 </button>
             </div>
+<<<<<<< HEAD
             <div class="flex flex-col gap-5 md:flex-row p-3 h-[250px] overflow-y-auto md:overflow-y-hidden">
                 <div class="flex flex-col gap-3 w-full lg:w-[60%]">
                     <div class="flex flex-col">
@@ -58,6 +59,28 @@
                 </div>
             </div>
             <button id="submit" type='submit' class="w-3/4 mx-auto p-2 text-white bg-blue-500 rounded-xl">Submit</button>
+=======
+            <label for="price">Price</label>
+            <input type="number" name="price" placeholder="Price" class="py-1.5 px-2 border-2 border-gray-500 rounded-xl transition duration-200"
+                id='price'>
+            <label for="">Type</label>
+            <select id='type' class="py-1.5 px-2 border-2 border-gray-500 rounded-xl transition duration-200">
+                <option value="Rumah">Rumah</option>
+                <option value="Tanah">Tanah</option>
+                <option value="Apartemen">Apartemen</option>
+                <option value="Other">lain-lain</option>
+            </select>
+            <label for="lat">Latitude</label>
+            <input type="text" name="lat" id="lat" placeholder="Latitude" class="py-1.5 px-2 border-2 border-gray-500 rounded-xl transition duration-200">
+            <label for="long">Longitude</label>
+            <input type="text" name="long" id="long" placeholder="Longitude" class="py-1.5 px-2 border-2 border-gray-500 rounded-xl transition duration-200">
+            <label for="long">Area</label>
+            <input type="number" name="area" id="area" placeholder="area" class="py-1.5 px-2 border-2 border-gray-500 rounded-xl transition duration-200">
+            <label for="">Deskripsi</label>
+            <textarea name="desc" id="desc" class="py-1.5 px-2 border-2 border-gray-500 rounded-xl transition duration-200" placeholder="Deskripsi"></textarea>
+            
+            <button id="submit" type='submit' class="p-2 text-white bg-blue-500 rounded-xl">Submit</button>
+>>>>>>> a3e092be90f810b75f0643924f2ee4c1d9d9bf1f
         </form>
     {{-- <livewire:components.form/> --}}
     </div>
@@ -67,7 +90,11 @@
     </div>
 
     <div class="absolute z-50 top-3 right-28" x-data="modal" x-show="isShow" x-init="ceklogin()">
+<<<<<<< HEAD
         <button class="px-5 py-2 text-white duration-200 bg-red-500 rounded-md shadow-md hover:bg-red-700 hover:text-white"
+=======
+        <button class="px-5 py-2 text-black duration-200 bg-red-500 rounded-md shadow-md hover:bg-red-700 hover:text-white"
+>>>>>>> a3e092be90f810b75f0643924f2ee4c1d9d9bf1f
             @click="logout()">Logout</button>
     </div>
 
