@@ -25,7 +25,7 @@ async function fetchApi(link) {
     for (i = 0; i < loc.length; i++) {
         L.marker([loc[i][0], loc[i][1]])
             .bindPopup("Price : " + loc[i][2])
-            .addTo(map); // untuk menampilkan marker dan popup akan  
+            .addTo(map); // show marker into the map with price in popup 
     }
 }
 
@@ -36,17 +36,20 @@ async function fetchApi(link) {
  */
 function onClickMap(e) {
     if (markers.length > 0) { 
-        markers[0].remove(); // all data in array markers will remove
+        markers[0].remove(); // delete the previous marker once clicked
         markers = []; // define marker variable to empty array
     }
 
-    const latitudeElement = document.getElementById("lat"); // getting element HTML by id 
-    const longitudeElement = document.getElementById("long"); // getting element HTML by id
+    // get element HTML by id
+    const latitudeElement = document.getElementById("lat");  
+    const longitudeElement = document.getElementById("long"); 
 
     latitudeElement.value = e.latlng.lat; // define a value in input latitude in form when user clicked a map 
     longitudeElement.value = e.latlng.lng; // define a value in input longitude in form when user clicked a map
 
-    const newMarker = new L.Marker([e.latlng.lat, e.latlng.lng]); // define new variable for stored a data latitude and longitude
+    // define new variable for stored a data latitude and longitude
+    const newMarker = new L.Marker([e.latlng.lat, e.latlng.lng]);
+
     newMarker.addTo(map); // add marker to map
     markers.push(newMarker); // insert data latitude longitude to variable markers in array 
 }
@@ -58,7 +61,7 @@ function onClickMap(e) {
  * @returns {void}
  */
 function toggleMessage(show, message) {
-    const messageContainer = document.querySelector("#message"); // getting element HTML by id
+    const messageContainer = document.querySelector("#message"); // get element HTML by id
     messageContainer.innerHTML = message; // set the content in messageContainer 
     if (show) { 
         messageContainer.classList.replace('hidden', 'flex'); // if show is true, it will deleted hidden class name in messageContainer and adding flex
@@ -74,10 +77,12 @@ function toggleMessage(show, message) {
  */
 function loading(toggle = false) {
     const loadingContainer = document.getElementById("loading"); // getting element by id = loading
-    if (!toggle) { // if toggle is false class name in loadingContainer 
+    if (!toggle) { 
+        // if toggle is false class name in loadingContainer 
         loadingContainer.classList.add("hidden");
         loadingContainer.classList.remove("flex");
-    } else { // else class name in loadingContainer will delete hidden 
+    } else { 
+        // else class name in loadingContainer will delete hidden 
         loadingContainer.classList.add("flex");
         loadingContainer.classList.remove("hidden");
     }
@@ -93,8 +98,8 @@ btn.addEventListener("click", (e) => {
     const formData = new FormData(); // define variable for stored data sent from forms  
 
     let valDescription = document.querySelector("#desc").value;
+    
     // stored data sent from forms and define the name field and get the value by id
-
     if(valDescription.length) formData.append("desc", valDescription);
     formData.append("type", document.querySelector("#type").value);
     formData.append("area", document.querySelector("#area").value);
