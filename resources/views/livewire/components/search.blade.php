@@ -3,7 +3,7 @@
         <div x-data="{ location: '', resultLocations: resultLocations, focus: false }" class="bg-white rounded-lg w-[316px]">
             <div class="flex items-center w-full py-1 pl-4 pr-2 bg-white rounded-lg shadow-md">
 
-                <div class="w-[6%] h-[40px] flex justify-start items-center">
+                <div class="w-[6%] h-[40px] text-slate-700 flex justify-start items-center">
                     <i class="fa-solid fa-magnifying-glass"></i>
                 </div>
 
