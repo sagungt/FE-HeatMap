@@ -67,18 +67,21 @@ async function modal(latitude, longitude, coords) {
     address.data.popular.results.forEach(
         ({ name, distance, categories }, i) => {
             htmlStringPopular += `
-        <tr class="bg-white border-b text-center">
-            <td scope="col" class="px-6 py-4">
-                ${i + 1}
-            </td>
-            <td scope="col" class="px-6 py-4">
-                ${name}
-            </td>
-            <td scope="col" class="px-6 py-4">
-               ~ ${distance / 1000} Km
-            </td>
-        </tr>
-        `;
+            <tr class="bg-white border-b text-center">
+                <td scope="col" class="px-6 py-4">
+                    ${i + 1}
+                </td>
+                <td scope="col" class="px-6 py-4">
+                    ${name}
+                </td>
+                <td scope="col" class="px-6 py-4">
+                ~ ${distance / 1000} Km
+                </td>
+                <td scope="col" class="px-6 py-4">
+                    ${category(categories).join("")}
+                </td>
+             </tr>
+            `;
         }
     );
 
@@ -241,6 +244,20 @@ async function modal(latitude, longitude, coords) {
     coordsElement.innerHTML = htmlStringProperty;
     popularElement.innerHTML = htmlStringPopular;
     addressElement.innerHTML = address.data.display_name;
+}
+
+function category(categories) {
+    if (categories.length != 0) {
+        let name = [];
+        for (let index = 0; index < categories.length; index++) {
+            name.push([
+                ` <span class="bg-blue-400 rounded-lg py-1 px-2 text-white">${categories[index].name}</span>`,
+            ]);
+        }
+        return name;
+    } else {
+        return ["-"];
+    }
 }
 
 /**

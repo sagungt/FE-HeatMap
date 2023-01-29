@@ -98,6 +98,9 @@
                         <th scope="col" class="px-6 py-3">
                             Distance
                         </th>
+                        <th scope="col" class="px-6 py-3">
+                            Categories
+                        </th>
                     </tr>
                 </thead>
 
