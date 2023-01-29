@@ -380,60 +380,61 @@ async function init() {
     const diff = 1575;
 
     // loop to right of the center
-    for (let j = 0; j < xOffset; j += 1) {
+    for (let x = 0; x < xOffset; x += 1) {
+
         // loop loop to the bottom
-        for (let i = 0; i < yOffset; i += 1) {
+        for (let y = 0; y < yOffset; y += 1) {
             // append coordinate to coords array
             // with computed distance in map scale
             coords.push({
-                latitude: latitudePlusMeters(currentLatitude, i * diff),
+                latitude: latitudePlusMeters(currentLatitude, y * diff),
                 longitude: longitudePlusMeters(
                     currentLatitude,
                     currentLongitude,
-                    j * diff + (i % 2 === 0 ? 775 : 0) // shift with additional distance if index is even
+                    x * diff + (y % 2 === 0 ? 775 : 0) // shift with additional distance if index is even
                 ),
             });
         }
 
         // loop to the top
-        for (let i = 1; i < yOffset; i += 1) {
+        for (let y = 1; y < yOffset; y += 1) {
             // append coordinate to coords array
             // with computed distance in map scale
             coords.push({
-                latitude: latitudePlusMeters(currentLatitude, -(i * diff)),
+                latitude: latitudePlusMeters(currentLatitude, -(y * diff)),
                 longitude: longitudePlusMeters(
                     currentLatitude,
                     currentLongitude,
-                    j * diff + (i % 2 === 0 ? 775 : 0) // shift with additional distance if index is even
+                    x * diff + (y % 2 === 0 ? 775 : 0) // shift with additional distance if index is even
                 ),
             });
         }
     }
 
     // loop to left of the center
-    for (let j = 1; j < xOffset; j += 1) {
+    for (let x = 1; x < xOffset; x += 1) {
         // loop to the bottom
-        for (let i = 0; i < yOffset; i += 1) {
+        for (let y = 0; y < yOffset; y += 1) {
             // append coordinate to coords array
             // with computed distance in map scale
             coords.push({
-                latitude: latitudePlusMeters(currentLatitude, i * diff),
+                latitude: latitudePlusMeters(currentLatitude, y * diff),
                 longitude: longitudePlusMeters(
                     currentLatitude,
                     currentLongitude,
-                    -(j * diff - (i % 2 === 0 ? 775 : 0)) // shift with additional distance if index is even
+                    -(x * diff - (y % 2 === 0 ? 775 : 0)) // shift with additional distance if index is even
                 ),
             });
         }
-        for (let i = 1; i < yOffset; i += 1) {
+        for (let y = 1; y < yOffset; y += 1) {
             // append coordinate to coords array
             // with computed distance in map scale
             coords.push({
-                latitude: latitudePlusMeters(currentLatitude, -(i * diff)),
+                latitude: latitudePlusMeters(currentLatitude, -(y * diff)),
                 longitude: longitudePlusMeters(
                     currentLatitude,
                     currentLongitude,
-                    -(j * diff - (i % 2 === 0 ? 775 : 0)) // shift with additional distance if index is even
+                    -(x * diff - (y % 2 === 0 ? 775 : 0)) // shift with additional distance if index is even
                 ),
             });
         }
