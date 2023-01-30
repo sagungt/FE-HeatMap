@@ -14,7 +14,9 @@
  *
  * See: https://github.com/laravel-frontend-presets/tall/issues/7
  */
- input:invalid, textarea:invalid, select:invalid {
+input:invalid,
+textarea:invalid,
+select:invalid {
     box-shadow: none;
 }
 
@@ -53,3 +55,50 @@
 [x-cloak] {
     display: none;
 }
+
+.bg-range-1 {
+    background-color: #fcf04f;
+}
+.bg-range-2 {
+    background-color: #9bffed;
+}
+.bg-range-3 {
+    background-color: #7ff866;
+}
+.bg-range-4 {
+    background-color: #4270f0;
+}
+.bg-range-5 {
+    background-color: #f52e2e;
+}
+.bg-range-6 {
+    background-color: #160101;
+}
+
+.nameLocation::-webkit-scrollbar {
+    display: none;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+    width: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+    background-color: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background: rgb(100, 116, 139);
+    border-radius: 20px;
+}
+
+
+.btn-legend-aktif{
+    @apply left-[240px] bottom-0 sm:bottom-0 sm:left-[400px] md:left-[390px] md:bottom-0 lg:bottom-0 lg:left-[315px];
+}
+
+.btn-legend-nonaktif{
+    @apply left-[320px] bottom-0 sm:bottom-0 sm:left-[415px] md:left-[415px] md:bottom-0 lg:bottom-0 lg:left-[415px];
+}
+
+
