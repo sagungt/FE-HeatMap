@@ -6,14 +6,14 @@
     <div id="map" class="z-10 h-screen min-h-screen"></div>
 
     <!-- Input data form -->
-    <div x-data="modal" class="absolute top-[65px] left-[35px] md:left-[50px] md:top-[35px] lg:left-[20px] lg:top-[20px] z-50" x-init="ceklogin()">
-        <button @click='isShow = !isShow' x-show='!isShow' class="border border-gray-500  absolute left-[-20px] lg:left-[15px] top-[15px] w-[200px] h-[40px] bg-white flex items-center justify-center gap-3 rounded-lg" >
+    <div x-data="modal" class="absolute top-3 left-[35px] md:left-[50px] md:top-[35px] lg:left-[20px] lg:top-[20px] z-50" x-init="ceklogin()">
+        <button @click='isShow = !isShow' x-show='!isShow' class="border border-gray-500  absolute left-[-20px] lg:left-[15px] lg:top-0 w-[150px] h-[40px] bg-white flex items-center justify-center gap-3 rounded-lg" >
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
             </svg>
-            <span>Create Property</span>
+            <span>Add New</span>
         </button>
-        <form id="handleForm" method="POST" x-show="isShow" x-transition class="rounded-lg gap-3 p-4 w-[330px] md:w-full flex justify-center lg:justify-start flex-col bg-white">
+        <form id="handleForm" method="POST" x-show="isShow" x-transition class="rounded-lg mt-12 gap-3 p-4 w-[100%] md:w-full flex justify-center lg:justify-start flex-col bg-white">
             <div class="flex items-center justify-between">
                 <h1 class="font-[800] text-lg">Insert Property</h1>
                 <button type="button" @click='isShow = !isShow' class="inline-block">
